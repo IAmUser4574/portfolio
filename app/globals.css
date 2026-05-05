@@ -68,3 +68,18 @@ body {
   background: #b7d4c7;
   color: #12110f;
 }
+
+@keyframes minecraft-splash {
+  0%,
+  100% {
+    transform: rotate(var(--minecraft-splash-rotation)) scale(1);
+  }
+
+  50% {
+    transform: rotate(var(--minecraft-splash-rotation)) scale(1.12);
+  }
+}
+
+.animate-minecraft-splash {
+  animation: minecraft-splash 1.0s ease-in-out infinite;
+}

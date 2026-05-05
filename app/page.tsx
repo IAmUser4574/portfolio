@@ -9,6 +9,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
+import { MinecraftName } from "@/components/minecraft-name";
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -48,9 +49,7 @@ export default function Home() {
           <p className="font-mono text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
             Hi, I&apos;m
           </p>
-          <h1 className="mt-4 text-6xl font-semibold tracking-tight text-foreground sm:text-7xl lg:text-8xl">
-            Briton
-          </h1>
+          <MinecraftName />
           <p className="mt-7 max-w-2xl text-xl leading-9 text-muted-foreground">
             I build modern web and mobile products with a bias toward useful
             tools, clean interfaces, and systems that can survive contact with
