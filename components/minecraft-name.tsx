@@ -54,7 +54,10 @@ export function MinecraftName() {
     <div
       className="mt-4 inline-flex flex-col items-center gap-4"
     >
-      <div className="relative h-[8.5rem] w-[min(92vw,34rem)] sm:h-[10.5rem] sm:w-[min(84vw,42rem)] lg:h-[11rem] lg:w-[40rem]">
+      <div
+        tabIndex={0}
+        className="group/name relative h-[8.5rem] w-[min(92vw,34rem)] outline-none sm:h-[10.5rem] sm:w-[min(84vw,42rem)] lg:h-[11rem] lg:w-[40rem]"
+      >
         <h1 aria-label="Briton" className="absolute inset-0">
           <span
             aria-hidden="true"
@@ -92,6 +95,12 @@ export function MinecraftName() {
           )}
         >
           {phrase}
+        </span>
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-4 right-0 rounded-md border bg-card/90 px-3 py-1.5 text-right font-mono text-xs text-muted-foreground opacity-0 shadow-sm backdrop-blur transition-all duration-300 group-hover/name:opacity-100 group-focus/name:opacity-100 sm:bottom-6"
+        >
+          pronounced braɪtən (BRY-tuhn)
         </span>
       </div>
 
