@@ -1,11 +1,11 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const splashPhrases = [
@@ -42,16 +42,34 @@ export function MinecraftName() {
   const [enabled, setEnabled] = useState(false);
   const [phrase, setPhrase] = useState(splashPhrases[0].text);
 
-  function toggleMinecraftMode() {
-    if (!enabled) {
-      setPhrase((currentPhrase) => getNextSplashPhrase(currentPhrase));
+  useEffect(() => {
+    function handleMinecraftChange(event: Event) {
+      const nextEnabled = (event as CustomEvent<{ enabled: boolean }>).detail
+        .enabled;
+
+      if (nextEnabled) {
+        setPhrase((currentPhrase) => getNextSplashPhrase(currentPhrase));
+      }
+
+      setEnabled(nextEnabled);
     }
 
-    setEnabled((current) => !current);
-  }
+    window.addEventListener("briton-minecraft-change", handleMinecraftChange);
+
+    return () => {
+      window.removeEventListener(
+        "briton-minecraft-change",
+        handleMinecraftChange,
+      );
+    };
+  }, []);
 
   return (
-    <div className="mt-4 inline-flex flex-col items-center gap-4">
+    <div
+      data-minecraft-root
+      data-minecraft-mode={enabled ? "true" : "false"}
+      className="mt-4 inline-flex flex-col items-center gap-4"
+    >
       <div className="relative h-[8.5rem] w-[min(92vw,34rem)] sm:h-[10.5rem] sm:w-[min(84vw,42rem)] lg:h-[11rem] lg:w-[40rem]">
         <h1 aria-label="Briton" className="absolute inset-0">
           <span
@@ -93,21 +111,26 @@ export function MinecraftName() {
         </span>
       </div>
 
-      <details className="group ml-auto w-44 rounded-lg border bg-card/70 text-left opacity-0 shadow-sm transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100">
+      <details className="group ml-auto w-44 rounded-lg border bg-card/70 text-left opacity-0 shadow-sm transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100 [&[open]]:opacity-100">
         <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/60 [&::-webkit-details-marker]:hidden">
           Fun Zone
           <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
         </summary>
         <div className="flex justify-end border-t px-4 py-3">
-          <Button
+          <button
             type="button"
-            variant={enabled ? "default" : "outline"}
-            size="sm"
+            data-minecraft-toggle
             aria-pressed={enabled}
-            onClick={toggleMinecraftMode}
+            className={cn(
+              buttonVariants({
+                variant: enabled ? "default" : "outline",
+                size: "sm",
+              }),
+              "touch-manipulation",
+            )}
           >
             {enabled ? "Boring Mode" : "Minecraft Mode"}
-          </Button>
+          </button>
         </div>
       </details>
     </div>

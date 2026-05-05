@@ -23,7 +23,8 @@
   color-scheme: light;
 }
 
-.dark {
+.dark,
+[data-theme="dark"] {
   --background: #12110f;
   --foreground: #f5f1e8;
   --card: #191713;
