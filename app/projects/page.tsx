@@ -1,13 +1,23 @@
-import { ArrowUpRight, Code2, Layers3 } from "lucide-react";
+import { ArrowUpRight, CalendarDays, Code2, Layers3 } from "lucide-react";
 import Link from "next/link";
 
 import { PageShell } from "@/components/page-shell";
 import { SectionHeading } from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { projects } from "@/lib/projects";
+import { getProjectSummaries } from "@/lib/projects";
 
-export default function ProjectsPage() {
+function formatDate(date: string) {
+  return new Intl.DateTimeFormat("en", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(`${date}T00:00:00`));
+}
+
+export default async function ProjectsPage() {
+  const projects = await getProjectSummaries();
+
   return (
     <PageShell>
       <section className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6">
@@ -23,6 +33,10 @@ export default function ProjectsPage() {
                 <span className="flex size-11 items-center justify-center rounded-md border bg-accent text-accent-foreground">
                   <Layers3 className="size-5" />
                 </span>
+                {/* <p className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <CalendarDays className="size-4" />
+                  {formatDate(project.publishedAt)}
+                </p> */}
                 <CardTitle className="text-2xl">{project.title}</CardTitle>
               </CardHeader>
               <CardContent>

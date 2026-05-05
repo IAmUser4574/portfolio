@@ -5,9 +5,9 @@ import { PageShell } from "@/components/page-shell";
 import { SectionHeading } from "@/components/section-heading";
 import { getBlogPostSummaries, getBlogTags } from "@/lib/blog";
 
-export default function BlogPage() {
-  const posts = getBlogPostSummaries();
-  const tags = getBlogTags();
+export default async function BlogPage() {
+  const posts = await getBlogPostSummaries();
+  const tags = await getBlogTags();
 
   return (
     <PageShell>
