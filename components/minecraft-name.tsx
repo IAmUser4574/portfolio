@@ -1,7 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 
@@ -42,32 +42,16 @@ export function MinecraftName() {
   const [enabled, setEnabled] = useState(false);
   const [phrase, setPhrase] = useState(splashPhrases[0].text);
 
-  useEffect(() => {
-    function handleMinecraftChange(event: Event) {
-      const nextEnabled = (event as CustomEvent<{ enabled: boolean }>).detail
-        .enabled;
-
-      if (nextEnabled) {
-        setPhrase((currentPhrase) => getNextSplashPhrase(currentPhrase));
-      }
-
-      setEnabled(nextEnabled);
+  function toggleMinecraftMode() {
+    if (!enabled) {
+      setPhrase((currentPhrase) => getNextSplashPhrase(currentPhrase));
     }
 
-    window.addEventListener("briton-minecraft-change", handleMinecraftChange);
-
-    return () => {
-      window.removeEventListener(
-        "briton-minecraft-change",
-        handleMinecraftChange,
-      );
-    };
-  }, []);
+    setEnabled((current) => !current);
+  }
 
   return (
     <div
-      data-minecraft-root
-      data-minecraft-mode={enabled ? "true" : "false"}
       className="mt-4 inline-flex flex-col items-center gap-4"
     >
       <div className="relative h-[8.5rem] w-[min(92vw,34rem)] sm:h-[10.5rem] sm:w-[min(84vw,42rem)] lg:h-[11rem] lg:w-[40rem]">
@@ -119,7 +103,6 @@ export function MinecraftName() {
         <div className="flex justify-end border-t px-4 py-3">
           <button
             type="button"
-            data-minecraft-toggle
             aria-pressed={enabled}
             className={cn(
               buttonVariants({
@@ -128,6 +111,7 @@ export function MinecraftName() {
               }),
               "touch-manipulation",
             )}
+            onClick={toggleMinecraftMode}
           >
             {enabled ? "Boring Mode" : "Minecraft Mode"}
           </button>
