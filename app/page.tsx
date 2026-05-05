@@ -1,6 +1,5 @@
 import {
   ArrowDown,
-  ArrowRight,
   BookOpen,
   BriefcaseBusiness,
   FileText,
@@ -12,7 +11,6 @@ import Link from "next/link";
 import { MinecraftName } from "@/components/minecraft-name";
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const homeTiles = [
   {
@@ -44,53 +42,46 @@ const homeTiles = [
 export default function Home() {
   return (
     <PageShell>
-      <section className="mx-auto grid min-h-[calc(100vh-4rem)] w-full max-w-6xl content-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
-        <div className="flex flex-col justify-center">
+      <section className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-6xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6 lg:py-20">
+        <div className="flex w-full flex-col items-center">
           <p className="font-mono text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
             Hi, I&apos;m
           </p>
           <MinecraftName />
-          <p className="mt-7 max-w-2xl text-xl leading-9 text-muted-foreground">
+
+          <div className="mt-8 flex w-full flex-wrap justify-center gap-3">
+            {homeTiles.map((tile) => {
+              const Icon = tile.icon;
+
+              return (
+                <Button
+                  key={tile.title}
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="min-w-36 transition-all hover:-translate-y-0.5 hover:border-foreground hover:shadow-md"
+                >
+                  {tile.href.startsWith("#") ? (
+                    <a href={tile.href}>
+                      <Icon />
+                      {tile.title}
+                    </a>
+                  ) : (
+                    <Link href={tile.href}>
+                      <Icon />
+                      {tile.title}
+                    </Link>
+                  )}
+                </Button>
+              );
+            })}
+          </div>
+
+          <p className="mt-8 max-w-2xl text-xl leading-9 text-muted-foreground">
             I build modern web and mobile products with a bias toward useful
             tools, clean interfaces, and systems that can survive contact with
             real people.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg">
-              <Link href="/projects">
-                View projects
-                <ArrowRight />
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="#about">About me</Link>
-            </Button>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3 sm:gap-4">
-          {homeTiles.map((tile) => {
-            const Icon = tile.icon;
-            const TileWrapper = tile.href.startsWith("#") ? "a" : Link;
-
-            return (
-              <TileWrapper key={tile.title} href={tile.href} className="group">
-                <Card className="h-full min-h-44 overflow-hidden rounded-lg border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-foreground hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/30">
-                  <CardHeader className="flex-row items-start justify-between gap-4">
-                    <CardTitle className="text-2xl">{tile.title}</CardTitle>
-                    <span className="flex size-10 items-center justify-center rounded-md border bg-background transition-colors group-hover:bg-foreground group-hover:text-background">
-                      <Icon className="size-5" />
-                    </span>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm leading-6 text-muted-foreground">
-                      {tile.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </TileWrapper>
-            );
-          })}
         </div>
       </section>
 

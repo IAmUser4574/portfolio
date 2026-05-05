@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 const splashPhrases = [
   { text: "Planes, Trains, and Automobiles", weight: 100 },
-  { text: "Batteries not included!", weight: 100 },
+  { text: "The Social Network > The King's Speech", weight: 50 },
   { text: "It was his hat, Mr. Krabs. He was number one!", weight: 100 },
   { text: "Han shot first and Lucas covered it up", weight: 100 },
   { text: "AAAHHHH LET ME OUT OF HERE!!!!", weight: 5 },
@@ -50,13 +51,13 @@ export function MinecraftName() {
   }
 
   return (
-    <div className="mt-4 inline-flex flex-col items-start gap-4">
+    <div className="mt-4 inline-flex flex-col items-center gap-4">
       <div className="relative h-[8.5rem] w-[min(92vw,34rem)] sm:h-[10.5rem] sm:w-[min(84vw,42rem)] lg:h-[11rem] lg:w-[40rem]">
         <h1 aria-label="Briton" className="absolute inset-0">
           <span
             aria-hidden="true"
             className={cn(
-              "absolute left-0 top-1/2 -translate-y-1/2 text-7xl font-semibold tracking-tight text-foreground transition-all duration-500 ease-out sm:text-8xl lg:text-9xl",
+              "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl font-semibold tracking-tight text-foreground transition-all duration-500 ease-out sm:text-8xl lg:text-9xl",
               enabled && "-translate-y-[45%] scale-95 opacity-0",
             )}
           >
@@ -65,7 +66,7 @@ export function MinecraftName() {
           <span
             aria-hidden="true"
             className={cn(
-              "absolute left-0 top-1/2 block w-full -translate-y-1/2 scale-95 opacity-0 transition-all duration-500 ease-out",
+              "absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2 scale-95 opacity-0 transition-all duration-500 ease-out",
               enabled && "scale-100 opacity-100",
             )}
           >
@@ -92,15 +93,23 @@ export function MinecraftName() {
         </span>
       </div>
 
-      <Button
-        type="button"
-        variant={enabled ? "default" : "outline"}
-        size="sm"
-        aria-pressed={enabled}
-        onClick={toggleMinecraftMode}
-      >
-        Minecraft Mode
-      </Button>
+      <details className="group ml-auto w-44 rounded-lg border bg-card/70 text-left opacity-0 shadow-sm transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/60 [&::-webkit-details-marker]:hidden">
+          Fun Zone
+          <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
+        </summary>
+        <div className="flex justify-end border-t px-4 py-3">
+          <Button
+            type="button"
+            variant={enabled ? "default" : "outline"}
+            size="sm"
+            aria-pressed={enabled}
+            onClick={toggleMinecraftMode}
+          >
+            {enabled ? "Boring Mode" : "Minecraft Mode"}
+          </Button>
+        </div>
+      </details>
     </div>
   );
 }
