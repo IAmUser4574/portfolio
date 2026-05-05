@@ -5,7 +5,8 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 
-import { buttonVariants } from "@/components/ui/button";
+import GlitchText from "@/components/react-bits/glitch-text";
+import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
 const splashPhrases = [
@@ -16,6 +17,8 @@ const splashPhrases = [
   { text: "AAAHHHH LET ME OUT OF HERE!!!!", weight: 5 },
   { text: "Played too much minecraft, now I have to make portfolios", weight: 5 },
 ];
+
+type FunMode = "normal" | "minecraft" | "nerd";
 
 function getNextSplashPhrase(currentPhrase: string) {
   const options = splashPhrases.filter((item) => item.text !== currentPhrase);
@@ -38,16 +41,34 @@ function getNextSplashPhrase(currentPhrase: string) {
   return options[options.length - 1].text;
 }
 
-export function MinecraftName() {
-  const [enabled, setEnabled] = useState(false);
+export function Name() {
+  const [mode, setMode] = useState<FunMode>("normal");
   const [phrase, setPhrase] = useState(splashPhrases[0].text);
 
-  function toggleMinecraftMode() {
-    if (!enabled) {
+  const isMinecraftMode = mode === "minecraft";
+  const isNerdMode = mode === "nerd";
+
+  function setMinecraftMode(checked: boolean) {
+    if (checked) {
       setPhrase((currentPhrase) => getNextSplashPhrase(currentPhrase));
+      setMode("minecraft");
+      return;
     }
 
-    setEnabled((current) => !current);
+    if (mode === "minecraft") {
+      setMode("normal");
+    }
+  }
+
+  function setNerdMode(checked: boolean) {
+    if (checked) {
+      setMode("nerd");
+      return;
+    }
+
+    if (mode === "nerd") {
+      setMode("normal");
+    }
   }
 
   return (
@@ -63,7 +84,7 @@ export function MinecraftName() {
             aria-hidden="true"
             className={cn(
               "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl font-semibold tracking-tight text-foreground transition-all duration-500 ease-out sm:text-8xl lg:text-9xl",
-              enabled && "-translate-y-[45%] scale-95 opacity-0",
+              mode !== "normal" && "-translate-y-[45%] scale-95 opacity-0",
             )}
           >
             Briton
@@ -72,7 +93,7 @@ export function MinecraftName() {
             aria-hidden="true"
             className={cn(
               "absolute left-1/2 top-1/2 block w-full -translate-x-1/2 -translate-y-1/2 scale-95 opacity-0 transition-all duration-500 ease-out",
-              enabled && "scale-100 opacity-100",
+              isMinecraftMode && "scale-100 opacity-100",
             )}
           >
             <Image
@@ -85,13 +106,29 @@ export function MinecraftName() {
               className="h-auto w-full select-none"
             />
           </span>
+          <div
+            aria-hidden="true"
+            className={cn(
+              "absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-500 ease-out",
+              isNerdMode && "opacity-100",
+            )}
+          >
+            <GlitchText
+              speed={0.85}
+              enableShadows
+              enableOnHover={false}
+              className="text-7xl sm:text-8xl lg:text-9xl"
+            >
+              Briton
+            </GlitchText>
+          </div>
         </h1>
         <span
-          aria-hidden={!enabled}
+          aria-hidden={!isMinecraftMode}
           style={{ "--minecraft-splash-rotation": "-10deg" } as CSSProperties}
           className={cn(
             "pointer-events-none absolute right-0 bottom-8 origin-center rotate-[var(--minecraft-splash-rotation)] whitespace-nowrap font-mono text-xs font-black uppercase tracking-wide text-[#f7e64b] opacity-0 drop-shadow-[2px_2px_0_rgba(0,0,0,0.65)] transition-all duration-500 ease-out sm:-right-2 sm:bottom-10 sm:text-sm",
-            enabled && "animate-minecraft-splash opacity-100",
+            isMinecraftMode && "animate-minecraft-splash opacity-100",
           )}
         >
           {phrase}
@@ -109,21 +146,26 @@ export function MinecraftName() {
           Fun Zone
           <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
         </summary>
-        <div className="flex justify-end border-t px-4 py-3">
-          <button
-            type="button"
-            aria-pressed={enabled}
-            className={cn(
-              buttonVariants({
-                variant: enabled ? "default" : "outline",
-                size: "sm",
-              }),
-              "touch-manipulation",
-            )}
-            onClick={toggleMinecraftMode}
-          >
-            {enabled ? "Boring Mode" : "Minecraft Mode"}
-          </button>
+        <div className="grid gap-3 border-t px-4 py-3">
+          <label className="flex items-center justify-between gap-3 text-sm">
+            <span>Minecraft</span>
+            <Switch
+              checked={isMinecraftMode}
+              onCheckedChange={setMinecraftMode}
+              aria-label="Toggle Minecraft Mode"
+            />
+          </label>
+          <label className="flex items-center justify-between gap-3 text-sm">
+            <span>Nerd</span>
+            <Switch
+              checked={isNerdMode}
+              onCheckedChange={setNerdMode}
+              aria-label="Toggle Nerd Mode"
+            />
+          </label>
+          <p className="text-right text-xs text-muted-foreground">
+            Current: {mode === "normal" ? "Normal" : mode}
+          </p>
         </div>
       </details>
     </div>

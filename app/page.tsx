@@ -8,7 +8,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-import { MinecraftName } from "@/components/minecraft-name";
+import { Name } from "@/components/name";
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
 
@@ -47,7 +47,7 @@ export default function Home() {
           <p className="font-mono text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
             Hi, I&apos;m
           </p>
-          <MinecraftName />
+          <Name />
 
           <div className="mt-8 flex w-full flex-wrap justify-center gap-3">
             {homeTiles.map((tile) => {
