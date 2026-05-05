@@ -2,47 +2,47 @@
 
 :root {
   --radius: 0.5rem;
-  --background: #f7f4ee;
-  --foreground: #181714;
-  --card: #fffefa;
-  --card-foreground: #181714;
-  --popover: #fffefa;
-  --popover-foreground: #181714;
-  --primary: #181714;
-  --primary-foreground: #f8f6f0;
-  --secondary: #e9e2d5;
-  --secondary-foreground: #26231e;
-  --muted: #eee8dd;
-  --muted-foreground: #6b665e;
-  --accent: #d6e4de;
-  --accent-foreground: #16231f;
-  --destructive: #ba3b2f;
-  --border: #d9d0c0;
-  --input: #d9d0c0;
-  --ring: #5f766c;
+  --background: #f4f7fb;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #102a56;
+  --primary-foreground: #f8fbff;
+  --secondary: #dde8f6;
+  --secondary-foreground: #13233d;
+  --muted: #e8eef7;
+  --muted-foreground: #526173;
+  --accent: #bfd7ff;
+  --accent-foreground: #0b2243;
+  --destructive: #bf2d3a;
+  --border: #c9d6e6;
+  --input: #c9d6e6;
+  --ring: #2f67b1;
   color-scheme: light;
 }
 
 .dark,
 [data-theme="dark"] {
-  --background: #12110f;
-  --foreground: #f5f1e8;
-  --card: #191713;
-  --card-foreground: #f5f1e8;
-  --popover: #191713;
-  --popover-foreground: #f5f1e8;
-  --primary: #f5f1e8;
-  --primary-foreground: #161411;
-  --secondary: #27231d;
-  --secondary-foreground: #ede7dc;
-  --muted: #24211c;
-  --muted-foreground: #b6aa99;
-  --accent: #20352e;
-  --accent-foreground: #d9f2e7;
-  --destructive: #ef6355;
-  --border: #373026;
-  --input: #373026;
-  --ring: #80a897;
+  --background: #0b0d10;
+  --foreground: #e7eef9;
+  --card: #111827;
+  --card-foreground: #e7eef9;
+  --popover: #111827;
+  --popover-foreground: #e7eef9;
+  --primary: #d7e8ff;
+  --primary-foreground: #07111f;
+  --secondary: #132640;
+  --secondary-foreground: #dbe8f7;
+  --muted: #102038;
+  --muted-foreground: #99abc1;
+  --accent: #183a63;
+  --accent-foreground: #dcecff;
+  --destructive: #fb7185;
+  --border: #223a58;
+  --input: #223a58;
+  --ring: #66a6ff;
   color-scheme: dark;
 }
 
@@ -89,8 +89,8 @@ body {
 }
 
 ::selection {
-  background: #b7d4c7;
-  color: #12110f;
+  background: #66a6ff;
+  color: #06101d;
 }
 
 @keyframes minecraft-splash {
