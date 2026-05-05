@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 
 const links = [
@@ -16,13 +17,16 @@ export function SiteHeader() {
         <Link href="/" className="font-mono text-sm font-semibold tracking-[0.18em]">
           BRITON
         </Link>
-        <nav className="flex items-center gap-1">
-          {links.map((link) => (
-            <Button key={link.href} asChild variant="ghost" size="sm">
-              <Link href={link.href}>{link.label}</Link>
-            </Button>
-          ))}
-        </nav>
+        <div className="flex items-center gap-1">
+          <nav className="flex items-center gap-1">
+            {links.map((link) => (
+              <Button key={link.href} asChild variant="ghost" size="sm">
+                <Link href={link.href}>{link.label}</Link>
+              </Button>
+            ))}
+          </nav>
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
