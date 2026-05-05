@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { useState } from "react";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -50,21 +51,40 @@ export function MinecraftName() {
 
   return (
     <div className="mt-4 inline-flex flex-col items-start gap-4">
-      <div className="relative inline-block pr-8">
-        <h1
-          className={cn(
-            "text-6xl font-semibold tracking-tight text-foreground transition-all duration-300 sm:text-7xl lg:text-8xl",
-            enabled &&
-              "font-black uppercase tracking-wider text-[#d9d9d9] [text-shadow:0_4px_0_#6b6b6b,0_8px_0_#2f2f2f,4px_4px_0_#ffffff,-4px_4px_0_#8b8b8b]",
-          )}
-        >
-          Briton
+      <div className="relative h-[8.5rem] w-[min(92vw,34rem)] sm:h-[10.5rem] sm:w-[min(84vw,42rem)] lg:h-[11rem] lg:w-[40rem]">
+        <h1 aria-label="Briton" className="absolute inset-0">
+          <span
+            aria-hidden="true"
+            className={cn(
+              "absolute left-0 top-1/2 -translate-y-1/2 text-7xl font-semibold tracking-tight text-foreground transition-all duration-500 ease-out sm:text-8xl lg:text-9xl",
+              enabled && "-translate-y-[45%] scale-95 opacity-0",
+            )}
+          >
+            Briton
+          </span>
+          <span
+            aria-hidden="true"
+            className={cn(
+              "absolute left-0 top-1/2 block w-full -translate-y-1/2 scale-95 opacity-0 transition-all duration-500 ease-out",
+              enabled && "scale-100 opacity-100",
+            )}
+          >
+            <Image
+              src="/briton-minecraft-logo.png"
+              alt=""
+              aria-hidden="true"
+              width={2073}
+              height={758}
+              priority
+              className="h-auto w-full select-none"
+            />
+          </span>
         </h1>
         <span
           aria-hidden={!enabled}
           style={{ "--minecraft-splash-rotation": "-10deg" } as CSSProperties}
           className={cn(
-            "pointer-events-none absolute -right-4 bottom-2 origin-center rotate-[var(--minecraft-splash-rotation)] whitespace-nowrap font-mono text-xs font-black uppercase tracking-wide text-[#f7e64b] opacity-0 drop-shadow-[2px_2px_0_rgba(0,0,0,0.65)] transition-opacity sm:-right-10 sm:bottom-4 sm:text-sm",
+            "pointer-events-none absolute right-0 bottom-8 origin-center rotate-[var(--minecraft-splash-rotation)] whitespace-nowrap font-mono text-xs font-black uppercase tracking-wide text-[#f7e64b] opacity-0 drop-shadow-[2px_2px_0_rgba(0,0,0,0.65)] transition-all duration-500 ease-out sm:-right-2 sm:bottom-10 sm:text-sm",
             enabled && "animate-minecraft-splash opacity-100",
           )}
         >
