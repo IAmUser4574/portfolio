@@ -2,7 +2,6 @@
 
 import type { CSSProperties } from "react";
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 
 import GlitchText from "@/components/react-bits/glitch-text";
@@ -141,12 +140,11 @@ export function Name() {
         </span>
       </div>
 
-      <details className="group ml-auto w-44 rounded-lg border bg-card/70 text-left opacity-0 shadow-sm transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100 [&[open]]:opacity-100">
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-medium transition-colors hover:bg-muted/60 [&::-webkit-details-marker]:hidden">
+      <fieldset className="ml-auto w-48 rounded-lg border bg-card/70 px-4 pb-3 pt-2 text-left opacity-0 shadow-sm transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100">
+        <legend className="px-1 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           Fun Zone
-          <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
-        </summary>
-        <div className="grid gap-3 border-t px-4 py-3">
+        </legend>
+        <div className="grid gap-3">
           <label className="flex items-center justify-between gap-3 text-sm">
             <span>Minecraft</span>
             <Switch
@@ -167,7 +165,7 @@ export function Name() {
             Current: {mode === "normal" ? "Normal" : mode}
           </p>
         </div>
-      </details>
+      </fieldset>
     </div>
   );
 }
