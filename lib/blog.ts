@@ -6,6 +6,7 @@ import BuildingHomebase, {
 import ProductEngineering, {
   metadata as productEngineeringMetadata,
 } from "@/content/blog/notes-on-product-engineering.mdx";
+import { getProjectBlogTags } from "@/lib/projects";
 
 export type BlogPostMetadata = {
   title: string;
@@ -42,4 +43,26 @@ export function getBlogPosts() {
 
 export function getBlogPost(slug: string) {
   return posts.find((post) => post.slug === slug);
+}
+
+export type BlogPostSummary = Omit<BlogPost, "Component">;
+
+export function getBlogPostSummaries(): BlogPostSummary[] {
+  return getBlogPosts().map((post) => ({
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    publishedAt: post.publishedAt,
+    readingTime: post.readingTime,
+    tags: post.tags,
+  }));
+}
+
+export function getBlogTags() {
+  return Array.from(
+    new Set([
+      ...getProjectBlogTags(),
+      ...getBlogPosts().flatMap((post) => post.tags),
+    ]),
+  ).sort((a, b) => a.localeCompare(b));
 }

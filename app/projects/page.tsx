@@ -1,30 +1,11 @@
 import { ArrowUpRight, Code2, Layers3 } from "lucide-react";
+import Link from "next/link";
 
 import { PageShell } from "@/components/page-shell";
 import { SectionHeading } from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-const projects = [
-  {
-    title: "Collectr",
-    description:
-      "A collection-management product surface for tracking items, signals, and ownership details across web and mobile.",
-    stack: ["Next.js", "Expo", "TypeScript", "Postgres"],
-  },
-  {
-    title: "Coin Vault",
-    description:
-      "A focused vault-style experience for cataloging coins, organizing inventory, and keeping collection context close.",
-    stack: ["React", "API design", "Prisma", "Tailwind"],
-  },
-  {
-    title: "Briton Homebase",
-    description:
-      "This portfolio system: four clear entry points, MDX writing, internal routes, and a maintainable design foundation.",
-    stack: ["Next.js", "MDX", "shadcn/ui", "Tailwind"],
-  },
-];
+import { projects } from "@/lib/projects";
 
 export default function ProjectsPage() {
   return (
@@ -56,6 +37,12 @@ export default function ProjectsPage() {
                     </span>
                   ))}
                 </div>
+                <Button asChild variant="outline" size="sm" className="ml-auto mt-6 flex w-fit">
+                  <Link href={`/blog?tag=${encodeURIComponent(project.blogTag)}`}>
+                    Blog: {project.blogTag.replaceAll("-", " ")}
+                    <ArrowUpRight />
+                  </Link>
+                </Button>
               </CardContent>
             </Card>
           ))}
