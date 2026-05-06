@@ -4,13 +4,17 @@ import {
   BriefcaseBusiness,
   Cog,
   FileText,
+  Film,
   Mail,
+  Trophy,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 import { HomeIntro } from "@/components/home-intro";
+import { JourneyTimeline } from "@/components/journey-timeline";
+import type { JourneyEvent } from "@/components/journey-timeline";
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
 
@@ -59,6 +63,132 @@ const footerLinks = [
   },
 ];
 
+const interests = [
+  {
+    title: "Tennis",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae sem at ipsum facilisis dictum.",
+    icon: Trophy,
+  },
+  {
+    title: "Movies",
+    description:
+      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Film notes live on Letterboxd.",
+    icon: Film,
+  },
+];
+
+const journeyEvents: JourneyEvent[] = [
+  {
+    dateLabel: "1997",
+    dateValue: 1997,
+    direction: "up",
+    kind: "Personal",
+    title: "Born",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing.",
+  },
+  {
+    dateLabel: "2000s",
+    dateValue: 2004,
+    direction: "down",
+    kind: "Personal",
+    title: "Robot stories",
+    description:
+      "Robot Jox, The Iron Giant, Short Circuit, Transformers, LEGOs, and Bionicles.",
+  },
+  {
+    dateLabel: "2000s",
+    dateValue: 2006,
+    direction: "down",
+    kind: "Personal",
+    title: "Taking things apart at home",
+    description:
+      "I started annoying my parents by tinkering with home electronics.",
+  },
+  {
+    dateLabel: "2011",
+    dateValue: 2011,
+    direction: "down",
+    kind: "Personal",
+    title: "Learned C++",
+    description:
+      "Got my parents to buy me two C++ books and began my journey programming.",
+  },
+  {
+    dateLabel: "2013",
+    dateValue: 2013,
+    direction: "down",
+    kind: "Personal",
+    title: "First 3d printer",
+    description:
+      "Robot Jox, The Iron Giant, Short Circuit, Transformers, LEGOs, and Bionicles.",
+  },
+  {
+    dateLabel: "2016",
+    dateValue: 2016,
+    direction: "up",
+    kind: "Career",
+    title: "Iowa State University",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  },
+    {
+    dateLabel: "2020",
+    dateValue: 2020,
+    direction: "down",
+    kind: "Career",
+    title: "MechE Robotics",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  },
+  // {
+  //   dateLabel: "2010s",
+  //   dateValue: 2017,
+  //   direction: "down",
+  //   kind: "Personal",
+  //   title: "Tinkering habit",
+  //   description:
+  //     "Started pulling ideas apart, building things back up, and following curiosity into technical work.",
+  // },
+  {
+    dateLabel: "2021",
+    dateValue: 2021,
+    direction: "up",
+    kind: "Career",
+    title: "Joined Intramotev",
+    description:
+      "Joined the budding St Louis startup as employee #2 to help build autonomous electric trains.",
+  },
+  {
+    dateLabel: "2022",
+    dateValue: 2022,
+    direction: "down",
+    kind: "Personal",
+    title: "Got married",
+    description:
+      "Fooled someone into thinking I was marriage material.",
+  },
+  
+  {
+    dateLabel: "Now",
+    dateValue: 2026,
+    direction: "down",
+    kind: "Career",
+    title: "Startup era",
+    description:
+      "Personal bootstrapped startups, stealth startups with friends.",
+  },
+  {
+    dateLabel: "Now",
+    dateValue: 2026.2,
+    direction: "up",
+    kind: "Career",
+    title: "Boeing",
+    description:
+      "Replace this with the current role, team, company, or work focus.",
+  },
+];
+
 export default function Home() {
   return (
     <PageShell>
@@ -103,61 +233,121 @@ export default function Home() {
             </div>
 
             <p className="mt-8 max-w-2xl text-xl leading-9 text-muted-foreground">
-              I build modern web and mobile products with a bias toward useful
-              tools, clean interfaces, and systems that can survive contact with
-              real people.
+              I build autonomous planes, trains, and automobiles. And robots. And 3d printers. 
+              And websites, apps, automations, and whatever else.
             </p>
           </HomeIntro>
         </div>
       </section>
 
       <section id="about" className="border-t bg-card">
-        <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-[0.85fr_1.15fr]">
-          <div>
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-              About
-            </p>
-            <h2 className="mt-3 text-4xl font-semibold tracking-tight">
-              Lorem ipsum dolor sit amet.
-            </h2>
-            <div className="mt-8 overflow-hidden rounded-lg border bg-background">
-              <Image
-                src="/homebase-sketch.jpg"
-                alt="Whiteboard sketch of my portfolio homepage layout."
-                width={900}
-                height={540}
-                className="aspect-[5/3] w-full object-cover"
-                priority
-              />
+        <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+            <div>
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                About
+              </p>
+              <h2 className="mt-3 text-4xl font-semibold tracking-tight">
+                Who I am and why I do what I do.
+              </h2>
+              <div className="mt-8 overflow-hidden rounded-lg border bg-background">
+                <Image
+                  src="/homebase-sketch.jpg"
+                  alt="Whiteboard sketch of my portfolio homepage layout."
+                  width={900}
+                  height={540}
+                  className="aspect-[5/3] w-full object-cover"
+                  priority
+                />
+              </div>
+            </div>
+            <div className="space-y-6 text-lg leading-8 text-muted-foreground">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+                vitae sem at ipsum facilisis dictum sed sed lorem.
+              </p>
+              <p>
+                Sed do eiusmod tempor incididunt ut labore et dolore magna
+                aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                ullamco.
+              </p>
+              <div className="grid gap-3 pt-4 sm:grid-cols-3">
+                {["Next.js", "React", "Tailwind", "TypeScript", "MDX", "Design systems"].map(
+                  (skill) => (
+                    <div
+                      key={skill}
+                      className="rounded-md border bg-background px-4 py-3 text-sm font-medium text-foreground"
+                    >
+                      {skill}
+                    </div>
+                  ),
+                )}
+              </div>
+              <Button asChild variant="outline" className="mt-2">
+                <Link href="/blog">
+                  Read the blog
+                  <BriefcaseBusiness />
+                </Link>
+              </Button>
             </div>
           </div>
-          <div className="space-y-6 text-lg leading-8 text-muted-foreground">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              vitae sem at ipsum facilisis dictum sed sed lorem.
-            </p>
-            <p>
-              Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco.
-            </p>
-            <div className="grid gap-3 pt-4 sm:grid-cols-3">
-              {["Next.js", "React", "Tailwind", "TypeScript", "MDX", "Design systems"].map(
-                (skill) => (
-                  <div
-                    key={skill}
-                    className="rounded-md border bg-background px-4 py-3 text-sm font-medium text-foreground"
-                  >
-                    {skill}
-                  </div>
-                ),
-              )}
+
+          <div className="mt-20 border-t pt-12">
+            <div>
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                Journey
+              </p>
+              <h3 className="mt-3 text-3xl font-semibold tracking-tight">
+                From first sparks to current work.
+              </h3>
             </div>
-            <Button asChild variant="outline" className="mt-2">
-              <Link href="/blog">
-                Read the blog
-                <BriefcaseBusiness />
-              </Link>
-            </Button>
+
+            <JourneyTimeline events={journeyEvents} />
+          </div>
+
+          <div className="mt-20 border-t pt-12">
+            <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr]">
+              <div>
+                <p className="font-mono text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                  Off Topic
+                </p>
+                <h3 className="mt-3 text-3xl font-semibold tracking-tight">
+                  Things outside the editor.
+                </h3>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {interests.map((interest) => {
+                  const Icon = interest.icon;
+
+                  return (
+                    <div
+                      key={interest.title}
+                      className="rounded-lg border bg-background p-5"
+                    >
+                      <Icon className="size-6 text-foreground" />
+                      <h4 className="mt-4 text-xl font-semibold text-foreground">
+                        {interest.title}
+                      </h4>
+                      <p className="mt-3 leading-7 text-muted-foreground">
+                        {interest.description}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end">
+              <Button asChild variant="outline">
+                <a
+                  href="https://letterboxd.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Letterboxd
+                  <Film />
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       </section>

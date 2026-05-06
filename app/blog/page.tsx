@@ -12,7 +12,7 @@ export default async function BlogPage() {
   return (
     <PageShell>
       <section className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6">
-        <SectionHeading eyebrow="Blog" title="Notes from the workbench.">
+        <SectionHeading eyebrow="Blog" title="Letters from the workbench.">
           Writing on software, product thinking, design details, and the useful
           friction that shows up while building real things.
         </SectionHeading>

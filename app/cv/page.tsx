@@ -41,7 +41,7 @@ export default function CvPage() {
     <PageShell>
       <section className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <SectionHeading eyebrow="CV" title="Experience and working toolkit.">
+          <SectionHeading eyebrow="CV" title="Experience. Skills. Education. All the good bits">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
             posuere erat a ante venenatis dapibus.
           </SectionHeading>
