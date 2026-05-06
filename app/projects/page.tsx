@@ -18,33 +18,42 @@ export default async function ProjectsPage() {
           posuere erat a ante venenatis dapibus.
         </SectionHeading>
 
-        <div className="mt-12 grid gap-4 lg:grid-cols-3">
+        <div className="mt-12 grid items-stretch gap-4 lg:grid-cols-3">
           {projects.map((project) => (
-            <Card key={project.title} className="rounded-lg">
+            <Card key={project.title} className="h-full rounded-lg">
               <CardHeader>
                 <span className="flex size-11 items-center justify-center rounded-md border bg-accent text-accent-foreground">
                   <Layers3 className="size-5" />
                 </span>
-                <CardTitle className="text-2xl">{project.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="leading-7 text-muted-foreground">{project.description}</p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {project.stack.map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-md border bg-background px-2.5 py-1 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-                <Button asChild variant="outline" size="sm" className="ml-auto mt-6 flex w-fit">
-                  <Link href={`/blog?tag=${encodeURIComponent(project.blogTag)}`}>
-                    Blog: {project.blogTag.replaceAll("-", " ")}
-                    <ArrowUpRight />
+                <CardTitle className="text-2xl">
+                  <Link
+                    href={`/projects/${project.slug}`}
+                    className="transition-colors hover:text-muted-foreground"
+                  >
+                    {project.title}
                   </Link>
-                </Button>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-1 flex-col">
+                <p className="leading-7 text-muted-foreground">{project.description}</p>
+                <div className="mt-auto pt-6">
+                  <div className="flex min-h-16 flex-wrap content-start gap-2">
+                    {project.stack.map((item) => (
+                      <span
+                        key={item}
+                        className="rounded-md border bg-background px-2.5 py-1 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                  <Button asChild variant="outline" size="sm" className="ml-auto mt-6 flex w-fit">
+                    <Link href={`/blog?tag=${encodeURIComponent(project.blogTag)}`}>
+                      Blog: {project.blogTag.replaceAll("-", " ")}
+                      <ArrowUpRight />
+                    </Link>
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}

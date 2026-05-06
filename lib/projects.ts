@@ -24,6 +24,10 @@ export async function getProjects() {
   );
 }
 
+export async function getProject(slug: string) {
+  return (await getProjects()).find((project) => project.slug === slug);
+}
+
 export async function getProjectSummaries(): Promise<ProjectSummary[]> {
   return (await getProjects()).map((project) => ({
     slug: project.slug,
