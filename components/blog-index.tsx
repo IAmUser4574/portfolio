@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, CalendarDays, Search, X } from "lucide-react";
+import { CalendarDays, Search, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -141,7 +141,7 @@ export function BlogIndex({ posts, tags }: BlogIndexProps) {
             key={post.slug}
             className="rounded-lg transition-all duration-300 hover:-translate-y-1 hover:border-foreground hover:shadow-lg"
           >
-            <CardHeader className="gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <CardHeader className="gap-4">
               <div>
                 <div className="mb-3 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
                   <span className="inline-flex items-center gap-2">
@@ -150,13 +150,15 @@ export function BlogIndex({ posts, tags }: BlogIndexProps) {
                   </span>
                   <span>{post.readingTime}</span>
                 </div>
-                <CardTitle className="text-2xl">{post.title}</CardTitle>
+                <CardTitle className="text-2xl">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="transition-colors hover:text-muted-foreground"
+                  >
+                    {post.title}
+                  </Link>
+                </CardTitle>
               </div>
-              <Button asChild variant="ghost" size="icon" className="group">
-                <Link href={`/blog/${post.slug}`} aria-label={`Read ${post.title}`}>
-                  <ArrowRight className="transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
             </CardHeader>
             <CardContent>
               <p className="max-w-3xl leading-7 text-muted-foreground">
