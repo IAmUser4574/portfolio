@@ -22,6 +22,10 @@ const splashPhrases = [
 
 type FunMode = "normal" | "minecraft" | "nerd";
 
+type NameProps = {
+  introStarted?: boolean;
+};
+
 function getNextSplashPhrase(currentPhrase: string) {
   const options = splashPhrases.filter((item) => item.text !== currentPhrase);
 
@@ -43,7 +47,7 @@ function getNextSplashPhrase(currentPhrase: string) {
   return options[options.length - 1].text;
 }
 
-export function Name() {
+export function Name({ introStarted = true }: NameProps) {
   const [mode, setMode] = useState<FunMode>("normal");
   const [phrase, setPhrase] = useState(splashPhrases[0].text);
 
@@ -110,7 +114,15 @@ export function Name() {
         tabIndex={0}
         className="group/name relative h-[8.5rem] w-[min(92vw,34rem)] outline-none sm:h-[10.5rem] sm:w-[min(84vw,42rem)] lg:h-[11rem] lg:w-[40rem]"
       >
-        <h1 aria-label="Briton" className="absolute inset-0">
+        <h1
+          aria-label="Briton"
+          className={cn(
+            "absolute inset-0 transition-all delay-500 duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:scale-100 motion-reduce:opacity-100 motion-reduce:blur-none motion-reduce:transition-none",
+            introStarted
+              ? "translate-y-0 scale-100 opacity-100 blur-none"
+              : "translate-y-5 scale-[0.96] opacity-0 blur-md",
+          )}
+        >
           <span
             aria-hidden="true"
             className={cn(

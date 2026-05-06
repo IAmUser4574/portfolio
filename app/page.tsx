@@ -10,7 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
-import { Name } from "@/components/name";
+import { HomeIntro } from "@/components/home-intro";
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
 
@@ -64,53 +64,50 @@ export default function Home() {
     <PageShell>
       <section className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-6xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6 lg:py-20">
         <div className="flex w-full flex-col items-center">
-          <p className="font-mono text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            Hi, I&apos;m
-          </p>
-          <Name />
-
-          <div className="mt-8 grid w-full max-w-5xl grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-            {homeTiles.map((tile) => {
-              const Icon = tile.icon;
-              const tileClassName =
-                "group flex min-h-36 flex-col items-center justify-center gap-8 rounded-lg border bg-card p-4 text-center shadow-sm transition-all hover:-translate-y-1 hover:border-foreground hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/30 sm:aspect-square sm:min-h-40 sm:p-5";
-              const tileContent = (
-                <>
-                  <span className="flex size-14 items-center justify-center text-foreground transition-transform group-hover:scale-110">
-                    <Icon className="size-14" />
-                  </span>
-                  <span>
-                    <span className="block text-lg font-semibold text-foreground">
-                      {tile.title}
+          <HomeIntro>
+            <div className="mt-8 grid w-full max-w-5xl grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+              {homeTiles.map((tile) => {
+                const Icon = tile.icon;
+                const tileClassName =
+                  "group flex min-h-36 flex-col items-center justify-center gap-8 rounded-lg border bg-card p-4 text-center shadow-sm transition-all hover:-translate-y-1 hover:border-foreground hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/30 sm:aspect-square sm:min-h-40 sm:p-5";
+                const tileContent = (
+                  <>
+                    <span className="flex size-14 items-center justify-center text-foreground transition-transform group-hover:scale-110">
+                      <Icon className="size-14" />
                     </span>
-                    <span className="mt-2 block text-sm leading-6 text-muted-foreground">
-                      {tile.description}
+                    <span>
+                      <span className="block text-lg font-semibold text-foreground">
+                        {tile.title}
+                      </span>
+                      <span className="mt-2 block text-sm leading-6 text-muted-foreground">
+                        {tile.description}
+                      </span>
                     </span>
-                  </span>
-                </>
-              );
+                  </>
+                );
 
-              return (
-                <div key={tile.title}>
-                  {tile.href.startsWith("#") ? (
-                    <a href={tile.href} className={tileClassName}>
-                      {tileContent}
-                    </a>
-                  ) : (
-                    <Link href={tile.href} className={tileClassName}>
-                      {tileContent}
-                    </Link>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                return (
+                  <div key={tile.title}>
+                    {tile.href.startsWith("#") ? (
+                      <a href={tile.href} className={tileClassName}>
+                        {tileContent}
+                      </a>
+                    ) : (
+                      <Link href={tile.href} className={tileClassName}>
+                        {tileContent}
+                      </Link>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
 
-          <p className="mt-8 max-w-2xl text-xl leading-9 text-muted-foreground">
-            I build modern web and mobile products with a bias toward useful
-            tools, clean interfaces, and systems that can survive contact with
-            real people.
-          </p>
+            <p className="mt-8 max-w-2xl text-xl leading-9 text-muted-foreground">
+              I build modern web and mobile products with a bias toward useful
+              tools, clean interfaces, and systems that can survive contact with
+              real people.
+            </p>
+          </HomeIntro>
         </div>
       </section>
 
