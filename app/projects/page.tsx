@@ -13,9 +13,9 @@ export default async function ProjectsPage() {
   return (
     <PageShell>
       <section className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6">
-        <SectionHeading eyebrow="Projects" title="Useful things, built in public enough.">
-          A living index for products, experiments, and technical case studies.
-          The entries here are ready for deeper writeups as each project matures.
+        <SectionHeading eyebrow="Projects" title="Lorem ipsum dolor sit amet.">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+          posuere erat a ante venenatis dapibus.
         </SectionHeading>
 
         <div className="mt-12 grid gap-4 lg:grid-cols-3">

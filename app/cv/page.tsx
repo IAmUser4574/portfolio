@@ -7,19 +7,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const experience = [
   {
-    role: "Full-stack product engineer",
+    role: "Lorem ipsum role",
     detail:
-      "Building TypeScript applications across web, API, and mobile surfaces with an eye for maintainability and product clarity.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    role: "Frontend systems",
+    role: "Dolor sit amet",
     detail:
-      "Designing component-driven interfaces with React, Tailwind, shadcn/ui patterns, and accessible interaction states.",
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   },
   {
-    role: "Backend foundations",
+    role: "Consectetur adipiscing",
     detail:
-      "Working through data modeling, API contracts, auth flows, and deployment concerns so products have sturdy roots.",
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
   },
 ];
 
@@ -42,8 +42,8 @@ export default function CvPage() {
       <section className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading eyebrow="CV" title="Experience and working toolkit.">
-            A concise resume page for the site, ready to expand with specific
-            roles, dates, impact, and links as the portfolio fills out.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+            posuere erat a ante venenatis dapibus.
           </SectionHeading>
           <div className="flex flex-wrap gap-3">
             <Button variant="outline">

@@ -4,7 +4,6 @@ import {
   BriefcaseBusiness,
   Cog,
   FileText,
-  Layers3,
   Mail,
 } from "lucide-react";
 import Image from "next/image";
@@ -122,7 +121,7 @@ export default function Home() {
               About
             </p>
             <h2 className="mt-3 text-4xl font-semibold tracking-tight">
-              Practical engineering, human-shaped products.
+              Lorem ipsum dolor sit amet.
             </h2>
             <div className="mt-8 overflow-hidden rounded-lg border bg-background">
               <Image
@@ -137,14 +136,12 @@ export default function Home() {
           </div>
           <div className="space-y-6 text-lg leading-8 text-muted-foreground">
             <p>
-              This site is meant to be a working homebase: a place where the
-              projects, writing, and resume all live together instead of being
-              scattered across tabs and old links.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+              vitae sem at ipsum facilisis dictum sed sed lorem.
             </p>
             <p>
-              My favorite work sits where product judgment and engineering
-              detail meet. I like turning ambiguous ideas into sturdy software,
-              then polishing the experience until the useful path feels obvious.
+              Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco.
             </p>
             <div className="grid gap-3 pt-4 sm:grid-cols-3">
               {["Next.js", "React", "Tailwind", "TypeScript", "MDX", "Design systems"].map(
@@ -170,7 +167,7 @@ export default function Home() {
 
       <footer className="border-t bg-background">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>&copy; {new Date().getFullYear()} Briton. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Briton Bauerly. All rights reserved.</p>
           <div className="flex flex-wrap gap-2">
             {footerLinks.map((link) => {
               const Icon = link.icon;
