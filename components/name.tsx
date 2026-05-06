@@ -10,9 +10,11 @@ import { cn } from "@/lib/utils";
 
 const splashPhrases = [
   { text: "Planes, Trains, and Automobiles", weight: 100 },
-  { text: "The Social Network > The King's Speech", weight: 50 },
   { text: "It was his hat, Mr. Krabs. He was number one!", weight: 100 },
   { text: "Han shot first and Lucas covered it up", weight: 100 },
+  { text: "The Social Network > The King's Speech", weight: 50 },
+  { text: "While my keyboard gently weeps", weight: 50 },
+  { text: "Remember KONY 2012? Whatever happened to that...", weight: 50 },
   { text: "AAAHHHH LET ME OUT OF HERE!!!!", weight: 5 },
   { text: "Played too much minecraft, now I have to make portfolios", weight: 5 },
 ];
@@ -86,7 +88,7 @@ export function Name() {
               mode !== "normal" && "-translate-y-[45%] scale-95 opacity-0",
             )}
           >
-            Briton
+            BRITON
           </span>
           <span
             aria-hidden="true"

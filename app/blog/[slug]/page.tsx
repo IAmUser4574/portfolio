@@ -5,6 +5,7 @@ import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
 import { getBlogPost, getBlogPosts } from "@/lib/blog";
+import { ArrowLeft } from "lucide-react";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -44,13 +45,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <PageShell>
-      <article className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6">
-        <Button asChild variant="ghost" className="-ml-3 mb-8">
-          <Link href="/blog">Back to blog</Link>
+      <article className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6">
+        <Button asChild variant="ghost" className="-ml-3 mb-4">
+          <Link href="/blog" aria-label={`Read ${post.title}`}>
+            <ArrowLeft className="transition-transform group-hover:translate-x-1" />
+          </Link>
         </Button>
         <div className="border-b pb-10">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            {post.readingTime}
+          <p className="flex items-center gap-8 font-mono text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+            <span>{post.publishedAt}</span>
+            {/* <span aria-hidden="true">|</span> */}
+            <span>{post.readingTime}</span>
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
             {post.title}

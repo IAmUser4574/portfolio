@@ -1,22 +1,60 @@
+import Image from "next/image";
+
 export const metadata = {
   title: "Building a Personal Homebase",
   excerpt:
-    "A short note on why a portfolio should feel less like a brochure and more like a useful operating surface.",
+    "It turns out that the motivation to work on projects can increase when you have a nice place to display them!",
   publishedAt: "2026-05-05",
   readingTime: "3 min read",
-  tags: ["homebase", "portfolio", "nextjs", "product"],
+  tags: ["portfolio", "nextjs"],
 };
 
-The best personal sites are small systems, not frozen posters. They help someone understand what you make, how you think, and where to go next.
+How it started:
 
-For this site, the home page starts with four clear destinations: About, Projects, Blog, and CV. The structure is intentionally simple because simple things survive iteration.
+<div className="mt-8 overflow-hidden rounded-lg border bg-background">
+  <Image
+    src="/homebase-sketch.jpg"
+    alt="Whiteboard sketch of my portfolio homepage layout."
+    width={900}
+    height={540}
+    className="aspect-[5/3] w-full object-cover"
+    priority
+  />
+</div>
 
-## The Site As A Workbench
+How it's going:
 
-I want this homebase to carry current work without needing a redesign every time a project changes shape. Projects can be swapped in, essays can be added as MDX, and the CV can stay readable without becoming a PDF maze.
+<div className="my-6 text-center leading-8 text-muted-foreground">
+  ... you already know how it's going!
+</div>
 
-That makes the site useful to visitors, but it also makes it useful to maintain. Good personal infrastructure should make the next update easier.
+---
 
-## What Comes Next
 
-The next layer is richer project case studies: goals, tradeoffs, screenshots, and notes on what changed after real usage. The blog can then hold the thinking that does not belong inside a project page.
+## Intent for this site
+
+I set out to make neither the best nor the most portfolio site - there are plenty of great examples to check out for that.
+
+I wanted something simple, approachable, and readable for visitors, but most importantly, for myself, a place I'd enjoy 
+depositing my bits of progress as I tinker, develop, and opine on the engineering world. 
+
+## Design choices
+
+Base architecture: I chose nextJs/react for the framework as I quite like the flexibility in design choice (static vs ssr components)
+ and the ubiquity within the web dev community (components galore).
+
+Deployment: Cloudflare Pages with a Github Apps integration - so far I'm getting that legendary fast, cheap, and good trifecta. 
+If the site grows in scope I may have to convert from static page hosting to a containerized solution. 
+
+## Going Forward
+
+Changes: I plan to add a few more features to the site from my YouTrack kanban board; more on that later.
+
+Content/Cadence: The goal is to not make this abandonware. Hopefully I can blog at a sustainable pace as well! 
+
+---- 
+
+Until next time,
+
+briton.
+

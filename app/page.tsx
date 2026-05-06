@@ -31,7 +31,7 @@ const homeTiles = [
   {
     title: "Blog",
     href: "/blog",
-    description: "Letters from the workbench. And occasional rants.",
+    description: "Letters from the workbench.",
     icon: BookOpen,
   },
   {
@@ -127,7 +127,7 @@ export default function Home() {
             <div className="mt-8 overflow-hidden rounded-lg border bg-background">
               <Image
                 src="/homebase-sketch.jpg"
-                alt="Whiteboard sketch of Briton's portfolio homepage layout."
+                alt="Whiteboard sketch of my portfolio homepage layout."
                 width={900}
                 height={540}
                 className="aspect-[5/3] w-full object-cover"
