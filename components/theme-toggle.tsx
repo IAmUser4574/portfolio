@@ -1,7 +1,7 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -10,13 +10,17 @@ type Theme = "dark" | "light";
 const themeStorageKey = "briton-theme";
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof document === "undefined") {
-      return "dark";
-    }
+  const [theme, setTheme] = useState<Theme>("dark");
+  const [mounted, setMounted] = useState(false);
 
-    return document.documentElement.dataset.theme === "light" ? "light" : "dark";
-  });
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      setTheme(document.documentElement.dataset.theme === "light" ? "light" : "dark");
+      setMounted(true);
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   function applyTheme(nextTheme: Theme) {
     const isDark = nextTheme === "dark";
@@ -39,7 +43,7 @@ export function ThemeToggle() {
       className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "touch-manipulation")}
       onClick={toggleTheme}
     >
-      {theme === "dark" ? <Sun /> : <Moon />}
+      {mounted && theme === "light" ? <Moon /> : <Sun />}
     </button>
   );
 }
