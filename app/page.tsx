@@ -4,9 +4,11 @@ import {
   BriefcaseBusiness,
   FileText,
   Layers3,
+  Mail,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 import { Name } from "@/components/name";
 import { PageShell } from "@/components/page-shell";
@@ -36,6 +38,24 @@ const homeTiles = [
     href: "/cv",
     description: "Experience, skills, tooling, and practical background.",
     icon: FileText,
+  },
+];
+
+const footerLinks = [
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/",
+    icon: FaLinkedin,
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/",
+    icon: FaGithub,
+  },
+  {
+    label: "Email",
+    href: "mailto:hello@example.com",
+    icon: Mail,
   },
 ];
 
@@ -137,6 +157,26 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <footer className="border-t bg-background">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <p>&copy; {new Date().getFullYear()} Briton. All rights reserved.</p>
+          <div className="flex flex-wrap gap-2">
+            {footerLinks.map((link) => {
+              const Icon = link.icon;
+
+              return (
+                <Button key={link.label} asChild variant="ghost" size="sm">
+                  <a href={link.href} target="_blank" rel="noreferrer">
+                    <Icon className="size-5" />
+                    {/* {link.label} */}
+                  </a>
+                </Button>
+              );
+            })}
+          </div>
+        </div>
+      </footer>
     </PageShell>
   );
 }
