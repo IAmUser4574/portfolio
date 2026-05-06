@@ -2,6 +2,7 @@ import {
   ArrowDown,
   BookOpen,
   BriefcaseBusiness,
+  Cog,
   FileText,
   Layers3,
   Mail,
@@ -18,25 +19,25 @@ const homeTiles = [
   {
     title: "About",
     href: "#about",
-    description: "How I think, what I build, and where this homebase points.",
+    description: "A little bit about my story, what I do, and why I do it.",
     icon: ArrowDown,
   },
   {
     title: "Projects",
     href: "/projects",
-    description: "Product ideas, technical experiments, and shipped work.",
-    icon: Layers3,
+    description: "What I've built and what I'm building.",
+    icon: Cog,
   },
   {
     title: "Blog",
     href: "/blog",
-    description: "Notes on software, systems, product craft, and learning.",
+    description: "Letters from the workbench. And occasional rants.",
     icon: BookOpen,
   },
   {
     title: "CV",
     href: "/cv",
-    description: "Experience, skills, tooling, and practical background.",
+    description: "Recruiters and eavesdroppers, go nuts.",
     icon: FileText,
   },
 ];
@@ -69,30 +70,39 @@ export default function Home() {
           </p>
           <Name />
 
-          <div className="mt-8 flex w-full flex-wrap justify-center gap-3">
+          <div className="mt-8 grid w-full max-w-5xl grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
             {homeTiles.map((tile) => {
               const Icon = tile.icon;
+              const tileClassName =
+                "group flex min-h-36 flex-col items-center justify-center gap-8 rounded-lg border bg-card p-4 text-center shadow-sm transition-all hover:-translate-y-1 hover:border-foreground hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/30 sm:aspect-square sm:min-h-40 sm:p-5";
+              const tileContent = (
+                <>
+                  <span className="flex size-14 items-center justify-center text-foreground transition-transform group-hover:scale-110">
+                    <Icon className="size-14" />
+                  </span>
+                  <span>
+                    <span className="block text-lg font-semibold text-foreground">
+                      {tile.title}
+                    </span>
+                    <span className="mt-2 block text-sm leading-6 text-muted-foreground">
+                      {tile.description}
+                    </span>
+                  </span>
+                </>
+              );
 
               return (
-                <Button
-                  key={tile.title}
-                  asChild
-                  variant="outline"
-                  size="lg"
-                  className="min-w-36 transition-all hover:-translate-y-0.5 hover:border-foreground hover:shadow-md"
-                >
+                <div key={tile.title}>
                   {tile.href.startsWith("#") ? (
-                    <a href={tile.href}>
-                      <Icon />
-                      {tile.title}
+                    <a href={tile.href} className={tileClassName}>
+                      {tileContent}
                     </a>
                   ) : (
-                    <Link href={tile.href}>
-                      <Icon />
-                      {tile.title}
+                    <Link href={tile.href} className={tileClassName}>
+                      {tileContent}
                     </Link>
                   )}
-                </Button>
+                </div>
               );
             })}
           </div>
