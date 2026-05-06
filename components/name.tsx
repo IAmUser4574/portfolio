@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import type { CSSProperties, FocusEvent } from "react";
 import { useState } from "react";
 import Image from "next/image";
 
@@ -50,6 +50,7 @@ function getNextSplashPhrase(currentPhrase: string) {
 export function Name({ introStarted = true }: NameProps) {
   const [mode, setMode] = useState<FunMode>("normal");
   const [phrase, setPhrase] = useState(splashPhrases[0].text);
+  const [isFunZoneVisible, setIsFunZoneVisible] = useState(false);
 
   const isMinecraftMode = mode === "minecraft";
   const isNerdMode = mode === "nerd";
@@ -76,6 +77,24 @@ export function Name({ introStarted = true }: NameProps) {
       setMode("normal");
     }
   }
+
+  function handleFunZoneBlur(event: FocusEvent<HTMLDivElement>) {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      setIsFunZoneVisible(false);
+    }
+  }
+
+  const funZoneWrapperClassName = cn(
+    "ml-auto w-48 rounded-2xl opacity-0 transition-opacity duration-300 hover:opacity-100 focus:opacity-100 focus-within:opacity-100",
+    isFunZoneVisible && "opacity-100",
+  );
+
+  const funZoneInteractionProps = {
+    onBlurCapture: handleFunZoneBlur,
+    onFocusCapture: () => setIsFunZoneVisible(true),
+    onPointerDown: () => setIsFunZoneVisible(true),
+    tabIndex: 0,
+  };
 
   const funZoneControls = (
     <fieldset className="rounded-[inherit] border bg-card/80 px-4 pb-3 pt-2 text-left shadow-sm backdrop-blur">
@@ -185,19 +204,26 @@ export function Name({ introStarted = true }: NameProps) {
       </div>
 
       {isNerdMode ? (
-        <ElectricBorder
-          color="#7df9ff"
-          speed={1}
-          chaos={0.12}
-          thickness={2}
-          borderRadius={16}
-          className="ml-auto w-48 opacity-0 transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100"
-          style={{ borderRadius: 16 }}
+        <div
+          className={funZoneWrapperClassName}
+          {...funZoneInteractionProps}
         >
-          {funZoneControls}
-        </ElectricBorder>
+          <ElectricBorder
+            color="#7df9ff"
+            speed={1}
+            chaos={0.12}
+            thickness={2}
+            borderRadius={16}
+            style={{ borderRadius: 16 }}
+          >
+            {funZoneControls}
+          </ElectricBorder>
+        </div>
       ) : (
-        <div className="ml-auto w-48 rounded-2xl opacity-0 transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100">
+        <div
+          className={funZoneWrapperClassName}
+          {...funZoneInteractionProps}
+        >
           {funZoneControls}
         </div>
       )}
