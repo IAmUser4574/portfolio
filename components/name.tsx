@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import { useState } from "react";
 import Image from "next/image";
 
+import ElectricBorder from "@/components/electric-border";
 import GlitchText from "@/components/react-bits/glitch-text";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
@@ -71,6 +72,35 @@ export function Name() {
       setMode("normal");
     }
   }
+
+  const funZoneControls = (
+    <fieldset className="rounded-[inherit] border bg-card/80 px-4 pb-3 pt-2 text-left shadow-sm backdrop-blur">
+      <legend className="px-1 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+        Fun Zone
+      </legend>
+      <div className="grid gap-3">
+        <label className="flex items-center justify-between gap-3 text-sm">
+          <span>Minecraft</span>
+          <Switch
+            checked={isMinecraftMode}
+            onCheckedChange={setMinecraftMode}
+            aria-label="Toggle Minecraft Mode"
+          />
+        </label>
+        <label className="flex items-center justify-between gap-3 text-sm">
+          <span>Nerd</span>
+          <Switch
+            checked={isNerdMode}
+            onCheckedChange={setNerdMode}
+            aria-label="Toggle Nerd Mode"
+          />
+        </label>
+        <p className="text-right text-xs text-muted-foreground">
+          Current: {mode === "normal" ? "Normal" : mode}
+        </p>
+      </div>
+    </fieldset>
+  );
 
   return (
     <div
@@ -142,32 +172,23 @@ export function Name() {
         </span>
       </div>
 
-      <fieldset className="ml-auto w-48 rounded-lg border bg-card/70 px-4 pb-3 pt-2 text-left opacity-0 shadow-sm transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100">
-        <legend className="px-1 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-          Fun Zone
-        </legend>
-        <div className="grid gap-3">
-          <label className="flex items-center justify-between gap-3 text-sm">
-            <span>Minecraft</span>
-            <Switch
-              checked={isMinecraftMode}
-              onCheckedChange={setMinecraftMode}
-              aria-label="Toggle Minecraft Mode"
-            />
-          </label>
-          <label className="flex items-center justify-between gap-3 text-sm">
-            <span>Nerd</span>
-            <Switch
-              checked={isNerdMode}
-              onCheckedChange={setNerdMode}
-              aria-label="Toggle Nerd Mode"
-            />
-          </label>
-          <p className="text-right text-xs text-muted-foreground">
-            Current: {mode === "normal" ? "Normal" : mode}
-          </p>
+      {isNerdMode ? (
+        <ElectricBorder
+          color="#7df9ff"
+          speed={1}
+          chaos={0.12}
+          thickness={2}
+          borderRadius={16}
+          className="ml-auto w-48 opacity-0 transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100"
+          style={{ borderRadius: 16 }}
+        >
+          {funZoneControls}
+        </ElectricBorder>
+      ) : (
+        <div className="ml-auto w-48 rounded-2xl opacity-0 transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100">
+          {funZoneControls}
         </div>
-      </fieldset>
+      )}
     </div>
   );
 }
