@@ -197,7 +197,11 @@ export function Name({ introStarted = true }: NameProps) {
         </span>
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute bottom-4 right-0 rounded-md border bg-card/90 px-3 py-1.5 text-right font-mono text-xs text-muted-foreground opacity-0 shadow-sm backdrop-blur transition-all duration-300 group-hover/name:opacity-100 group-focus/name:opacity-100 sm:bottom-6"
+          className={cn(
+            "pointer-events-none absolute bottom-4 right-0 rounded-md border bg-card/90 px-3 py-1.5 text-right font-mono text-xs text-muted-foreground opacity-0 shadow-sm backdrop-blur transition-all duration-300 sm:bottom-6",
+            introStarted &&
+              "group-hover/name:opacity-100 group-focus/name:opacity-100",
+          )}
         >
           pronounced braɪtən (BRY-tuhn)
         </span>
