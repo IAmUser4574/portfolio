@@ -31,10 +31,13 @@ type PlacedJourneyEvent = JourneyEvent & {
 };
 
 type TimelineDateLabel = {
-  laneOffset: number;
   label: string;
   position: number;
   side: "above" | "below";
+};
+
+type RawTimelineDateLabel = TimelineDateLabel & {
+  labels: string[];
 };
 
 function getPosition(dateValue: number, minDate: number, maxDate: number) {
@@ -61,7 +64,18 @@ function getLaneOffset(
         Math.abs(getPosition(previousEvent.dateValue, minDate, maxDate) - position) < 8,
     ).length;
 
-  return nearbyPreviousCount % 2;
+  return Math.min(nearbyPreviousCount, 2);
+}
+
+function getOffsetClass(
+  direction: JourneyEvent["direction"],
+  offset: number,
+  classes: {
+    down: string[];
+    up: string[];
+  },
+) {
+  return classes[direction][offset] ?? classes[direction][classes[direction].length - 1];
 }
 
 function getPopupPosition(
@@ -92,6 +106,19 @@ function getPopupPosition(
   };
 }
 
+function formatDateLabelCluster(labels: string[]) {
+  const uniqueLabels = Array.from(new Set(labels));
+  const numericLabels = uniqueLabels
+    .map((label) => Number(label))
+    .filter((label) => Number.isInteger(label));
+
+  if (numericLabels.length === uniqueLabels.length && numericLabels.length > 1) {
+    return `${Math.min(...numericLabels)}-${Math.max(...numericLabels)}`;
+  }
+
+  return uniqueLabels.join(" / ");
+}
+
 export function JourneyTimeline({ events }: JourneyTimelineProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [popupPosition, setPopupPosition] = useState<PopupPosition | null>(null);
@@ -120,7 +147,7 @@ export function JourneyTimeline({ events }: JourneyTimelineProps) {
       ]);
     });
 
-    return Array.from(labels.entries()).map(([label, labelEvents], index, groupedLabels) => {
+    const rawLabels: RawTimelineDateLabel[] = Array.from(labels.entries()).map(([label, labelEvents]) => {
       const positions = labelEvents.map((event) => event.position);
       const position =
         positions.reduce((total, eventPosition) => total + eventPosition, 0) /
@@ -133,33 +160,43 @@ export function JourneyTimeline({ events }: JourneyTimelineProps) {
       ).length;
       const nearbyDownCount = nearbyEvents.length - nearbyUpCount;
       const side = nearbyDownCount >= nearbyUpCount ? "above" : "below";
-      const nearbyPreviousCount = groupedLabels
-        .slice(0, index)
-        .filter(([, previousEvents]) => {
-          const previousUpCount = previousEvents.filter(
-            (event) => event.direction === "up",
-          ).length;
-          const previousSide =
-            previousUpCount >= previousEvents.length - previousUpCount
-              ? "below"
-              : "above";
-          const previousPositions = previousEvents.map((event) => event.position);
-          const previousPosition =
-            previousPositions.reduce(
-              (total, eventPosition) => total + eventPosition,
-              0,
-            ) / previousPositions.length;
-
-          return previousSide === side && Math.abs(previousPosition - position) < 7;
-        }).length;
 
       return {
-        laneOffset: nearbyPreviousCount % 2,
         label,
+        labels: [label],
         position,
         side,
       };
     });
+
+    return rawLabels
+      .sort((a, b) => a.position - b.position)
+      .reduce<RawTimelineDateLabel[]>((clusteredLabels, label) => {
+        const previousLabel = clusteredLabels[clusteredLabels.length - 1];
+
+        if (
+          previousLabel &&
+          previousLabel.side === label.side &&
+          Math.abs(label.position - previousLabel.position) < 9
+        ) {
+          const labels = [...previousLabel.labels, ...label.labels];
+
+          clusteredLabels[clusteredLabels.length - 1] = {
+            label: formatDateLabelCluster(labels),
+            labels,
+            position:
+              (previousLabel.position * previousLabel.labels.length +
+                label.position * label.labels.length) /
+              labels.length,
+            side: previousLabel.side,
+          };
+
+          return clusteredLabels;
+        }
+
+        return [...clusteredLabels, label];
+      }, [])
+      .map(({ label, position, side }) => ({ label, position, side }));
   }, [placedEvents]);
 
   const activeEvent = activeIndex === null ? null : placedEvents[activeIndex];
@@ -224,7 +261,7 @@ export function JourneyTimeline({ events }: JourneyTimelineProps) {
 
   return (
     <div className="mt-10 overflow-x-auto overflow-y-visible pb-6">
-      <div className="relative h-[24rem] min-w-[72rem] px-36">
+      <div className="relative h-[24rem] min-w-[72rem] px-36 xl:min-w-full">
         <div className="absolute left-18 right-18 top-1/2 h-px -translate-y-1/2 bg-border" />
 
         <div className="absolute left-18 right-28 top-1/2">
@@ -232,14 +269,8 @@ export function JourneyTimeline({ events }: JourneyTimelineProps) {
             <span
               key={dateLabel.label}
               className={cn(
-                "absolute left-0 z-10 w-24 -translate-x-1/2 bg-card py-1 text-center font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground",
-                dateLabel.side === "below"
-                  ? dateLabel.laneOffset === 1
-                    ? "top-10"
-                    : "top-3"
-                  : dateLabel.laneOffset === 1
-                    ? "-top-16"
-                    : "-top-9",
+                "absolute left-0 z-10 w-28 -translate-x-1/2 bg-card py-1 text-center font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground",
+                dateLabel.side === "below" ? "top-3" : "-top-9",
               )}
               style={{ left: `${dateLabel.position}%` } as CSSProperties}
             >
@@ -250,14 +281,19 @@ export function JourneyTimeline({ events }: JourneyTimelineProps) {
           {placedEvents.map((event, index) => {
             const active = activeIndex === index;
             const goesUp = event.direction === "up";
-            const spurClassName = event.laneOffset === 1 ? "h-28" : "h-16";
+            const spurClassName = getOffsetClass(event.direction, event.laneOffset, {
+              down: ["h-16", "h-28", "h-40"],
+              up: ["h-16", "h-28", "h-40"],
+            });
             const labelClassName = goesUp
-              ? event.laneOffset === 1
-                ? "bottom-32"
-                : "bottom-20"
-              : event.laneOffset === 1
-                ? "top-32"
-                : "top-20";
+              ? getOffsetClass("up", event.laneOffset, {
+                  down: [],
+                  up: ["bottom-20", "bottom-32", "bottom-44"],
+                })
+              : getOffsetClass("down", event.laneOffset, {
+                  down: ["top-20", "top-32", "top-44"],
+                  up: [],
+                });
             return (
               <div
                 key={`${event.dateLabel}-${event.title}`}
