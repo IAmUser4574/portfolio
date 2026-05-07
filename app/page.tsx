@@ -48,17 +48,17 @@ const homeTiles = [
 const footerLinks = [
   {
     label: "LinkedIn",
-    href: "https://www.linkedin.com/",
+    href: "https://www.linkedin.com/in/briton-bauerly/",
     icon: FaLinkedin,
   },
   {
     label: "GitHub",
-    href: "https://github.com/",
+    href: "https://github.com/IAmUser4574/",
     icon: FaGithub,
   },
   {
     label: "Email",
-    href: "mailto:hello@example.com",
+    href: "mailto:bauerlybriton6@gmail.com",
     icon: Mail,
   },
 ];
