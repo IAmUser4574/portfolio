@@ -1,7 +1,8 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { cn } from "@/lib/utils";
 
@@ -16,6 +17,12 @@ export type JourneyEvent = {
 
 type JourneyTimelineProps = {
   events: JourneyEvent[];
+};
+
+type PopupPosition = {
+  left: number;
+  top: number;
+  visibility: "hidden" | "visible";
 };
 
 type PlacedJourneyEvent = JourneyEvent & {
@@ -57,8 +64,39 @@ function getLaneOffset(
   return nearbyPreviousCount % 2;
 }
 
+function getPopupPosition(
+  element: HTMLElement,
+  direction: JourneyEvent["direction"],
+  popupSize = { height: 0, width: 240 },
+): PopupPosition {
+  const rect = element.getBoundingClientRect();
+  const margin = 16;
+  const gap = 10;
+  const centerX = rect.left + rect.width / 2;
+  const popupHeight = popupSize.height || 180;
+  const popupWidth = popupSize.width || 240;
+
+  return {
+    left: Math.min(
+      window.innerWidth - popupWidth - margin,
+      Math.max(margin, centerX - popupWidth / 2),
+    ),
+    top:
+      direction === "up"
+        ? Math.max(margin, rect.top - popupHeight - gap)
+        : Math.min(
+            window.innerHeight - popupHeight - margin,
+            rect.bottom + gap,
+          ),
+    visibility: popupSize.height ? "visible" : "hidden",
+  };
+}
+
 export function JourneyTimeline({ events }: JourneyTimelineProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [popupPosition, setPopupPosition] = useState<PopupPosition | null>(null);
+  const eventButtonRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const popupRef = useRef<HTMLDivElement | null>(null);
 
   const placedEvents = useMemo<PlacedJourneyEvent[]>(() => {
     const dateValues = events.map((event) => event.dateValue);
@@ -124,12 +162,72 @@ export function JourneyTimeline({ events }: JourneyTimelineProps) {
     });
   }, [placedEvents]);
 
-  return (
-    <div className="mt-10 overflow-x-auto overflow-y-visible pb-16">
-      <div className="relative h-[42rem] min-w-[72rem] px-36">
-        <div className="absolute left-36 right-36 top-1/2 h-px -translate-y-1/2 bg-border" />
+  const activeEvent = activeIndex === null ? null : placedEvents[activeIndex];
 
-        <div className="absolute left-36 right-36 top-1/2">
+  function activateEvent(index: number, element: HTMLElement) {
+    setActiveIndex(index);
+    setPopupPosition(getPopupPosition(element, placedEvents[index].direction));
+  }
+
+  function deactivateEvent() {
+    setActiveIndex(null);
+    setPopupPosition(null);
+  }
+
+  useEffect(() => {
+    if (activeIndex === null) {
+      return;
+    }
+
+    const currentIndex = activeIndex;
+
+    function updatePopupPosition() {
+      const activeButton = eventButtonRefs.current[currentIndex];
+
+      if (!activeButton) {
+        return;
+      }
+
+      setPopupPosition(
+        getPopupPosition(activeButton, placedEvents[currentIndex].direction),
+      );
+    }
+
+    window.addEventListener("resize", updatePopupPosition);
+    window.addEventListener("scroll", updatePopupPosition, true);
+
+    return () => {
+      window.removeEventListener("resize", updatePopupPosition);
+      window.removeEventListener("scroll", updatePopupPosition, true);
+    };
+  }, [activeIndex, placedEvents]);
+
+  useLayoutEffect(() => {
+    if (activeIndex === null || !popupRef.current) {
+      return;
+    }
+
+    const activeButton = eventButtonRefs.current[activeIndex];
+
+    if (!activeButton) {
+      return;
+    }
+
+    const popupRect = popupRef.current.getBoundingClientRect();
+    setPopupPosition(
+      getPopupPosition(activeButton, placedEvents[activeIndex].direction, {
+        height: popupRect.height,
+        width: popupRect.width,
+      }),
+    );
+  }, [activeIndex, activeEvent, placedEvents]);
+
+  return (
+    <div className="mt-10 overflow-x-auto overflow-y-visible pb-6">
+      <div className="relative h-[24rem] min-w-[72rem] px-36">
+        <div className="absolute left-18 right-18 top-1/2 h-px -translate-y-1/2 bg-border" />
+
+        <div className="absolute left-18 right-28 top-1/2">
           {dateLabels.map((dateLabel) => (
             <span
               key={dateLabel.label}
@@ -160,14 +258,6 @@ export function JourneyTimeline({ events }: JourneyTimelineProps) {
               : event.laneOffset === 1
                 ? "top-32"
                 : "top-20";
-            const panelClassName = goesUp
-              ? event.laneOffset === 1
-                ? "bottom-40"
-                : "bottom-28"
-              : event.laneOffset === 1
-                ? "top-40"
-                : "top-28";
-
             return (
               <div
                 key={`${event.dateLabel}-${event.title}`}
@@ -183,13 +273,27 @@ export function JourneyTimeline({ events }: JourneyTimelineProps) {
                   )}
                 />
                 <button
+                  ref={(element) => {
+                    eventButtonRefs.current[index] = element;
+                  }}
                   type="button"
                   aria-expanded={active}
-                  onBlur={() => setActiveIndex(null)}
-                  onClick={() => setActiveIndex(active ? null : index)}
-                  onFocus={() => setActiveIndex(index)}
-                  onMouseEnter={() => setActiveIndex(index)}
-                  onMouseLeave={() => setActiveIndex(null)}
+                  onBlur={deactivateEvent}
+                  onClick={(clickEvent) => {
+                    if (active) {
+                      deactivateEvent();
+                      return;
+                    }
+
+                    activateEvent(index, clickEvent.currentTarget);
+                  }}
+                  onFocus={(focusEvent) =>
+                    activateEvent(index, focusEvent.currentTarget)
+                  }
+                  onMouseEnter={(mouseEvent) =>
+                    activateEvent(index, mouseEvent.currentTarget)
+                  }
+                  onMouseLeave={deactivateEvent}
                   className={cn(
                     "absolute left-1/2 w-36 -translate-x-1/2 text-center text-sm font-semibold text-foreground underline-offset-4 transition hover:underline focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/30",
                     labelClassName,
@@ -198,33 +302,35 @@ export function JourneyTimeline({ events }: JourneyTimelineProps) {
                 >
                   {event.title}
                 </button>
-                <div
-                  className={cn(
-                    "absolute left-1/2 z-20 w-60 -translate-x-1/2 rounded-lg border bg-background p-4 text-left shadow-lg transition-all duration-200",
-                    panelClassName,
-                    active
-                      ? "translate-y-0 opacity-100"
-                      : cn(
-                          "pointer-events-none opacity-0",
-                          goesUp ? "translate-y-2" : "-translate-y-2",
-                        ),
-                  )}
-                >
-                  <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    {event.kind} / {event.dateLabel}
-                  </p>
-                  <h4 className="mt-2 text-base font-semibold text-foreground">
-                    {event.title}
-                  </h4>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    {event.description}
-                  </p>
-                </div>
               </div>
             );
           })}
         </div>
       </div>
+      {activeEvent &&
+        popupPosition &&
+        createPortal(
+          <div
+            ref={popupRef}
+            className="fixed z-[100] w-60 rounded-lg border bg-background p-4 text-left shadow-lg"
+            style={{
+              left: popupPosition.left,
+              top: popupPosition.top,
+              visibility: popupPosition.visibility,
+            }}
+          >
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              {activeEvent.kind} / {activeEvent.dateLabel}
+            </p>
+            <h4 className="mt-2 text-base font-semibold text-foreground">
+              {activeEvent.title}
+            </h4>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              {activeEvent.description}
+            </p>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }

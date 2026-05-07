@@ -110,14 +110,14 @@ export function Name({ introStarted = true }: NameProps) {
             aria-label="Toggle Minecraft Mode"
           />
         </label>
-        <label className="flex items-center justify-between gap-3 text-sm">
+        {/* <label className="flex items-center justify-between gap-3 text-sm">
           <span>Nerd</span>
           <Switch
             checked={isNerdMode}
             onCheckedChange={setNerdMode}
             aria-label="Toggle Nerd Mode"
           />
-        </label>
+        </label> */}
         <p className="text-right text-xs text-muted-foreground">
           Current: {mode === "normal" ? "Normal" : mode}
         </p>

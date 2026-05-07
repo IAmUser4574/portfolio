@@ -28,7 +28,7 @@ const homeTiles = [
   {
     title: "Projects",
     href: "/projects",
-    description: "What I've built and what I'm building.",
+    description: "Projects I've planned, completed, or am working on.",
     icon: Cog,
   },
   {
@@ -40,7 +40,7 @@ const homeTiles = [
   {
     title: "CV",
     href: "/cv",
-    description: "Recruiters and eavesdroppers, go nuts.",
+    description: "Recruiters and snoopers, go nuts.",
     icon: FileText,
   },
 ];
@@ -112,7 +112,7 @@ const journeyEvents: JourneyEvent[] = [
     kind: "Personal",
     title: "Learned C++",
     description:
-      "Got my parents to buy me two C++ books and began my journey programming.",
+      "Picked up two C++03 textbooks at Half-Price Books and began my journey programming with Code::Blocks.",
   },
   {
     dateLabel: "2013",
@@ -121,7 +121,7 @@ const journeyEvents: JourneyEvent[] = [
     kind: "Personal",
     title: "First 3d printer",
     description:
-      "Robot Jox, The Iron Giant, Short Circuit, Transformers, LEGOs, and Bionicles.",
+      "Convinced my parents to buy me a PrintrBot.",
   },
   {
     dateLabel: "2016",
@@ -130,34 +130,25 @@ const journeyEvents: JourneyEvent[] = [
     kind: "Career",
     title: "Iowa State University",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Received a degree in Mechanical Engineering and pursued research leveraging artificial intelligence in automotive and robotics.",
   },
     {
     dateLabel: "2020",
     dateValue: 2020,
     direction: "down",
     kind: "Career",
-    title: "MechE Robotics",
+    title: "Factory Robotics",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Worked on factory automomation robotics systems in the St. Louis area.",
   },
-  // {
-  //   dateLabel: "2010s",
-  //   dateValue: 2017,
-  //   direction: "down",
-  //   kind: "Personal",
-  //   title: "Tinkering habit",
-  //   description:
-  //     "Started pulling ideas apart, building things back up, and following curiosity into technical work.",
-  // },
   {
     dateLabel: "2021",
     dateValue: 2021,
     direction: "up",
     kind: "Career",
-    title: "Joined Intramotev",
+    title: "Autonomous rail",
     description:
-      "Joined the budding St Louis startup as employee #2 to help build autonomous electric trains.",
+      "Joined the budding St Louis startup as employee no. 2 to help build autonomous electric trains.",
   },
   {
     dateLabel: "2022",
@@ -183,9 +174,9 @@ const journeyEvents: JourneyEvent[] = [
     dateValue: 2026.2,
     direction: "up",
     kind: "Career",
-    title: "Boeing",
+    title: "Autonomous air",
     description:
-      "Replace this with the current role, team, company, or work focus.",
+      "Embedded Vehicle Management Software Engineer for an autonomous air vehicle project.",
   },
 ];
 
@@ -195,11 +186,11 @@ export default function Home() {
       <section className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-6xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6 lg:py-20">
         <div className="flex w-full flex-col items-center">
           <HomeIntro>
-            <div className="mt-8 grid w-full max-w-5xl grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+            <div className="mt-8 grid w-full max-w-5xl auto-rows-fr grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
               {homeTiles.map((tile) => {
                 const Icon = tile.icon;
                 const tileClassName =
-                  "group flex min-h-36 flex-col items-center justify-center gap-8 rounded-lg border bg-card p-4 text-center shadow-sm transition-all hover:-translate-y-1 hover:border-foreground hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/30 sm:aspect-square sm:min-h-40 sm:p-5";
+                  "group flex h-full min-h-36 flex-col items-center justify-center gap-8 rounded-lg border bg-card p-4 text-center shadow-sm transition-all hover:-translate-y-1 hover:border-foreground hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/30 sm:aspect-square sm:min-h-40 sm:p-5";
                 const tileContent = (
                   <>
                     <span className="flex size-14 items-center justify-center text-foreground transition-transform group-hover:scale-110">
@@ -217,7 +208,7 @@ export default function Home() {
                 );
 
                 return (
-                  <div key={tile.title}>
+                  <div key={tile.title} className="h-full">
                     {tile.href.startsWith("#") ? (
                       <a href={tile.href} className={tileClassName}>
                         {tileContent}
@@ -248,7 +239,7 @@ export default function Home() {
                 About
               </p>
               <h2 className="mt-3 text-4xl font-semibold tracking-tight">
-                Who I am and why I do what I do.
+                Who I am and what gets me out of bed.
               </h2>
               <div className="mt-8 overflow-hidden rounded-lg border bg-background">
                 <Image
@@ -298,7 +289,7 @@ export default function Home() {
                 Journey
               </p>
               <h3 className="mt-3 text-3xl font-semibold tracking-tight">
-                From first sparks to current work.
+                Frome cradle to desk: a timeline.
               </h3>
             </div>
 
@@ -309,10 +300,10 @@ export default function Home() {
             <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr]">
               <div>
                 <p className="font-mono text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-                  Off Topic
+                  Off-World
                 </p>
                 <h3 className="mt-3 text-3xl font-semibold tracking-tight">
-                  Things outside the editor.
+                  My other interests.
                 </h3>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
