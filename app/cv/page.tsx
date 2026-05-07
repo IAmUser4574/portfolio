@@ -50,9 +50,12 @@ export default function CvPage() {
               <Mail />
               Contact
             </Button>
-            <Button>
-              <Download />
-              Resume
+            <Button asChild>
+              <a href="/Briton_Bauerly_Q1_2026_Resume.pdf" download="Briton-Bauerly-Resume.pdf">
+                <Download />
+                Resume/CV
+              </a>
+              
             </Button>
           </div>
         </div>
