@@ -5,7 +5,7 @@ export type ProjectMetadata = {
   description: string;
   publishedAt: string;
   stack: string[];
-  blogTag: string;
+  blogTag?: string;
 };
 
 export type Project = ProjectMetadata & {
@@ -40,5 +40,7 @@ export async function getProjectSummaries(): Promise<ProjectSummary[]> {
 }
 
 export async function getProjectBlogTags() {
-  return (await getProjects()).map((project) => project.blogTag);
+  return (await getProjects())
+    .map((project) => project.blogTag)
+    .filter((tag): tag is string => Boolean(tag));
 }

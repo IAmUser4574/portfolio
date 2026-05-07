@@ -79,12 +79,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               </span>
             ))}
           </div>
-          <Button asChild variant="outline" size="sm" className="mt-6">
-            <Link href={`/blog?tag=${encodeURIComponent(project.blogTag)}`}>
-              Blog: {project.blogTag.replaceAll("-", " ")}
-              <ArrowUpRight />
-            </Link>
-          </Button>
+          {project.blogTag && (
+            <Button asChild variant="outline" size="sm" className="mt-6">
+              <Link href={`/blog?tag=${encodeURIComponent(project.blogTag)}`}>
+                Blog: {project.blogTag.replaceAll("-", " ")}
+                <ArrowUpRight />
+              </Link>
+            </Button>
+          )}
         </div>
         <div className="space-y-6 pt-10 text-lg leading-8 text-muted-foreground">
           <Project />

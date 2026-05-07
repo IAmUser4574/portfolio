@@ -47,12 +47,14 @@ export default async function ProjectsPage() {
                       </span>
                     ))}
                   </div>
-                  <Button asChild variant="outline" size="sm" className="ml-auto mt-6 flex w-fit">
-                    <Link href={`/blog?tag=${encodeURIComponent(project.blogTag)}`}>
-                      Blog: {project.blogTag.replaceAll("-", " ")}
-                      <ArrowUpRight />
-                    </Link>
-                  </Button>
+                  {project.blogTag && (
+                    <Button asChild variant="outline" size="sm" className="ml-auto mt-6 flex w-fit">
+                      <Link href={`/blog?tag=${encodeURIComponent(project.blogTag)}`}>
+                        Blog: {project.blogTag.replaceAll("-", " ")}
+                        <ArrowUpRight />
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>
