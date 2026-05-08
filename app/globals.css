@@ -108,6 +108,120 @@ body {
   animation: minecraft-splash 1.0s ease-in-out infinite;
 }
 
+@keyframes hero-favicon-o-glitch {
+  0%,
+  3% {
+    clip-path: inset(0 0 0 0);
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  4% {
+    clip-path: inset(0 0 72% 0);
+    opacity: 1;
+    transform: translate(0.04em, -0.02em);
+  }
+
+  6% {
+    clip-path: inset(34% 0 36% 0);
+    opacity: 0;
+    transform: translate(-0.04em, 0.02em);
+  }
+
+  8% {
+    clip-path: inset(64% 0 0 0);
+    opacity: 1;
+    transform: translate(0.03em, 0);
+  }
+
+  10%,
+  68%,
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  70% {
+    clip-path: inset(0 0 72% 0);
+    opacity: 0;
+    transform: translate(0.04em, -0.02em);
+  }
+
+  72% {
+    clip-path: inset(64% 0 0 0);
+    opacity: 1;
+    transform: translate(-0.04em, 0.02em);
+  }
+
+  74% {
+    clip-path: inset(34% 0 36% 0);
+    opacity: 0;
+    transform: translate(0.03em, 0);
+  }
+
+  76%,
+  82% {
+    clip-path: inset(0 0 0 0);
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+
+  84% {
+    clip-path: inset(46% 0 22% 0);
+    opacity: 1;
+    transform: translate(-0.03em, -0.01em);
+  }
+
+  86% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes hero-text-o-glitch {
+  0%,
+  3%,
+  6% {
+    opacity: 1;
+  }
+
+  4%,
+  8%,
+  10%,
+  68%,
+  100% {
+    opacity: 0;
+  }
+
+  70%,
+  74%,
+  76%,
+  82% {
+    opacity: 1;
+  }
+
+  72%,
+  84%,
+  86% {
+    opacity: 0;
+  }
+}
+
+.hero-text-o {
+  animation: hero-text-o-glitch 5.5s steps(1, end) infinite;
+  animation-delay: 2.7s;
+  opacity: 1;
+}
+
+.hero-favicon-o {
+  animation: hero-favicon-o-glitch 5.5s steps(1, end) infinite;
+  animation-delay: 2.7s;
+  opacity: 0;
+  will-change: clip-path, opacity, transform;
+}
+
 .glitch {
   position: relative;
   margin: 0 auto;

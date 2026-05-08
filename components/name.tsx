@@ -145,11 +145,20 @@ export function Name({ introStarted = true }: NameProps) {
           <span
             aria-hidden="true"
             className={cn(
-              "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl font-semibold tracking-tight text-foreground transition-all duration-500 ease-out sm:text-8xl lg:text-9xl",
+              "absolute left-1/2 top-1/2 inline-flex -translate-x-1/2 -translate-y-1/2 items-center text-7xl font-semibold tracking-tight text-foreground transition-all duration-500 ease-out sm:text-8xl lg:text-9xl",
               mode !== "normal" && "-translate-y-[45%] scale-95 opacity-0",
             )}
           >
-            BRITON
+            <span>BRIT</span>
+            <span
+              className="relative mx-[0.00em] inline-block h-[0.9em] w-[0.82em] align-middle"
+            >
+              <span className="hero-text-o absolute inset-0 flex items-center justify-center">
+                O
+              </span>
+              <span className="hero-favicon-o absolute inset-0 block bg-[url('/briton-icon.png')] bg-contain bg-center bg-no-repeat" />
+            </span>
+            <span>N</span>
           </span>
           <span
             aria-hidden="true"
