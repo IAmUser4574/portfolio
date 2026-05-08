@@ -1,5 +1,6 @@
 import {
   ArrowDown,
+  ArrowRight,
   BookOpen,
   BriefcaseBusiness,
   Cog,
@@ -85,7 +86,7 @@ const journeyEvents: JourneyEvent[] = [
     direction: "up",
     kind: "Personal",
     title: "Born",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing.",
+    description: "Can't speak to the experience, I was barely there.",
   },
   {
     dateLabel: "2000s",
@@ -243,7 +244,7 @@ export default function Home() {
               </h2>
               <div className="mt-8 overflow-hidden rounded-lg border bg-background">
                 <Image
-                  src="/homebase-sketch.jpg"
+                  src="/warp-drive.jpg"
                   alt="Whiteboard sketch of my portfolio homepage layout."
                   width={900}
                   height={540}
@@ -263,7 +264,7 @@ export default function Home() {
                 ullamco.
               </p>
               <div className="grid gap-3 pt-4 sm:grid-cols-3">
-                {["Next.js", "React", "Tailwind", "TypeScript", "MDX", "Design systems"].map(
+                {["Robotics", "Automation", "Software", "Hardware", "3D Printing", "Vehicles"].map(
                   (skill) => (
                     <div
                       key={skill}
@@ -277,7 +278,7 @@ export default function Home() {
               <Button asChild variant="outline" className="mt-2">
                 <Link href="/blog">
                   Read the blog
-                  <BriefcaseBusiness />
+                  <ArrowRight />
                 </Link>
               </Button>
             </div>
