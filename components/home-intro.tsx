@@ -86,7 +86,7 @@ export function HomeIntro({ children }: HomeIntroProps) {
             hasGreeting ? "max-w-24 opacity-100" : "max-w-0 opacity-0",
           )}
         >
-          , I&apos;m
+          , I'm
         </span>
       </p>
       <Name introStarted={hasName} />
