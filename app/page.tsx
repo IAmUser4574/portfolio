@@ -1,17 +1,21 @@
 import {
   ArrowDown,
-  ArrowRight,
   BookOpen,
-  BriefcaseBusiness,
+  Cat,
+  Clapperboard,
   Cog,
+  FileCog,
   FileText,
-  Film,
   Mail,
-  Trophy,
+  Pencil,
+  ScrollText,
 } from "lucide-react";
+import { faLetterboxd } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { GiTennisRacket } from "react-icons/gi";
 
 import { HomeIntro } from "@/components/home-intro";
 import { JourneyTimeline } from "@/components/journey-timeline";
@@ -66,17 +70,30 @@ const footerLinks = [
 
 const interests = [
   {
-    title: "Tennis",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae sem at ipsum facilisis dictum.",
-    icon: Trophy,
-  },
-  {
     title: "Movies",
     description:
-      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Film notes live on Letterboxd.",
-    icon: Film,
+      "Any discussion you have with me in person will eventually converge towards movies. Check out my Letterboxd.",
+    icon: Clapperboard,
+    href: "https://boxd.it/ea3ZD",
+    linkIcon: faLetterboxd,
+    linkLabel: "Letterboxd",
   },
+    {
+    title: "Tennis",
+    description:
+      "Since graduation I no longer play competitively, but I still love racquet sports.",
+    icon: GiTennisRacket,
+  },
+  {
+    title: "Writing",
+    description: "I love to write poetry and short stories. I'm currently writing a film script for a sci-fi thriller. More on that later!",
+    icon: Pencil
+  },
+  {
+    title: "Cats",
+    description: "Cat dad to three, I love 'em!",
+    icon: Cat
+  }
 ];
 
 const journeyEvents: JourneyEvent[] = [
@@ -255,13 +272,12 @@ export default function Home() {
             </div>
             <div className="space-y-6 text-lg leading-8 text-muted-foreground">
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-                vitae sem at ipsum facilisis dictum sed sed lorem.
+                To me, engineering is not a job. Engineering is the craft of transforming the the physical world via
+                human ingenuity. When I look at the world around me, I see opportunities to improve things and I&apos;m not 
+                satisfied until I&apos;ve taken a crack at it. I see engineering as a responsibility.
               </p>
               <p>
-                Sed do eiusmod tempor incididunt ut labore et dolore magna
-                aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                ullamco.
+                It&apos;s also really f***ing cool. Here are some of my engineering foci:
               </p>
               <div className="grid gap-3 pt-4 sm:grid-cols-3">
                 {["Robotics", "Automation", "Software", "Hardware", "3D Printing", "Vehicles"].map(
@@ -275,12 +291,20 @@ export default function Home() {
                   ),
                 )}
               </div>
-              <Button asChild variant="outline" className="mt-2">
-                <Link href="/blog">
-                  Read the blog
-                  <ArrowRight />
-                </Link>
-              </Button>
+              <div className="mt-2 flex flex-wrap justify-end gap-3">
+                <Button asChild variant="outline">
+                  <Link href="/blog">
+                    Read the blog
+                    <ScrollText />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <Link href="/cv">
+                    More skills
+                    <FileCog />
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
 
@@ -307,38 +331,48 @@ export default function Home() {
                   My other interests.
                 </h3>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid items-start gap-3 sm:grid-cols-2">
                 {interests.map((interest) => {
                   const Icon = interest.icon;
 
                   return (
-                    <div
+                    <details
                       key={interest.title}
-                      className="rounded-lg border bg-background p-5"
+                      className="group rounded-lg border bg-background p-4"
                     >
-                      <Icon className="size-6 text-foreground" />
-                      <h4 className="mt-4 text-xl font-semibold text-foreground">
-                        {interest.title}
-                      </h4>
-                      <p className="mt-3 leading-7 text-muted-foreground">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
+                        <span className="flex items-center gap-3">
+                          <Icon className="size-5 text-foreground" />
+                          <span className="font-semibold text-foreground">
+                            {interest.title}
+                          </span>
+                        </span>
+                        <ArrowDown className="size-4 text-muted-foreground transition-transform group-open:rotate-180" />
+                      </summary>
+                      <p className="mt-4 leading-7 text-muted-foreground">
                         {interest.description}
                       </p>
-                    </div>
+                      {interest.href && (
+                        <Button asChild variant="outline" size="sm" className="mt-4">
+                          <a
+                            href={interest.href}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {interest.linkLabel}
+                            {interest.linkIcon && (
+                              <FontAwesomeIcon
+                                icon={interest.linkIcon}
+                                className="size-4"
+                              />
+                            )}
+                          </a>
+                        </Button>
+                      )}
+                    </details>
                   );
                 })}
               </div>
-            </div>
-            <div className="mt-6 flex justify-end">
-              <Button asChild variant="outline">
-                <a
-                  href="https://letterboxd.com/"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Letterboxd
-                  <Film />
-                </a>
-              </Button>
             </div>
           </div>
         </div>

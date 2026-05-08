@@ -13,9 +13,8 @@ export default async function ProjectsPage() {
   return (
     <PageShell>
       <section className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6">
-        <SectionHeading eyebrow="Projects" title="Lorem ipsum dolor sit amet.">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-          posuere erat a ante venenatis dapibus.
+        <SectionHeading eyebrow="Projects" title="Tools, apps, and gadgets.">
+          A selection of the projects I'm currently working on or have recently completed.
         </SectionHeading>
 
         <div className="mt-12 grid items-stretch gap-4 lg:grid-cols-3">
@@ -62,14 +61,14 @@ export default async function ProjectsPage() {
         </div>
 
         <div className="mt-10 flex flex-wrap gap-3">
-          <Button variant="outline">
+          {/* <Button variant="outline">
             <Code2 />
             GitHub
           </Button>
           <Button>
             Case studies
             <ArrowUpRight />
-          </Button>
+          </Button> */}
         </div>
       </section>
     </PageShell>
