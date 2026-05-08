@@ -273,11 +273,11 @@ export default function Home() {
             <div className="space-y-6 text-lg leading-8 text-muted-foreground">
               <p>
                 To me, engineering is not a job. Engineering is the craft of transforming the the physical world via
-                human ingenuity. When I look at the world around me, I see opportunities to improve things and I&apos;m not 
-                satisfied until I&apos;ve taken a crack at it. I see engineering as a responsibility.
+                human ingenuity. When I look at the world around me, I see opportunities to improve it and I'm not 
+                satisfied until I've taken a crack at it. I see engineering as a responsibility.
               </p>
               <p>
-                It&apos;s also really f***ing cool. Here are some of my engineering foci:
+                It's also really f***ing cool. Here are some of my engineering foci:
               </p>
               <div className="grid gap-3 pt-4 sm:grid-cols-3">
                 {["Robotics", "Automation", "Software", "Hardware", "3D Printing", "Vehicles"].map(
