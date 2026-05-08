@@ -12,6 +12,10 @@ type MdxModule<Metadata> = {
   metadata: Metadata;
 };
 
+type MaybePublished = {
+  publishedAt?: unknown;
+};
+
 async function getMdxSlugs(contentDirectory: string) {
   const files = await readdir(path.join(process.cwd(), "content", contentDirectory));
 
@@ -39,5 +43,9 @@ export async function getMdxCollection<Metadata>(
     }),
   );
 
-  return items;
+  return items.filter((item) => {
+    const publishedAt = (item as MaybePublished).publishedAt;
+
+    return typeof publishedAt === "string" && publishedAt.trim().length > 0;
+  });
 }

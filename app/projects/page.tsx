@@ -1,4 +1,4 @@
-import { ArrowUpRight, Code2, Layers3 } from "lucide-react";
+import { ArrowUpRight, Layers3 } from "lucide-react";
 import Link from "next/link";
 
 import { PageShell } from "@/components/page-shell";
@@ -14,7 +14,7 @@ export default async function ProjectsPage() {
     <PageShell>
       <section className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6">
         <SectionHeading eyebrow="Projects" title="Tools, apps, and gadgets.">
-          A selection of the projects I'm currently working on or have recently completed.
+          A selection of the projects I&apos;m currently working on or have recently completed.
         </SectionHeading>
 
         <div className="mt-12 grid items-stretch gap-4 lg:grid-cols-3">
