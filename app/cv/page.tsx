@@ -9,7 +9,7 @@ const experience = [
   {
     company: "First Orion",
     dates: "March 2025 - Present",
-    location: "St. Louis, MO",
+    location: "Remote - St. Louis, MO",
     role: "Software Engineer - Backend & Cloud",
     bullets: [
       "Engineered high-performance, security-critical C++ software running on bare-metal infrastructure for a tier-1 telecommunications provider.",
