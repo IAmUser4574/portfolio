@@ -124,7 +124,7 @@ export default function CvPage() {
             eyebrow="CV"
             title="Experience. Skills. Education. All the good bits"
           >
-            Versatile engineer delivering software across embedded C++ vehicle
+            I deliver software across embedded C++ vehicle
             controls, automation robotics, user-facing applications, and
             scalable backend systems.
           </SectionHeading>
