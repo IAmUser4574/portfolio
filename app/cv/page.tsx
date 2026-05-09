@@ -88,29 +88,10 @@ export default function CvPage() {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
             eyebrow="CV"
-            title="Experience. Skills. Education. All the good bits"
+            title="Experience. Skills. Education."
           >
-            I deliver software across embedded C++ vehicle
-            controls, automation robotics, user-facing applications, and
-            scalable backend systems.
+            All the good bits.
           </SectionHeading>
-          <div className="flex flex-wrap gap-3">
-            <Button asChild variant="outline">
-              <a href="mailto:bauerlybriton6@gmail.com">
-                <Mail />
-                Contact
-              </a>
-            </Button>
-            <Button asChild>
-              <a
-                href="/Briton_Bauerly_Q1_2026_Resume.pdf"
-                download="Briton-Bauerly-Resume.pdf"
-              >
-                <Download />
-                Resume/CV
-              </a>
-            </Button>
-          </div>
         </div>
 
         <div className="mt-12 grid gap-4 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
@@ -120,7 +101,7 @@ export default function CvPage() {
                 <CardTitle className="text-2xl">Experience</CardTitle>
                 <Button asChild variant="outline" size="sm" className="w-fit">
                   <a
-                    href="/Briton_Bauerly_Q1_2026_Resume.pdf"
+                    href="/resume.pdf"
                     download="Briton-Bauerly-Resume.pdf"
                   >
                     <Download />

@@ -1,4 +1,4 @@
-# Briton Portfolio Homebase
+# Portfolio
 
 A modern personal portfolio and project homebase built with Next.js, React,
 Tailwind CSS, shadcn/ui-style components, and MDX.
@@ -44,12 +44,9 @@ pnpm build
 - `content/blog/` contains MDX blog posts.
 - `lib/blog.ts` registers blog posts and exposes helpers for the blog index and
   static post routes.
-- `public/` contains static assets, including the sketch reference image and
-  Minecraft-style logo asset.
+- `public/` contains static assets
 
-The main homepage lives in `app/page.tsx`. It renders a centered hero, primary
-navigation buttons, the Minecraft/Fun Zone name component, and the scrollable
-About section.
+The main homepage lives in `app/page.tsx`.
 
 ## Features
 
@@ -58,9 +55,7 @@ About section.
 - Projects and CV are dedicated routes.
 - Blog index and blog detail pages are powered by local MDX content.
 - Dark mode defaults on and can be toggled from the header.
-- Fun Zone hides a Minecraft Mode toggle that swaps the name into a generated
-  Minecraft-inspired transparent PNG wordmark.
-- Weighted splash phrases power the Minecraft-style yellow overlay text.
+- Fun easter eggs hidden in the project.
 
 ## Writing Blog Posts
 
@@ -78,12 +73,14 @@ export const metadata = {
 Your post content goes here.
 ```
 
-Then import and register the post in `lib/blog.ts` so it appears in `/blog` and
-gets a static `/blog/[slug]` page.
+MDX files are automatically picked up by `lib/blog.ts` so they appear in `/blog` and
+get a static `/blog/[slug]` page.
+
+Note - MDX files with an empty `publishedAt` field will not be included.
 
 ## Local Mobile Testing
 
-When testing `next dev` from a phone on the LAN, Next.js may block dev resources
+When testing `pnpm dev` from a phone on the LAN, Next.js may block dev resources
 unless the phone uses an allowed origin. Add the dev host/IP to
 `allowedDevOrigins` in `next.config.ts`, then restart the dev server.
 
