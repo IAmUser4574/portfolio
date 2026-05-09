@@ -4,8 +4,6 @@ import type { CSSProperties, FocusEvent } from "react";
 import { useState } from "react";
 import Image from "next/image";
 
-import ElectricBorder from "@/components/electric-border";
-import GlitchText from "@/components/react-bits/glitch-text";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +18,7 @@ const splashPhrases = [
   { text: "Played too much minecraft, now I have to make portfolios", weight: 5 },
 ];
 
-type FunMode = "normal" | "minecraft" | "nerd";
+type FunMode = "normal" | "minecraft";
 
 type NameProps = {
   introStarted?: boolean;
@@ -53,7 +51,6 @@ export function Name({ introStarted = true }: NameProps) {
   const [isFunZoneVisible, setIsFunZoneVisible] = useState(false);
 
   const isMinecraftMode = mode === "minecraft";
-  const isNerdMode = mode === "nerd";
 
   function setMinecraftMode(checked: boolean) {
     if (checked) {
@@ -63,17 +60,6 @@ export function Name({ introStarted = true }: NameProps) {
     }
 
     if (mode === "minecraft") {
-      setMode("normal");
-    }
-  }
-
-  function setNerdMode(checked: boolean) {
-    if (checked) {
-      setMode("nerd");
-      return;
-    }
-
-    if (mode === "nerd") {
       setMode("normal");
     }
   }
@@ -110,14 +96,6 @@ export function Name({ introStarted = true }: NameProps) {
             aria-label="Toggle Minecraft Mode"
           />
         </label>
-        {/* <label className="flex items-center justify-between gap-3 text-sm">
-          <span>Nerd</span>
-          <Switch
-            checked={isNerdMode}
-            onCheckedChange={setNerdMode}
-            aria-label="Toggle Nerd Mode"
-          />
-        </label> */}
         <p className="text-right text-xs text-muted-foreground">
           Current: {mode === "normal" ? "Normal" : mode}
         </p>
@@ -177,22 +155,6 @@ export function Name({ introStarted = true }: NameProps) {
               className="h-auto w-full select-none"
             />
           </span>
-          <div
-            aria-hidden="true"
-            className={cn(
-              "absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-500 ease-out",
-              isNerdMode && "opacity-100",
-            )}
-          >
-            <GlitchText
-              speed={0.85}
-              enableShadows
-              enableOnHover={false}
-              className="text-7xl sm:text-8xl lg:text-9xl"
-            >
-              Briton
-            </GlitchText>
-          </div>
         </h1>
         <span
           aria-hidden={!isMinecraftMode}
@@ -216,30 +178,9 @@ export function Name({ introStarted = true }: NameProps) {
         </span>
       </div>
 
-      {isNerdMode ? (
-        <div
-          className={funZoneWrapperClassName}
-          {...funZoneInteractionProps}
-        >
-          <ElectricBorder
-            color="#7df9ff"
-            speed={1}
-            chaos={0.12}
-            thickness={2}
-            borderRadius={16}
-            style={{ borderRadius: 16 }}
-          >
-            {funZoneControls}
-          </ElectricBorder>
-        </div>
-      ) : (
-        <div
-          className={funZoneWrapperClassName}
-          {...funZoneInteractionProps}
-        >
-          {funZoneControls}
-        </div>
-      )}
+      <div className={funZoneWrapperClassName} {...funZoneInteractionProps}>
+        {funZoneControls}
+      </div>
     </div>
   );
 }
