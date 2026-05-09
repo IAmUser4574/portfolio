@@ -1,5 +1,6 @@
 import { BriefcaseBusiness, Download, GraduationCap, Mail } from "lucide-react";
 
+import { CvSkills } from "@/components/cv-skills";
 import { PageShell } from "@/components/page-shell";
 import { SectionHeading } from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
@@ -115,7 +116,7 @@ export default function CvPage() {
         <div className="mt-12 grid gap-4 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
           <div className="space-y-4">
             <Card className="rounded-lg">
-              <CardHeader className="gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <CardHeader className="grid-cols-[1fr_auto] items-center gap-4">
                 <CardTitle className="text-2xl">Experience</CardTitle>
                 <Button asChild variant="outline" size="sm" className="w-fit">
                   <a
@@ -123,7 +124,7 @@ export default function CvPage() {
                     download="Briton-Bauerly-Resume.pdf"
                   >
                     <Download />
-                    More experiential details in resume
+                    More details in resume
                   </a>
                 </Button>
               </CardHeader>
@@ -202,24 +203,8 @@ export default function CvPage() {
             <CardHeader>
               <CardTitle className="text-2xl">Skills</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-5">
-              {skillGroups.map((group) => (
-                <div key={group.label}>
-                  <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    {group.label}
-                  </p>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {group.skills.map((skill) => (
-                      <span
-                        key={skill}
-                        className="rounded-md border bg-background px-3 py-2 text-sm font-medium"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
+            <CardContent>
+              <CvSkills groups={skillGroups} />
             </CardContent>
           </Card>
         </div>
