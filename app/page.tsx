@@ -272,8 +272,8 @@ export default function Home() {
             </div>
             <div className="space-y-6 text-lg leading-8 text-muted-foreground">
               <p>
-                To me, engineering is not a job. Engineering is the craft of transforming the the physical world via
-                human ingenuity. When I look at the world around me, I see opportunities to improve it and I'm not 
+                To me, engineering is much more than a job - it's the craft of improving and transforming the physical world via
+                human ingenuity. When I look around, I constantly see opportunities to improve things and I'm not 
                 satisfied until I've taken a crack at it. I see engineering as a responsibility.
               </p>
               <p>

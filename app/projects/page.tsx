@@ -1,4 +1,4 @@
-import { ArrowUpRight, Code2, Layers3 } from "lucide-react";
+import { ArrowUpRight, Layers3 } from "lucide-react";
 import Link from "next/link";
 
 import { PageShell } from "@/components/page-shell";
@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getProjectSummaries } from "@/lib/projects";
+import { HiWrenchScrewdriver } from "react-icons/hi2";
 
 export default async function ProjectsPage() {
   const projects = await getProjectSummaries();
@@ -22,7 +23,7 @@ export default async function ProjectsPage() {
             <Card key={project.title} className="h-full rounded-lg">
               <CardHeader>
                 <span className="flex size-11 items-center justify-center rounded-md border bg-accent text-accent-foreground">
-                  <Layers3 className="size-5" />
+                  <HiWrenchScrewdriver className="size-5" />
                 </span>
                 <CardTitle className="text-2xl">
                   <Link
