@@ -42,11 +42,23 @@ pnpm build
 - `components/` contains reusable UI and site components.
 - `components/ui/` contains shadcn/ui-style primitives.
 - `content/blog/` contains MDX blog posts.
-- `lib/blog.ts` registers blog posts and exposes helpers for the blog index and
-  static post routes.
+- `lib/mdx-collection.ts` registers MDX blog posts and projects, then exposes
+  helpers for index and detail routes.
 - `public/` contains static assets
 
 The main homepage lives in `app/page.tsx`.
+
+## Cloudflare Pages Note
+
+The MDX collection registry is explicit instead of discovered with runtime
+filesystem reads. Cloudflare Pages deploys this Next.js app through OpenNext on
+Workers, where request-time `node:fs` access is not available. Keeping the MDX
+modules statically imported ensures `/blog` and `/projects` are bundled into the
+Worker and do not 500 in production.
+
+When the site is hosted as a full application runtime with normal filesystem
+access, this workaround can be removed by switching `lib/mdx-collection.ts` back
+to directory discovery under `content/`.
 
 ## Features
 
@@ -73,7 +85,7 @@ export const metadata = {
 Your post content goes here.
 ```
 
-MDX files are automatically picked up by `lib/blog.ts` so they appear in `/blog` and
+Register new MDX files in `lib/mdx-collection.ts` so they appear in `/blog` and
 get a static `/blog/[slug]` page.
 
 Note - MDX files with an empty `publishedAt` field will not be included.
