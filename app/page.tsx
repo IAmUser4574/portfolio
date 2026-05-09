@@ -139,7 +139,7 @@ const journeyEvents: JourneyEvent[] = [
     kind: "Personal",
     title: "First 3d printer",
     description:
-      "Convinced my parents to buy me a PrintrBot.",
+      "My parents had no idea what 3D Printing was at the time, but I somehow talked them into buying me a PrintrBot. It proved influential, to say the least.",
   },
   {
     dateLabel: "2016",
