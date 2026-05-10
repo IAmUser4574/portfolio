@@ -112,7 +112,7 @@ const journeyEvents: JourneyEvent[] = [
     kind: "Personal",
     title: "Robot stories",
     description:
-      "Robot Jox, The Iron Giant, Short Circuit, Transformers, LEGOs, and Bionicles.",
+      "Enamored by the movies and toys of my formative years - Robot Jox, The Iron Giant, Short Circuit, Transformers, LEGOs, and Bionicles - I was hooked on the desire to build machines.",
   },
   {
     dateLabel: "2000s",
@@ -121,7 +121,7 @@ const journeyEvents: JourneyEvent[] = [
     kind: "Personal",
     title: "Taking things apart at home",
     description:
-      "I started annoying my parents by tinkering with home electronics.",
+      "I began annoying my parents by tinkering with home electronics - I was a nuisance to the house and dubbed, \"The Terrible Toy-Breaker\".",
   },
   {
     dateLabel: "2011",
@@ -314,7 +314,7 @@ export default function Home() {
                 Journey
               </p>
               <h3 className="mt-3 text-3xl font-semibold tracking-tight">
-                Frome cradle to desk: a timeline.
+                Frome cradle to workbench: a timeline.
               </h3>
             </div>
 
