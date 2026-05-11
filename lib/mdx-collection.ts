@@ -21,6 +21,7 @@ import SystemUnderDesignProject, {
 import BuildingAHomebasePost, {
   metadata as buildingAHomebasePostMetadata,
 } from "@/content/blog/building-a-homebase.mdx";
+import { isPublishedMdxItem } from "@/lib/mdx-utils";
 
 export type MdxCollectionItem<Metadata> = Metadata & {
   slug: string;
@@ -77,10 +78,6 @@ const mdxRegistry = {
   ],
 } satisfies Record<MdxCollectionKey, MdxRegistryItem[]>;
 
-type MaybePublished = {
-  publishedAt?: unknown;
-};
-
 export async function getMdxCollection<Metadata>(
   contentDirectory: MdxCollectionKey,
 ): Promise<MdxCollectionItem<Metadata>[]> {
@@ -90,9 +87,5 @@ export async function getMdxCollection<Metadata>(
     ...(item.metadata as Metadata),
   }));
 
-  return items.filter((item) => {
-    const publishedAt = (item as MaybePublished).publishedAt;
-
-    return typeof publishedAt === "string" && publishedAt.trim().length > 0;
-  });
+  return items.filter(isPublishedMdxItem);
 }
