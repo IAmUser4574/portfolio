@@ -272,9 +272,11 @@ export default function Home() {
             </div>
             <div className="space-y-6 text-lg leading-8 text-muted-foreground">
               <p>
-                To me, engineering is much more than a job - it's the craft of improving and transforming the physical world via
-                human ingenuity. When I look around, I constantly see opportunities to improve things and I'm not 
-                satisfied until I've taken a crack at it. I see engineering as a responsibility.
+                My relationship with engineering is not one of compensation but compulsion. When I look around, I continuously find opportunities to improve things and I'm not 
+                satisfied until I've taken a crack at it. 
+              </p>
+              <p>
+                I see engineering as a responsibility to transform the inhuman world with human ingenuity.
               </p>
               <p>
                 It's also really f***ing cool. Here are some of my engineering foci:
@@ -380,7 +382,7 @@ export default function Home() {
 
       <footer className="border-t bg-background">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>&copy; {new Date().getFullYear()} Briton Bauerly. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Briton Bauerly.</p>
           <div className="flex flex-wrap gap-2">
             {footerLinks.map((link) => {
               const Icon = link.icon;
