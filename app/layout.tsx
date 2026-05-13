@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Briton | Portfolio Homebase",
-  description: "A homebase for Briton's projects, writing, CV, and technical work.",
+  title: "Briton | Portfolio",
+  description: "A homebase for my projects.",
 };
 
 export default function RootLayout({

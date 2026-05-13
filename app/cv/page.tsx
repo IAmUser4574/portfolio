@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, Download, GraduationCap, Mail } from "lucide-react";
+import { BriefcaseBusiness, Download, GraduationCap } from "lucide-react";
 
 import { CvSkills } from "@/components/cv-skills";
 import { PageShell } from "@/components/page-shell";
@@ -8,8 +8,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const experience = [
   {
+    company: "Boeing",
+    dates: "April 2026 - Present",
+    location: "St. Louis, MO",
+    role: "Embedded Software Engineer - Vehicle Management Systems",
+  },
+  {
     company: "First Orion",
-    dates: "March 2025 - Present",
+    dates: "March 2025 - April 2026",
     location: "Remote - St. Louis, MO",
     role: "Software Engineer - Backend & Cloud",
   },
@@ -27,7 +33,7 @@ const experience = [
   },
   {
     company: "Intramotev Inc",
-    dates: "December 2021 - July 2022",
+    dates: "December 2021 - May 2024",
     location: "St. Louis, MO",
     role: "Software Engineer",
   },
