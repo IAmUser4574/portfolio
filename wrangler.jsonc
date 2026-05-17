@@ -7,6 +7,9 @@
     "nodejs_compat",
     "global_fetch_strictly_public"
   ],
+  "vars": {
+    "PISTON_URL": "https://piston.systemunderdesign.com"
+  },
   "observability": {
     "enabled": true
   },
