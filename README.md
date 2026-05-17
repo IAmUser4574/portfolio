@@ -98,7 +98,7 @@ By default, code is executed against the [Wandbox](https://wandbox.org) public A
 
 To route execution through a self-hosted [Piston](https://github.com/engineer-man/piston) instance instead, set the server-side env var:
 
-```
+```yml
 PISTON_URL=https://your-server
 ```
 

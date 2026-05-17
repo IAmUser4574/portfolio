@@ -6,7 +6,7 @@ import { Play, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-type Language = "cpp" | "rust";
+type Language = "cpp" | "rust" | "csharp";
 
 type TokenType =
   | "keyword"
@@ -46,6 +46,20 @@ const RUST_KEYWORDS = new Set([
   "use", "where", "while",
 ]);
 
+const CSHARP_KEYWORDS = new Set([
+  "abstract", "as", "async", "await", "base", "bool", "break", "byte", "case",
+  "catch", "char", "checked", "class", "const", "continue", "decimal", "default",
+  "delegate", "do", "double", "else", "enum", "event", "explicit", "extern",
+  "false", "finally", "fixed", "float", "for", "foreach", "goto", "if",
+  "implicit", "in", "init", "int", "interface", "internal", "is", "lock", "long",
+  "namespace", "new", "null", "object", "operator", "out", "override", "params",
+  "private", "protected", "public", "readonly", "record", "ref", "return",
+  "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string",
+  "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong",
+  "unchecked", "unsafe", "ushort", "using", "var", "virtual", "void", "volatile",
+  "where", "while", "with",
+]);
+
 // one-dark-pro-style palette
 const TOKEN_COLORS: Record<TokenType, string> = {
   keyword:      "text-[#c678dd]",
@@ -61,11 +75,12 @@ const TOKEN_COLORS: Record<TokenType, string> = {
 
 // — runners —
 
-const PROMPTS: Record<Language, string> = { cpp: "$ ./snippet", rust: "$ cargo run" };
-const LANG_LABEL: Record<Language, string> = { cpp: "C++", rust: "RUST" };
+const PROMPTS: Record<Language, string> = { cpp: "$ ./snippet", rust: "$ cargo run", csharp: "$ dotnet run" };
+const LANG_LABEL: Record<Language, string> = { cpp: "C++", rust: "RUST", csharp: "C#" };
 const LANG_BADGE: Record<Language, string> = {
-  cpp:  "border-[#5cb8ff]/40 bg-[#5cb8ff]/10 text-[#5cb8ff]",
-  rust: "border-[#f0804a]/40 bg-[#f0804a]/10 text-[#f0804a]",
+  cpp:    "border-[#5cb8ff]/40 bg-[#5cb8ff]/10 text-[#5cb8ff]",
+  rust:   "border-[#f0804a]/40 bg-[#f0804a]/10 text-[#f0804a]",
+  csharp: "border-[#a855f7]/40 bg-[#a855f7]/10 text-[#a855f7]",
 };
 
 type RunResult = { output: string; error: string | null };
@@ -76,7 +91,7 @@ async function executeCode(code: string, lang: Language): Promise<RunResult> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ code, language: lang }),
   });
-  if (!res.ok) throw new Error(`Execute error ${res.status}`);
+  if (!res.ok) throw new Error(`Execute error ${res.status}: ${await res.text()}`);
   return res.json();
 }
 
@@ -360,7 +375,7 @@ function tokenizeLines(code: string, lang: Language): Token[][] {
 
 function tokenize(code: string, lang: Language): Token[] {
   const tokens: Token[] = [];
-  const kw = lang === "cpp" ? CPP_KEYWORDS : RUST_KEYWORDS;
+  const kw = lang === "cpp" ? CPP_KEYWORDS : lang === "csharp" ? CSHARP_KEYWORDS : RUST_KEYWORDS;
   let i = 0;
 
   const c = (offset = 0) => code[i + offset] ?? "";
@@ -393,6 +408,18 @@ function tokenize(code: string, lang: Language): Token[] {
       i = j + 1;
       continue;
     }
+    // C# verbatim string @"..."  (no backslash escapes; "" is an escaped quote)
+    if (lang === "csharp" && c() === "@" && c(1) === '"') {
+      let j = i + 2;
+      while (j < code.length) {
+        if (code[j] === '"' && code[j + 1] === '"') { j += 2; continue; }
+        if (code[j] === '"') { j++; break; }
+        j++;
+      }
+      tokens.push({ type: "string", text: code.slice(i, j) });
+      i = j;
+      continue;
+    }
     // Rust raw string r#"..."#
     if (lang === "rust" && c() === "r" && c(1) === "#" && c(2) === '"') {
       const end = code.indexOf('"#', i + 3);
@@ -420,8 +447,8 @@ function tokenize(code: string, lang: Language): Token[] {
       i = j;
       continue;
     }
-    // C++ preprocessor directive
-    if (lang === "cpp" && c() === "#") {
+    // C++ / C# preprocessor directive
+    if ((lang === "cpp" || lang === "csharp") && c() === "#") {
       let j = i;
       while (j < code.length && code[j] !== "\n") j++;
       tokens.push({ type: "preprocessor", text: code.slice(i, j) });
@@ -455,7 +482,7 @@ function tokenize(code: string, lang: Language): Token[] {
         i++;
       } else if (kw.has(word)) {
         tokens.push({ type: "keyword", text: word });
-      } else if (lang === "rust" && /^[A-Z]/.test(word)) {
+      } else if ((lang === "rust" || lang === "csharp") && /^[A-Z]/.test(word)) {
         tokens.push({ type: "type", text: word });
       } else {
         tokens.push({ type: "plain", text: word });

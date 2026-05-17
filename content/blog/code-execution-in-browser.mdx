@@ -2,7 +2,7 @@ export const metadata = {
   title: "Running code snippets in my blog with code execution engines",
   excerpt:
     "Voluntarily adding critical RCE vectors to my infrastructure for fun.",
-  publishedAt: "2026-05-16",
+  publishedAt: "2026-05-17",
   readingTime: "5 min read",
   tags: ["portfolio"],
 };
@@ -68,6 +68,25 @@ And here's some Rust:
     println!("Hello rusty world!");
 
     println!("Goodbye...");
+  }
+  `}
+/>
+
+And some garbage collection goodness:
+
+<SnippetRunner
+  title="Snippet demo"
+  language="csharp"
+  code={`
+  using System;
+  namespace SnippetRunner {
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Hello C# world!");
+        }
+    } 
   }
   `}
 />
