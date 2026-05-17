@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Play, RotateCcw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -140,22 +140,97 @@ type SnippetRunnerProps = {
 const runDelayMs = 120;
 
 export function SnippetRunner({ code, title, language = "cpp" }: SnippetRunnerProps) {
+  const [editableCode, setEditableCode]     = useState(() => code.replace(/^\n+|\n+$/g, ""));
   const [isRunning, setIsRunning]           = useState(false);
   const [hasRun, setHasRun]                 = useState(false);
   const [outputLines, setOutputLines]       = useState<string[]>([]);
   const [errorText, setErrorText]           = useState<string | null>(null);
   const [visibleLineCount, setVisibleCount] = useState(0);
   const timerRefs = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const preRef          = useRef<HTMLPreElement>(null);
+  const textareaRef     = useRef<HTMLTextAreaElement>(null);
+  const pendingSelection = useRef<[number, number] | null>(null);
 
-  const trimmed = useMemo(() => code.replace(/^\n+|\n+$/g, ""), [code]);
-  const codeLines = useMemo(() => tokenizeLines(trimmed, language), [trimmed, language]);
+  const codeLines = useMemo(() => tokenizeLines(editableCode, language), [editableCode, language]);
 
   const clearTimers = useCallback(() => {
     timerRefs.current.forEach(clearTimeout);
     timerRefs.current = [];
   }, []);
 
+  function syncScroll() {
+    if (!preRef.current || !textareaRef.current) return;
+    preRef.current.scrollTop  = textareaRef.current.scrollTop;
+    preRef.current.scrollLeft = textareaRef.current.scrollLeft;
+  }
+
   useEffect(() => () => clearTimers(), [clearTimers]);
+
+  useLayoutEffect(() => {
+    if (pendingSelection.current) {
+      textareaRef.current?.setSelectionRange(...pendingSelection.current);
+      pendingSelection.current = null;
+    }
+  });
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    const ta = e.currentTarget;
+    const { selectionStart: ss, selectionEnd: se, value } = ta;
+
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const lineStart = value.lastIndexOf("\n", ss - 1) + 1;
+      const indent = value.slice(lineStart, ss).match(/^\s*/)?.[0] ?? "";
+      const insert = "\n" + indent;
+      setEditableCode(value.slice(0, ss) + insert + value.slice(se));
+      pendingSelection.current = [ss + insert.length, ss + insert.length];
+      return;
+    }
+
+    if (e.key === "Tab") {
+      e.preventDefault();
+
+      if (ss === se) {
+        // no selection — single-cursor insert or remove
+        if (e.shiftKey) {
+          const lineStart = value.lastIndexOf("\n", ss - 1) + 1;
+          const spaces = value.slice(lineStart, ss).match(/ {1,2}$/)?.[0].length ?? 0;
+          if (spaces) {
+            setEditableCode(value.slice(0, ss - spaces) + value.slice(ss));
+            pendingSelection.current = [ss - spaces, ss - spaces];
+          }
+        } else {
+          setEditableCode(value.slice(0, ss) + "  " + value.slice(se));
+          pendingSelection.current = [ss + 2, ss + 2];
+        }
+        return;
+      }
+
+      // selection spans lines — block indent / dedent
+      const lineStart = value.lastIndexOf("\n", ss - 1) + 1;
+      const lineEnd   = value.indexOf("\n", se);
+      const before = value.slice(0, lineStart);
+      const block  = value.slice(lineStart, lineEnd < 0 ? value.length : lineEnd);
+      const after  = lineEnd < 0 ? "" : value.slice(lineEnd);
+      const lines  = block.split("\n");
+
+      if (e.shiftKey) {
+        let removedFirst = 0, totalRemoved = 0;
+        const dedented = lines.map((line, i) => {
+          const n = Math.min(2, line.length - line.trimStart().length);
+          if (i === 0) removedFirst = n;
+          totalRemoved += n;
+          return line.slice(n);
+        });
+        setEditableCode(before + dedented.join("\n") + after);
+        pendingSelection.current = [ss - removedFirst, se - totalRemoved];
+      } else {
+        const indented = lines.map((l) => "  " + l);
+        setEditableCode(before + indented.join("\n") + after);
+        pendingSelection.current = [ss + 2, se + lines.length * 2];
+      }
+    }
+  }
 
   async function runSnippet() {
     clearTimers();
@@ -166,7 +241,7 @@ export function SnippetRunner({ code, title, language = "cpp" }: SnippetRunnerPr
     setVisibleCount(0);
 
     try {
-      const result = await executeCode(trimmed, language);
+      const result = await executeCode(editableCode, language);
 
       if (result.error) {
         setErrorText(result.error);
@@ -245,22 +320,50 @@ export function SnippetRunner({ code, title, language = "cpp" }: SnippetRunnerPr
         </div>
       </div>
 
-      <pre className="overflow-x-auto bg-[#0b1020] p-4 text-sm leading-6">
-        <code>
-          {codeLines.map((lineTokens, lineIdx) => (
-            <span key={lineIdx} className="block min-w-max">
-              <span className="mr-4 inline-block w-6 select-none text-right text-[#73819d]">
-                {lineIdx + 1}
-              </span>
-              {lineTokens.map((tok, tokIdx) => (
-                <span key={tokIdx} className={TOKEN_COLORS[tok.type]}>
-                  {tok.text}
+      <div className="relative bg-[#0b1020]">
+        <pre
+          ref={preRef}
+          aria-hidden
+          className="overflow-hidden p-4 text-sm leading-6 pointer-events-none select-none"
+        >
+          <code>
+            {codeLines.map((lineTokens, lineIdx) => (
+              <span key={lineIdx} className="block min-w-max">
+                <span className="mr-4 inline-block w-6 text-right text-[#73819d]">
+                  {lineIdx + 1}
                 </span>
-              ))}
-            </span>
-          ))}
-        </code>
-      </pre>
+                {lineTokens.map((tok, tokIdx) => (
+                  <span key={tokIdx} className={TOKEN_COLORS[tok.type]}>
+                    {tok.text}
+                  </span>
+                ))}
+              </span>
+            ))}
+          </code>
+        </pre>
+        <textarea
+          ref={textareaRef}
+          suppressHydrationWarning
+          className="absolute inset-0 w-full h-full resize-none border-none font-mono text-sm leading-6 outline-none"
+          style={{
+            background: "transparent",
+            color: "transparent",
+            caretColor: "#d8e3f0",
+            padding: "1rem 1rem 1rem 3.5rem",
+            whiteSpace: "pre",
+            overflowWrap: "normal",
+            tabSize: 2,
+          }}
+          value={editableCode}
+          onChange={(e) => setEditableCode(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onScroll={syncScroll}
+          spellCheck={false}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+        />
+      </div>
 
       <div className="border-t bg-[#07111f] p-4 font-mono text-sm text-[#d7e8ff]">
         <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-[#99abc1]">
@@ -389,7 +492,7 @@ function tokenize(code: string, lang: Language): Token[] {
       i = j;
       continue;
     }
-    // identifier → keyword / macro / PascalCase type (Rust) / plain
+    // identifier - keyword / macro / PascalCase type (Rust) / plain
     if (reAlpha.test(c())) {
       let j = i + 1;
       while (j < code.length && reAlNum.test(code[j])) j++;

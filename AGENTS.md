@@ -22,3 +22,4 @@ Choose these tech stack entities and work within their respective idioms when ap
 Comments: 
 * don't write a book, just describe the basics of intent or form when applicable. 
 * start comments with a lowercase letter
+* don't use emojis or other non standard keyboard symbols in comments and documentation
