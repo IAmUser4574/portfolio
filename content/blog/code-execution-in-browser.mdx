@@ -119,22 +119,22 @@ Since this component direcly hits my VPS (after cloudflare proxying), it's smart
 
 ### Security
 
-It's realy simple to secure this - don't do it. Don't willing remote code execution features to any infrastructure you care about attackers not accessing - RCE is single worst
-attack for any system. In my case, the VPS I stood up assumes that risk as high and if I change that in the future. there are several additional layers of security I'd add
+It's realy simple to secure this - don't do it. Don't willing remote code execution features to any infrastructure you care about attackers not accessing - RCE is the single worst
+attack for any system. In my case, the VPS I stood up assumes that risk as high. If I change that in the future, there are several additional layers of security I'd add
 to this project beyond relying solely on [Isolate](https://www.ucw.cz/isolate/isolate.1.html) inside docker. At every layer from cloudflare -> nextjs -> vps -> nginx -> docker
-there are additional options for isolation and whitelisting safe paths. 
+there are options for isolation and whitelisting safe paths. 
 
 
 ### Fallback
 
-Since I already had the `Wandbox` api working near the beginning, I kept it in place with a simple exception catch passthrough - if for some
+Since I already had the `Wandbox` api working near the beginning, I kept it in place with a simple exception catch passthrough: if for some
 reason my VPS or container goes down, the api will hot swap from piston to wandbox.
 
 ## Conclusion
 
-In the future I might make a PR or fork of piston api - some of its compilers and runtimes are well out of date (such as the C# example above). 
+In the future I might update or fork piston api - some of its compilers and runtimes are well out-of-date (such as the C# example above). 
 But I'm glad this little side project finally convinced me to stand up a VPS - the peace of mind I get from not worrying about sandboxing my home
-network for port 80 and 443 traffic is awesome.
+network from port 80 and 443 traffic is awesome.
 
 Onto the next blog post,
 
