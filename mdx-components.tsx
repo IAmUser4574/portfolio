@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef } from "react";
+import { isValidElement, type ComponentPropsWithoutRef } from "react";
 import type { MDXComponents } from "mdx/types";
 
 function H2(props: ComponentPropsWithoutRef<"h2">) {
@@ -29,11 +29,35 @@ function OrderedList(props: ComponentPropsWithoutRef<"ol">) {
 }
 
 function Code(props: ComponentPropsWithoutRef<"code">) {
+  // block code (inside <pre>) carries a language-* class — leave it unstyled
+  if (props.className?.startsWith("language-")) return <code {...props} />;
   return (
     <code
-      className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground"
+      className="rounded-md border border-border bg-secondary px-1.5 py-0.5 font-mono text-[0.875em] text-secondary-foreground"
       {...props}
     />
+  );
+}
+
+function Pre({ children, ...props }: ComponentPropsWithoutRef<"pre">) {
+  const lang = isValidElement(children)
+    ? (children.props as { className?: string }).className?.replace("language-", "")
+    : undefined;
+
+  return (
+    <div className="relative my-6">
+      {lang && (
+        <span className="absolute right-3 top-2.5 font-mono text-xs text-muted-foreground">
+          {lang}
+        </span>
+      )}
+      <pre
+        className="overflow-x-auto rounded-lg border border-border bg-card p-4 font-mono text-sm leading-6"
+        {...props}
+      >
+        {children}
+      </pre>
+    </div>
   );
 }
 
@@ -43,6 +67,7 @@ const components = {
   a: Anchor,
   ul: List,
   ol: OrderedList,
+  pre: Pre,
   code: Code,
 } satisfies MDXComponents;
 

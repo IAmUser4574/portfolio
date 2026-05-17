@@ -38,7 +38,13 @@ server route to handle the request.
 
 And it's at this point that I think I need UML or something to draw this stuff out. Maybe for the next blog enhancement!
 
+### Building out the component
+
+I let claude take a crack at finishing up the component -  building out the tokenizer for language-specific highlighting, cursor blink timer, and tab/shift-tab support. It worked really well 
+right off the bat.
+
 ## Test
+
 Here's some C++ to run:
 
 <SnippetRunner
@@ -90,3 +96,27 @@ And some garbage collection goodness:
   }
   `}
 />
+
+## Tuning
+
+### Piston API
+
+The minimal C# code example above was triggering a `compile_cpu_time` timeout error in my self hosted piston api. Unlike the C++ and Rust examples,
+the C# example requires standing up the `dotnet runtime`, adding additional time complexity. The solution was to throw environment variables from
+the piston readme into my docker compose file:
+
+```yml
+environment:
+    - PISTON_LIMIT_OVERRIDES={"csharp.net":{"compile_timeout":50000,"compile_cpu_time":30000,"run_timeout":50000,"run_cpu_time":30000}}
+```
+
+### Endpoint
+
+I extracted the API calls to a server side nextjs api component and then added ip-based rate limiting for the code executor.
+Since it direcly hits my VPS (after cloudflare proxying), it's smart to add basic protections.
+
+## Conclusion
+
+In the future I might make a PR or fork of piston api - some of its compilers and runtimes are well out of date (such as the C# example above). 
+But I'm glad this little side project finally convinced me to stand up a VPS - the peace of mind from not worrying about sandboxing my home
+network for port 80 and 443 traffic is awesome.
