@@ -1,4 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { StatusCodes } from "http-status-codes";
+
+const RATE_LIMIT_MAX_REQUESTS = 10;
+const RATE_LIMIT_WINDOW_MS = 60_000;
 
 export function createRateLimiter(limit: number, windowMs: number) {
   const store = new Map<string, number[]>();
@@ -12,7 +16,7 @@ export function createRateLimiter(limit: number, windowMs: number) {
   };
 }
 
-const isRateLimited = createRateLimiter(10, 60_000);
+const isRateLimited = createRateLimiter(RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS);
 
 type RouteHandler = (req: NextRequest) => Promise<NextResponse>;
 
@@ -25,8 +29,8 @@ export function withRateLimit(handler: RouteHandler): RouteHandler {
 
     if (isRateLimited(ip)) {
       return NextResponse.json(
-        { error: "Rate limit exceeded — try again in a minute" },
-        { status: 429 }
+        { error: "Not so fast - some things in life are worth waiting for." },
+        { status: StatusCodes.TOO_MANY_REQUESTS }
       );
     }
 
