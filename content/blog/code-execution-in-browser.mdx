@@ -1,0 +1,43 @@
+export const metadata = {
+  title: "Running code snippets in my blog with code execution engines",
+  excerpt:
+    "Voluntarily adding critical RCE vectors to my infrastructure for fun.",
+  publishedAt: "2026-05-16",
+  readingTime: "5 min read",
+  tags: ["portfolio"],
+};
+
+import { SnippetRunner } from "@/components/snippet-runner";
+
+Here's some C++:
+
+<SnippetRunner
+  title="RAII demo"
+  language="cpp"
+  code={`
+  
+    #include <iostream>
+
+    #define LOG(x) std::cout << x << std::endl
+
+    int main() {
+        LOG("Hello World!");
+
+        LOG("Exiting program.");
+    }
+`}
+/>
+
+Here's some Rust:
+
+<SnippetRunner
+  title="RAII demo"
+  language="rust"
+  code={`
+  fn main() {
+    println!("Hello rusty world!");
+
+    println!("Goodbye...");
+  }
+  `}
+/>

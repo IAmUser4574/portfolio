@@ -21,6 +21,12 @@ import SystemUnderDesignProject, {
 import BuildingAHomebasePost, {
   metadata as buildingAHomebasePostMetadata,
 } from "@/content/blog/building-a-homebase.mdx";
+import RaiiIsRadPost, {
+  metadata as raiiIsRadPostMetadata,
+} from "@/content/blog/raii-is-rad.mdx";
+import CodeExecutionInBrowser, {
+  metadata as codeExecutionInBrowserMetadata,
+} from "@/content/blog/code-execution-in-browser.mdx";
 import { isPublishedMdxItem } from "@/lib/mdx-utils";
 
 export type MdxCollectionItem<Metadata> = Metadata & {
@@ -43,6 +49,16 @@ const mdxRegistry = {
       Component: BuildingAHomebasePost,
       metadata: buildingAHomebasePostMetadata,
     },
+    {
+      slug: "raii-is-rad",
+      Component: RaiiIsRadPost,
+      metadata: raiiIsRadPostMetadata,
+    },
+    {
+      slug: "code-execution-in-browser",
+      Component: CodeExecutionInBrowser,
+      metadata: codeExecutionInBrowserMetadata,
+    }
   ],
   projects: [
     {
