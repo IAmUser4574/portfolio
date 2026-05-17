@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { withRateLimit } from "@/lib/rate-limit";
 
 type Language = "cpp" | "rust" | "csharp";
 
@@ -84,7 +85,7 @@ async function executeWithPiston(code: string, lang: Language, baseUrl: string):
   return { output: out || "(no output)", error: null };
 }
 
-export async function POST(req: NextRequest) {
+async function handler(req: NextRequest) {
   const { code, language } = await req.json();
 
   if (!code || !language) {
@@ -113,3 +114,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
+
+export const POST = withRateLimit(handler);
