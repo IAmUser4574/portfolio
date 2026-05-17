@@ -9,10 +9,40 @@ export const metadata = {
 
 import { SnippetRunner } from "@/components/snippet-runner";
 
-Here's some C++:
+## Why
+
+In future blog posts I'd like to embed interactive code snippets into my mdx files, so I thought it would be a fun exercise to fiddle
+with remote code execution engines - like the ones you see on [neetcode.io](https://neetcode.io) and similar.
+
+## How
+
+First I sought out some free public APIs for code execution - a few of them are okay, but they have reliability, rate, and future proofing drawbacks. And instead of paying for paid 
+versions, I'd much rather pay for a VPS and self-host my own api tooling.
+
+### Testing with a public api
+
+I was able to get requests to [Wandbox](https://wandbox.org/) going quite quickly, so I started there with writing and testing my snippet-runner component.
+
+
+### Setting up a VPS
+
+One credit card swipe later and I've got a VPS with a (hopefully static?) IPv4.
+
+### Installing piston api
+
+I ran into a CORS issue short-circuit testing with Piston directly from its port on my VPS - the api doesn't return `Access-Control-Allow-Origin` headers which forced my hand. 
+Oh well, I wanted to do it right anyways.
+
+To solve my issues, I set up the reverse proxy via nginx, rolled https certs with LetsEncrypt, wired up the endpoint with a cloudflare `A` record, and then wrote a small nextjs 
+server route to handle the request.
+
+And it's at this point that I think I need UML or something to draw this stuff out. Maybe for the next blog enhancement!
+
+## Test
+Here's some C++ to run:
 
 <SnippetRunner
-  title="RAII demo"
+  title="Snippet demo"
   language="cpp"
   code={`
   
@@ -28,10 +58,10 @@ Here's some C++:
 `}
 />
 
-Here's some Rust:
+And here's some Rust:
 
 <SnippetRunner
-  title="RAII demo"
+  title="Snippet demo"
   language="rust"
   code={`
   fn main() {

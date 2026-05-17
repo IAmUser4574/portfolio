@@ -70,63 +70,14 @@ const LANG_BADGE: Record<Language, string> = {
 
 type RunResult = { output: string; error: string | null };
 
-// wandbox (default, no auth required)
-const WANDBOX_COMPILER: Record<Language, string> = { cpp: "gcc-head", rust: "rust-1.82.0" };
-const WANDBOX_OPTIONS: Partial<Record<Language, string>> = { cpp: "c++17" };
-
-interface WandboxResponse {
-  status: string;
-  compiler_error: string;
-  program_output: string;
-  program_error: string;
-}
-
-async function runWithWandbox(code: string, lang: Language): Promise<RunResult> {
-  const body: Record<string, string> = { code, compiler: WANDBOX_COMPILER[lang] };
-  if (WANDBOX_OPTIONS[lang]) body.options = WANDBOX_OPTIONS[lang]!;
-
-  const res = await fetch("https://wandbox.org/api/compile.json", {
+async function executeCode(code: string, lang: Language): Promise<RunResult> {
+  const res = await fetch("/api/execute", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
+    body: JSON.stringify({ code, language: lang }),
   });
-  if (!res.ok) throw new Error(`Wandbox error ${res.status}`);
-
-  const data: WandboxResponse = await res.json();
-  if (data.status !== "0" && !data.program_output)
-    return { output: "", error: data.compiler_error || data.program_error || "Compilation failed" };
-  return { output: data.program_output || "(no output)", error: null };
-}
-
-// piston (self-hosted; set NEXT_PUBLIC_PISTON_URL to enable)
-const PISTON_LANG: Record<Language, string> = { cpp: "c++", rust: "rust" };
-const PISTON_FILE: Record<Language, string> = { cpp: "main.cpp", rust: "main.rs" };
-
-interface PistonStage { stdout: string; stderr: string; code: number }
-interface PistonResponse { compile?: PistonStage; run: PistonStage }
-
-async function runWithPiston(code: string, lang: Language, baseUrl: string): Promise<RunResult> {
-  const res = await fetch(`${baseUrl}/api/v2/execute`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      language: PISTON_LANG[lang],
-      version: "*",
-      files: [{ name: PISTON_FILE[lang], content: code }],
-    }),
-  });
-  if (!res.ok) throw new Error(`Piston error ${res.status}`);
-
-  const data: PistonResponse = await res.json();
-  if (data.compile && data.compile.code !== 0)
-    return { output: "", error: data.compile.stderr || "Compilation failed" };
-  const out = data.run.code !== 0 && !data.run.stdout ? data.run.stderr : data.run.stdout;
-  return { output: out || "(no output)", error: null };
-}
-
-function executeCode(code: string, lang: Language): Promise<RunResult> {
-  const pistonUrl = process.env.NEXT_PUBLIC_PISTON_URL;
-  return pistonUrl ? runWithPiston(code, lang, pistonUrl) : runWithWandbox(code, lang);
+  if (!res.ok) throw new Error(`Execute error ${res.status}`);
+  return res.json();
 }
 
 // — component —
@@ -262,6 +213,7 @@ export function SnippetRunner({ code, title, language = "cpp" }: SnippetRunnerPr
         timerRefs.current.push(t);
       });
     } catch (err) {
+      console.error("[snippet-runner] execute failed:", err);
       setErrorText(err instanceof Error ? err.message : "Failed to connect");
       setHasRun(true);
       setIsRunning(false);

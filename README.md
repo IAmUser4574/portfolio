@@ -92,12 +92,14 @@ Note - MDX files with an empty `publishedAt` field will not be included.
 
 ## interactive code snippets
 
-Blog posts can embed runnable C++ and Rust snippets via `<SnippetRunner>` (`components/snippet-runner.tsx`). By default, code is executed against the [Wandbox](https://wandbox.org) public API — no auth or setup required.
+Blog posts can embed runnable C++ and Rust snippets via `<SnippetRunner>` (`components/snippet-runner.tsx`). Execution is handled server-side via `app/api/execute/route.ts`, so no CORS configuration is required on the execution backend.
 
-To route execution through a self-hosted [Piston](https://github.com/engineer-man/piston) instance instead, set:
+By default, code is executed against the [Wandbox](https://wandbox.org) public API — no auth or setup required.
+
+To route execution through a self-hosted [Piston](https://github.com/engineer-man/piston) instance instead, set the server-side env var:
 
 ```
-NEXT_PUBLIC_PISTON_URL=http://your-server:2000
+PISTON_URL=https://your-server
 ```
 
 When this variable is unset, Wandbox is used as the fallback.
