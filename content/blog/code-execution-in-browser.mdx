@@ -16,13 +16,15 @@ with remote code execution engines - like the ones you see on [neetcode.io](http
 
 ## How
 
-First I sought out some free public APIs for code execution - a few of them are okay, but they have reliability, rate, and future proofing drawbacks. And instead of paying for paid 
-versions, I'd much rather pay for a VPS and self-host my own api tooling.
+First I sought out some free public APIs for code execution.
 
-### Testing with a public api
+I was able to get requests to [Wandbox](https://wandbox.org/) going quite quickly, so I started there with writing and testing a basic version of my snippet-runner component.
 
-I was able to get requests to [Wandbox](https://wandbox.org/) going quite quickly, so I started there with writing and testing my snippet-runner component.
 
+Soon in my testing I noticed a few drawbacks related to reliability and rate, which is fair considering it's a free and open API. But I wanted more control.
+Instead of paying for paid versions of these, I'd much rather pay for a VPS and self-host my own api tooling.
+
+I found a self-hostable option with docker, [piston](https://github.com/engineer-man/piston), and got to work.
 
 ### Setting up a VPS
 
@@ -41,7 +43,7 @@ And it's at this point that I may need UML support to draw this stuff out in the
 ### Building out the component
 
 I let claude take a crack at finishing up the component -  building out the tokenizer for language-specific highlighting, cursor blink timer, and tab/shift-tab support. It worked really well 
-right off the bat.
+right off the bat. This is exactly the type of detail work that would typically preclude me from continuing a toy project in my free time such as this.
 
 ## Test
 
@@ -113,12 +115,20 @@ environment:
 ### Endpoint
 
 I extracted the API calls to a server side nextjs api component and then added ip-based rate limiting for the code executor.
-Since it direcly hits my VPS (after cloudflare proxying), it's smart to add basic protections.
+Since this component direcly hits my VPS (after cloudflare proxying), it's smart to add basic protections.
+
+### Security
+
+It's realy simple to secure this - don't do it. Don't willing remote code execution features to any infrastructure you care about attackers not accessing - RCE is single worst
+attack for any system. In my case, the VPS I stood up assumes that risk as high and if I change that in the future. there are several additional layers of security I'd add
+to this project beyond relying solely on [Isolate](https://www.ucw.cz/isolate/isolate.1.html) inside docker. At every layer from cloudflare -> nextjs -> vps -> nginx -> docker
+there are additional options for isolation and whitelisting safe paths. 
+
 
 ### Fallback
 
 Since I already had the `Wandbox` api working near the beginning, I kept it in place with a simple exception catch passthrough - if for some
-reason my VPS or container goes down.
+reason my VPS or container goes down, the api will hot swap from piston to wandbox.
 
 ## Conclusion
 
