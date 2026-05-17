@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { withRateLimit } from "@/lib/rate-limit";
+import { withRateLimit } from "@/middleware/rate-limit";
 
 type Language = "cpp" | "rust" | "csharp";
 
