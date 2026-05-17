@@ -1,0 +1,70 @@
+export const metadata = {
+  title: "R.A.I.I. is R.A.D.! -  Using the C & Rust Compilers For Free Memory Management ",
+  excerpt:
+    "Resource Acquisition Is Initialization (RAII)",
+  publishedAt: "",
+  readingTime: "10 min read",
+  tags: ["C++", "Rust"],
+};
+
+import { SnippetRunner } from "@/components/snippet-runner";
+
+So much compiler, runtime, and application code is designed around memory safety. Most software environments opt for either manually tracking and releasing memory (e.g. C/C++) or automatic memory management through garbage collection (e.g. Java, C#, Python).
+
+The problem with the former is human overhead; it's tedious and error-prone for developers to be constantly putting away the toys they play with.
+
+The issue with the latter is compute overhead - automatic garbage collection in Java, C#, Python, Javascript is expensive.
+
+Enter RAII:
+
+<SnippetRunner
+  title="RAII demo"
+  language="cpp"
+  code={`
+  
+    #include <iostream>
+    #include <string>
+
+    #define LOG(x) std::cout << x << std::endl
+
+    class TrackedFile {
+    public:
+    explicit TrackedFile(std::string name) : name_(std::move(name)) {
+        std::cout << "open " << name_ << "\\n";
+    }
+
+    ~TrackedFile() {
+        std::cout << "close " << name_ << "\\n";
+    }
+
+    private:
+    std::string name_;
+    };
+
+    int main() {
+        LOG("Hai!!");
+        std::cout << "enter main\\n";
+
+        {
+            TrackedFile log("notes.txt");
+            std::cout << "write notes\\n";
+        }
+
+        std::cout << "leave main\\n";
+    }
+`}
+/>
+
+And here's RAII in Rust:
+
+<SnippetRunner
+  title="RAII demo"
+  language="rust"
+  code={`
+  fn main() {
+    println!("Hello rusty world!");
+
+    // todo - add RAII rust demo
+  }
+  `}
+/>

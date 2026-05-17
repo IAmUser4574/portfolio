@@ -1,0 +1,141 @@
+export const metadata = {
+  title: "Running code snippets in my blog with code execution engines",
+  excerpt:
+    "Voluntarily adding critical RCE vectors to my infrastructure for fun.",
+  publishedAt: "2026-05-17",
+  readingTime: "7 min read",
+  tags: ["portfolio"],
+};
+
+import { SnippetRunner } from "@/components/snippet-runner";
+
+## Why
+
+In future blog posts I'd like to embed interactive code snippets into my mdx files, so I thought it would be a fun exercise to fiddle
+with remote code execution engines - like the ones you see on [neetcode.io](https://neetcode.io) and similar.
+
+## How
+
+First I sought out some free public APIs for code execution.
+
+I was able to get requests to [Wandbox](https://wandbox.org/) going quite quickly, so I started there with writing and testing a basic version of my snippet-runner component.
+
+
+Soon in my testing I noticed a few drawbacks related to reliability and rate, which is fair considering it's a free and open API. But I wanted more control.
+Instead of paying for paid versions of these, I'd much rather pay for a VPS and self-host my own api tooling.
+
+I found a self-hostable option with docker, [piston](https://github.com/engineer-man/piston), and got to work.
+
+### Setting up a VPS
+
+One credit card swipe later and I've got a VPS with a (hopefully static?) IPv4.
+
+### Installing piston api
+
+I ran into a CORS issue short-circuit testing with Piston directly from its port on my VPS - the api doesn't return `Access-Control-Allow-Origin` headers which forced my hand. 
+Oh well, I wanted to do it right anyways.
+
+To solve my issues, I set up the reverse proxy via nginx, rolled https certs with LetsEncrypt, wired up the endpoint with a cloudflare `A` record on my `piston.*` subdomain,
+ and then wrote a small nextjs server route to handle the request.
+
+And it's at this point that I may need UML support to draw this stuff out in these mdx file posts. Maybe for the next blog enhancement!
+
+### Building out the component
+
+I let claude take a crack at finishing up the component -  building out the tokenizer for language-specific highlighting, cursor blink timer, and tab/shift-tab support. It worked really well 
+right off the bat. This is exactly the type of detail work that would typically preclude me from continuing a toy project in my free time such as this.
+
+## Test
+
+Here's some C++ to run:
+
+<SnippetRunner
+  title="Snippet demo"
+  language="cpp"
+  code={`
+  
+    #include <iostream>
+
+    #define LOG(x) std::cout << x << std::endl
+
+    int main() {
+        LOG("Hello World!");
+
+        LOG("Exiting program.");
+    }
+`}
+/>
+
+And here's some Rust:
+
+<SnippetRunner
+  title="Snippet demo"
+  language="rust"
+  code={`
+  fn main() {
+    println!("Hello rusty world!");
+
+    println!("Goodbye...");
+  }
+  `}
+/>
+
+And some garbage collection goodness:
+
+<SnippetRunner
+  title="Snippet demo"
+  language="csharp"
+  code={`
+  using System;
+  namespace SnippetRunner {
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Hello C# world!");
+        }
+    } 
+  }
+  `}
+/>
+
+## Tuning
+
+### Piston API
+
+The minimal C# code example above was triggering a `compile_cpu_time` timeout error in my vps-hosted piston api. Unlike the C++ and Rust examples,
+the C# example requires standing up the `dotnet runtime`, adding additional time complexity. The solution was to throw environment variables from
+the piston readme into my docker compose file:
+
+```yml
+environment:
+    - PISTON_LIMIT_OVERRIDES={"csharp.net":{"compile_timeout":50000,"compile_cpu_time":30000,"run_timeout":50000,"run_cpu_time":30000}}
+```
+
+### Endpoint
+
+I extracted the API calls to a server side nextjs api component and then added ip-based rate limiting for the code executor.
+Since this component direcly hits my VPS (after cloudflare proxying), it's smart to add basic protections.
+
+### Security
+
+It's realy simple to secure this - don't do it. Don't willing remote code execution features to any infrastructure you care about attackers not accessing - RCE is single worst
+attack for any system. In my case, the VPS I stood up assumes that risk as high and if I change that in the future. there are several additional layers of security I'd add
+to this project beyond relying solely on [Isolate](https://www.ucw.cz/isolate/isolate.1.html) inside docker. At every layer from cloudflare -> nextjs -> vps -> nginx -> docker
+there are additional options for isolation and whitelisting safe paths. 
+
+
+### Fallback
+
+Since I already had the `Wandbox` api working near the beginning, I kept it in place with a simple exception catch passthrough - if for some
+reason my VPS or container goes down, the api will hot swap from piston to wandbox.
+
+## Conclusion
+
+In the future I might make a PR or fork of piston api - some of its compilers and runtimes are well out of date (such as the C# example above). 
+But I'm glad this little side project finally convinced me to stand up a VPS - the peace of mind I get from not worrying about sandboxing my home
+network for port 80 and 443 traffic is awesome.
+
+Onto the next blog post,
+
+briton.

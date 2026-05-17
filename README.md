@@ -1,9 +1,9 @@
-# Portfolio
+# portfolio
 
 A modern personal portfolio and project homebase built with Next.js, React,
 Tailwind CSS, shadcn/ui-style components, and MDX.
 
-## Stack
+## stack
 
 - Next.js App Router
 - React
@@ -13,7 +13,7 @@ Tailwind CSS, shadcn/ui-style components, and MDX.
 - MDX blog posts via `@next/mdx`
 - pnpm for package management
 
-## Getting Started
+## run the project
 
 Install dependencies:
 
@@ -36,7 +36,7 @@ pnpm lint
 pnpm build
 ```
 
-## Architecture
+## architecture
 
 - `app/` contains App Router routes and global layout/styles.
 - `components/` contains reusable UI and site components.
@@ -48,7 +48,7 @@ pnpm build
 
 The main homepage lives in `app/page.tsx`.
 
-## Cloudflare Pages Note
+## cloudflare pages limitations
 
 The MDX collection registry is explicit instead of discovered with runtime
 filesystem reads. Cloudflare Pages deploys this Next.js app through OpenNext on
@@ -60,7 +60,7 @@ When the site is hosted as a full application runtime with normal filesystem
 access, this workaround can be removed by switching `lib/mdx-collection.ts` back
 to directory discovery under `content/`.
 
-## Features
+## features
 
 - Four primary internal destinations: About, Projects, Blog, and CV.
 - About scrolls to an in-page section on the homepage.
@@ -69,7 +69,7 @@ to directory discovery under `content/`.
 - Dark mode defaults on and can be toggled from the header.
 - Fun easter eggs hidden in the project.
 
-## Writing Blog Posts
+## blog posts
 
 Add a new `.mdx` file under `content/blog/` with a metadata export:
 
@@ -90,7 +90,21 @@ get a static `/blog/[slug]` page.
 
 Note - MDX files with an empty `publishedAt` field will not be included.
 
-## Local Mobile Testing
+## interactive code snippets
+
+Blog posts can embed runnable C++ and Rust snippets via `<SnippetRunner>` (`components/snippet-runner.tsx`). Execution is handled server-side via `app/api/execute/route.ts`, so no CORS configuration is required on the execution backend.
+
+By default, code is executed against the [Wandbox](https://wandbox.org) public API — no auth or setup required.
+
+To route execution through a self-hosted [Piston](https://github.com/engineer-man/piston) instance instead, set the server-side env var:
+
+```yml
+PISTON_URL=https://your-server
+```
+
+When this variable is unset, Wandbox is used as the fallback.
+
+## local mobile testing
 
 When testing `pnpm dev` from a phone on the LAN, Next.js may block dev resources
 unless the phone uses an allowed origin. Add the dev host/IP to
