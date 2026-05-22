@@ -2,7 +2,7 @@
   "name": "portfolio",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@10.30.3",
+  "packageManager": "pnpm@11.2.2",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,7 +11,10 @@
     "preview": "opennextjs-cloudflare preview",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "docker:build": "docker build -t briton-local .",
+    "docker:run": "docker run --rm -p 3000:3000 briton-local",
+    "docker:dev": "pnpm docker:build && pnpm docker:run"
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^7.2.0",
