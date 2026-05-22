@@ -1,5 +1,9 @@
 # portfolio
 
+![Test](https://github.com/IAmUser4574/portfolio/actions/workflows/ci-test.yml/badge.svg?branch=main)
+![Staging](https://github.com/IAmUser4574/portfolio/actions/workflows/deploy-staging.yml/badge.svg?branch=main)
+![Prod](https://github.com/IAmUser4574/portfolio/actions/workflows/deploy-prod.yml/badge.svg?branch=main)
+
 A modern personal portfolio and project homebase built with Next.js, React,
 Tailwind CSS, shadcn/ui-style components, and MDX.
 
