@@ -1,32 +1,7 @@
+import { readdirSync } from "fs";
+import { join } from "path";
 import type { ComponentType } from "react";
 
-import BamlProject, {
-  metadata as bamlProjectMetadata,
-} from "@/content/projects/baml.mdx";
-import BritonHomebaseProject, {
-  metadata as britonHomebaseProjectMetadata,
-} from "@/content/projects/briton-homebase.mdx";
-import CoinVaultProject, {
-  metadata as coinVaultProjectMetadata,
-} from "@/content/projects/coin-vault.mdx";
-import CouncilProject, {
-  metadata as councilProjectMetadata,
-} from "@/content/projects/council.mdx";
-import HostageNegotiatorProject, {
-  metadata as hostageNegotiatorProjectMetadata,
-} from "@/content/projects/hostage-negotiator.mdx";
-import SystemUnderDesignProject, {
-  metadata as systemUnderDesignProjectMetadata,
-} from "@/content/projects/system-under-design.mdx";
-import BuildingAHomebasePost, {
-  metadata as buildingAHomebasePostMetadata,
-} from "@/content/blog/building-a-homebase.mdx";
-import RaiiIsRadPost, {
-  metadata as raiiIsRadPostMetadata,
-} from "@/content/blog/raii-is-rad.mdx";
-import CodeExecutionInBrowser, {
-  metadata as codeExecutionInBrowserMetadata,
-} from "@/content/blog/code-execution-in-browser.mdx";
 import { isPublishedMdxItem } from "@/lib/mdx-utils";
 
 export type MdxCollectionItem<Metadata> = Metadata & {
@@ -36,72 +11,41 @@ export type MdxCollectionItem<Metadata> = Metadata & {
 
 type MdxCollectionKey = "blog" | "projects";
 
-type MdxRegistryItem = {
-  slug: string;
-  Component: ComponentType;
-  metadata: unknown;
+type ModuleLoader = (
+  dir: MdxCollectionKey,
+  slug: string,
+) => Promise<{ default: ComponentType; metadata: unknown }>;
+
+type Readdir = (path: string) => string[];
+
+// split by dir so webpack can statically analyze each import pattern
+const defaultLoader: ModuleLoader = async (dir, slug) => {
+  if (dir === "blog") return import(`@/content/blog/${slug}.mdx`);
+  return import(`@/content/projects/${slug}.mdx`);
 };
 
-const mdxRegistry = {
-  blog: [
-    {
-      slug: "building-a-homebase",
-      Component: BuildingAHomebasePost,
-      metadata: buildingAHomebasePostMetadata,
-    },
-    {
-      slug: "raii-is-rad",
-      Component: RaiiIsRadPost,
-      metadata: raiiIsRadPostMetadata,
-    },
-    {
-      slug: "code-execution-in-browser",
-      Component: CodeExecutionInBrowser,
-      metadata: codeExecutionInBrowserMetadata,
-    }
-  ],
-  projects: [
-    {
-      slug: "baml",
-      Component: BamlProject,
-      metadata: bamlProjectMetadata,
-    },
-    {
-      slug: "briton-homebase",
-      Component: BritonHomebaseProject,
-      metadata: britonHomebaseProjectMetadata,
-    },
-    {
-      slug: "coin-vault",
-      Component: CoinVaultProject,
-      metadata: coinVaultProjectMetadata,
-    },
-    {
-      slug: "council",
-      Component: CouncilProject,
-      metadata: councilProjectMetadata,
-    },
-    {
-      slug: "hostage-negotiator",
-      Component: HostageNegotiatorProject,
-      metadata: hostageNegotiatorProjectMetadata,
-    },
-    {
-      slug: "system-under-design",
-      Component: SystemUnderDesignProject,
-      metadata: systemUnderDesignProjectMetadata,
-    },
-  ],
-} satisfies Record<MdxCollectionKey, MdxRegistryItem[]>;
+const defaultReaddir: Readdir = (p) => readdirSync(p) as string[];
 
 export async function getMdxCollection<Metadata>(
   contentDirectory: MdxCollectionKey,
+  loader: ModuleLoader = defaultLoader,
+  readdir: Readdir = defaultReaddir,
 ): Promise<MdxCollectionItem<Metadata>[]> {
-  const items = mdxRegistry[contentDirectory].map((item) => ({
-    slug: item.slug,
-    Component: item.Component,
-    ...(item.metadata as Metadata),
-  }));
+  const contentPath = join(process.cwd(), "content", contentDirectory);
+  const slugs = readdir(contentPath)
+    .filter((f) => f.endsWith(".mdx"))
+    .map((f) => f.replace(/\.mdx$/, ""));
+
+  const items = await Promise.all(
+    slugs.map(async (slug) => {
+      const mod = await loader(contentDirectory, slug);
+      return {
+        slug,
+        Component: mod.default,
+        ...(mod.metadata as Metadata),
+      };
+    }),
+  );
 
   return items.filter(isPublishedMdxItem);
 }
