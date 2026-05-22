@@ -4,8 +4,9 @@
 ![Staging](https://github.com/IAmUser4574/portfolio/actions/workflows/deploy-staging.yml/badge.svg?branch=main)
 ![Prod](https://github.com/IAmUser4574/portfolio/actions/workflows/deploy-prod.yml/badge.svg?branch=main)
 
-A modern personal portfolio and project homebase built with Next.js, React,
-Tailwind CSS, shadcn/ui-style components, and MDX.
+my personal blog and portfolio sitting at [briton.dev](https://briton.dev)
+
+![Alt](https://repobeats.axiom.co/api/embed/ab0a1d8747f846af20c955a04d0c8ce0d19a5993.svg "Repobeats analytics image")
 
 ## stack
 
