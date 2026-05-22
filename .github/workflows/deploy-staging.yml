@@ -38,8 +38,26 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
 
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm vitest run --reporter=verbose --reporter=junit --outputFile.junit=test-results/junit.xml
+
   deploy:
-    needs: build
+    needs: [build, test]
     runs-on: ubuntu-latest
     permissions:
       packages: read
