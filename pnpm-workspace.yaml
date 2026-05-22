@@ -8,4 +8,9 @@ onlyBuiltDependencies:
 
 ignoredBuiltDependencies:
   - unrs-resolver
-  
+
+allowBuilds:
+  esbuild: true
+  sharp: false
+  unrs-resolver: false
+  workerd: false
