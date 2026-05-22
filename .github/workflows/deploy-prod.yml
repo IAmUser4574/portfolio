@@ -1,0 +1,31 @@
+name: Deploy Production
+
+on:
+  workflow_run:
+    workflows: ["Deploy Staging"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      packages: read
+    steps:
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          envs: GHCR_TOKEN,GHCR_USER,IMAGE,COMPOSE_PROJECT_DIR
+          script: |
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+            printf 'PROD_IMAGE=%s\n' "$IMAGE" > "$COMPOSE_PROJECT_DIR/.env.github.prod"
+            docker compose -f "$COMPOSE_PROJECT_DIR/docker-compose.yml" --env-file "$COMPOSE_PROJECT_DIR/.env.github.prod" pull portfolio-prod
+            docker compose -f "$COMPOSE_PROJECT_DIR/docker-compose.yml" --env-file "$COMPOSE_PROJECT_DIR/.env.github.prod" up -d --no-deps portfolio-prod
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+          IMAGE: ghcr.io/${{ github.repository }}:latest
+          COMPOSE_PROJECT_DIR: ${{ vars.COMPOSE_PROJECT_DIR }}

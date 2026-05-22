@@ -1,0 +1,60 @@
+services:
+  npm:
+    image: jc21/nginx-proxy-manager:latest
+    container_name: npm
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "81:81"   # NPM admin UI
+    volumes:
+      - ./npm/data:/data
+      - ./npm/letsencrypt:/etc/letsencrypt
+    networks:
+      - proxy
+
+  piston:
+    image: ghcr.io/engineer-man/piston
+    container_name: piston_api
+    restart: always
+    privileged: true
+    volumes:
+      - ./piston/packages:/piston/packages
+    tmpfs:
+      - /tmp:exec
+    networks:
+      - proxy
+    environment:
+      - PISTON_COMPILE_TIMEOUT=50000
+      - PISTON_RUN_TIMEOUT=50000
+      - PISTON_LIMIT_OVERRIDES={"csharp.net":{"compile_timeout":50000,"compile_cpu_time":30000,"run_timeout":50000,"run_cpu_time":30000}}
+
+  portfolio-prod:
+    image: ${PROD_IMAGE:-ghcr.io/iamuser4574/briton:latest}
+    container_name: portfolio-prod
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PISTON_URL=http://piston_api:2000
+    networks:
+      - proxy
+    depends_on:
+      - piston
+
+  portfolio-staging:
+    image: ${STAGING_IMAGE:-ghcr.io/iamuser4574/briton:staging-latest}
+    container_name: portfolio-staging
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - PISTON_URL=http://piston_api:2000
+    networks:
+      - proxy
+    depends_on:
+      - piston
+
+networks:
+  proxy:
+    external: true

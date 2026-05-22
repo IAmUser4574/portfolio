@@ -12,6 +12,13 @@ async function handler(req: NextRequest) {
 
   const pistonUrl = process.env.PISTON_URL;
 
+  if (!pistonUrl && language === "csharp") {
+    return NextResponse.json(
+      { error: "C# execution requires a Piston backend — set PISTON_URL to enable it" },
+      { status: StatusCodes.NOT_IMPLEMENTED }
+    );
+  }
+
   let usedFallback = false;
 
   if (pistonUrl) {

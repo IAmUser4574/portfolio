@@ -33,6 +33,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <ThemeScript />
         {children}
+        <footer className="mt-auto px-4 py-2 text-right font-mono text-[10px] text-muted-foreground/40">
+          built {process.env.NEXT_PUBLIC_BUILD_TIME}
+        </footer>
       </body>
     </html>
   );

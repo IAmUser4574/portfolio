@@ -48,17 +48,48 @@ pnpm build
 
 The main homepage lives in `app/page.tsx`.
 
-## cloudflare pages limitations
+## deployment
 
-The MDX collection registry is explicit instead of discovered with runtime
-filesystem reads. Cloudflare Pages deploys this Next.js app through OpenNext on
-Workers, where request-time `node:fs` access is not available. Keeping the MDX
-modules statically imported ensures `/blog` and `/projects` are bundled into the
-Worker and do not 500 in production.
+The site runs on a self-hosted VPS via Docker Compose with two environments:
 
-When the site is hosted as a full application runtime with normal filesystem
-access, this workaround can be removed by switching `lib/mdx-collection.ts` back
-to directory discovery under `content/`.
+| Environment | URL | Port | Trigger |
+|---|---|---|---|
+| Staging | staging.briton.dev | 3001 | any PR push, or push to `main` |
+| Production | briton.dev | 3000 | staging workflow succeeds on `main` |
+
+Prod reuses the `latest` image built during the staging step — nothing is rebuilt twice. Piston is reachable at `http://piston_api:2000` over the internal Docker network and is set directly in the Compose service env.
+
+### GitHub Actions secrets
+
+Set in repo Settings → Secrets and variables → Actions → **Secrets**:
+
+| Secret | Value |
+|---|---|
+| `VPS_HOST` | hostname or IP of the VPS |
+| `VPS_USER` | SSH username on the VPS |
+| `VPS_SSH_KEY` | private SSH key (corresponding public key must be in `~/.ssh/authorized_keys` on the VPS) |
+
+### GitHub Actions variables
+
+Set in repo Settings → Secrets and variables → Actions → **Variables**:
+
+| Variable | Value |
+|---|---|
+| `COMPOSE_PROJECT_DIR` | absolute path to the Docker Compose project on the VPS (e.g. `/opt/briton`) |
+
+### Runtime env vars
+
+These are set in `docker-compose.yml` and require no GitHub configuration:
+
+| Variable | Value | Set in |
+|---|---|---|
+| `PISTON_URL` | `http://piston_api:2000` | compose service `environment:` block |
+| `PROD_IMAGE` | injected by prod deploy workflow | `.env.github.prod` (written at deploy time) |
+| `STAGING_IMAGE` | injected by staging deploy workflow | `.env.github.staging` (written at deploy time) |
+
+## mdx collection note
+
+The MDX collection registry in `lib/mdx-collection.ts` uses explicit static imports rather than runtime filesystem discovery. This was originally required for Cloudflare Pages / OpenNext (no `node:fs` at request time), but since the site now runs as a standard Node.js container, this constraint no longer applies — discovery-based collection can be restored if desired.
 
 ## features
 
@@ -96,13 +127,7 @@ Blog posts can embed runnable C++ and Rust snippets via `<SnippetRunner>` (`comp
 
 By default, code is executed against the [Wandbox](https://wandbox.org) public API — no auth or setup required.
 
-To route execution through a self-hosted [Piston](https://github.com/engineer-man/piston) instance instead, set the server-side env var:
-
-```yml
-PISTON_URL=https://your-server
-```
-
-When this variable is unset, Wandbox is used as the fallback.
+To route execution through a self-hosted [Piston](https://github.com/engineer-man/piston) instance instead, set the server-side env var `PISTON_URL`. In production this is injected via the Compose environment block (see deployment section). When unset, Wandbox is used as the fallback.
 
 ## local mobile testing
 

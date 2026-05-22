@@ -1,6 +1,10 @@
 packages:
   - .
 
-ignoredBuiltDependencies:
+onlyBuiltDependencies:
+  - esbuild
   - sharp
+  - workerd
+
+ignoredBuiltDependencies:
   - unrs-resolver
