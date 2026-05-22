@@ -13,6 +13,9 @@ jobs:
     permissions:
       packages: read
     steps:
+      - id: image
+        run: echo "ref=ghcr.io/${GITHUB_REPOSITORY,,}:latest" >> $GITHUB_OUTPUT
+
       - uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -27,5 +30,5 @@ jobs:
         env:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHCR_USER: ${{ github.actor }}
-          IMAGE: ghcr.io/${{ github.repository }}:latest
+          IMAGE: ${{ steps.image.outputs.ref }}
           COMPOSE_PROJECT_DIR: ${{ vars.COMPOSE_PROJECT_DIR }}

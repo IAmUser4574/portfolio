@@ -21,10 +21,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - id: repo
+        run: echo "lower=ghcr.io/${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
+
       - id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ${{ steps.repo.outputs.lower }}
           tags: |
             type=raw,value=staging-latest
             type=raw,value=latest,enable=${{ github.event_name == 'push' }}
@@ -41,6 +44,9 @@ jobs:
     permissions:
       packages: read
     steps:
+      - id: image
+        run: echo "ref=ghcr.io/${GITHUB_REPOSITORY,,}:staging-latest" >> $GITHUB_OUTPUT
+
       - uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -55,5 +61,5 @@ jobs:
         env:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHCR_USER: ${{ github.actor }}
-          IMAGE: ghcr.io/${{ github.repository }}:staging-latest
+          IMAGE: ${{ steps.image.outputs.ref }}
           COMPOSE_PROJECT_DIR: ${{ vars.COMPOSE_PROJECT_DIR }}
