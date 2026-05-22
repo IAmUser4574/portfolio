@@ -87,9 +87,9 @@ These are set in `docker-compose.yml` and require no GitHub configuration:
 | `PROD_IMAGE` | injected by prod deploy workflow | `.env.github.prod` (written at deploy time) |
 | `STAGING_IMAGE` | injected by staging deploy workflow | `.env.github.staging` (written at deploy time) |
 
-## mdx collection note
+## adding content
 
-The MDX collection registry in `lib/mdx-collection.ts` uses explicit static imports rather than runtime filesystem discovery. This was originally required for Cloudflare Pages / OpenNext (no `node:fs` at request time), but since the site now runs as a standard Node.js container, this constraint no longer applies — discovery-based collection can be restored if desired.
+Drop a `.mdx` file with a `metadata` export into `content/blog/` or `content/projects/` — no registration needed. The collection is discovered at runtime via `fs.readdirSync`. Files with an empty `publishedAt` field are excluded.
 
 ## features
 
