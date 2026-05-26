@@ -1,8 +1,56 @@
-import { isValidElement, type ComponentPropsWithoutRef } from "react";
+import { isValidElement, type ComponentPropsWithoutRef, type ReactNode } from "react";
 import type { MDXComponents } from "mdx/types";
 
-function H2(props: ComponentPropsWithoutRef<"h2">) {
-  return <h2 className="mt-12 text-3xl font-semibold tracking-tight" {...props} />;
+import { slugify } from "@/lib/slugify";
+
+function extractText(node: ReactNode): string {
+  if (typeof node === "string") return node;
+  if (typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(extractText).join("");
+  if (isValidElement(node))
+    return extractText((node.props as { children?: ReactNode }).children);
+  return "";
+}
+
+function HeadingAnchor({ slug }: { slug: string }) {
+  return (
+    <a
+      href={`#${slug}`}
+      aria-hidden="true"
+      tabIndex={-1}
+      className="ml-2 font-normal text-muted-foreground/40 opacity-0 transition-opacity group-hover:opacity-100"
+    >
+      #
+    </a>
+  );
+}
+
+function H2({ children, ...props }: ComponentPropsWithoutRef<"h2">) {
+  const slug = slugify(extractText(children));
+  return (
+    <h2
+      id={slug}
+      className="group mt-12 scroll-mt-20 text-3xl font-semibold tracking-tight"
+      {...props}
+    >
+      {children}
+      <HeadingAnchor slug={slug} />
+    </h2>
+  );
+}
+
+function H3({ children, ...props }: ComponentPropsWithoutRef<"h3">) {
+  const slug = slugify(extractText(children));
+  return (
+    <h3
+      id={slug}
+      className="group mt-8 scroll-mt-20 text-xl font-semibold tracking-tight"
+      {...props}
+    >
+      {children}
+      <HeadingAnchor slug={slug} />
+    </h3>
+  );
 }
 
 function Paragraph(props: ComponentPropsWithoutRef<"p">) {
@@ -63,6 +111,7 @@ function Pre({ children, ...props }: ComponentPropsWithoutRef<"pre">) {
 
 const components = {
   h2: H2,
+  h3: H3,
   p: Paragraph,
   a: Anchor,
   ul: List,

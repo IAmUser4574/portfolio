@@ -9,6 +9,7 @@ export type BlogPostMetadata = {
   publishedAt: string;
   readingTime: string;
   tags: string[];
+  toc?: boolean;
 };
 
 export type BlogPost = BlogPostMetadata & {
