@@ -5,7 +5,9 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
+import { TableOfContents } from "@/components/table-of-contents";
 import { getProject, getProjects } from "@/lib/projects";
+import { getHeadings } from "@/lib/heading-utils";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -87,6 +89,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           )}
         </div>
         <div className="space-y-6 pt-10 text-lg leading-8 text-muted-foreground">
+          {project.toc && <TableOfContents headings={getHeadings("projects", slug)} />}
           <Project />
         </div>
       </article>

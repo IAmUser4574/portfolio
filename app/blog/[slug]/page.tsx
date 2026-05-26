@@ -4,7 +4,9 @@ import Link from "next/link";
 
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
+import { TableOfContents } from "@/components/table-of-contents";
 import { getBlogPost, getBlogPosts } from "@/lib/blog";
+import { getHeadings } from "@/lib/heading-utils";
 import { ArrowLeft } from "lucide-react";
 
 type BlogPostPageProps = {
@@ -63,6 +65,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </p>
         </div>
         <div className="pt-10 text-lg">
+          {post.toc && <TableOfContents headings={getHeadings("blog", slug)} />}
           <Post />
         </div>
       </article>

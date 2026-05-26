@@ -6,6 +6,7 @@ export type ProjectMetadata = {
   publishedAt: string;
   stack: string[];
   blogTag?: string;
+  toc?: boolean;
 };
 
 export type Project = ProjectMetadata & {
