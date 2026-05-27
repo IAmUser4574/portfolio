@@ -37,6 +37,7 @@ services:
       - "3000:3000"
     environment:
       - PISTON_URL=http://piston_api:2000
+      - DATABASE_URL=${DATABASE_URL}
     networks:
       - proxy
     depends_on:
@@ -50,6 +51,7 @@ services:
       - "3001:3000"
     environment:
       - PISTON_URL=http://piston_api:2000
+      - DATABASE_URL=${STAGING_DATABASE_URL:-${DATABASE_URL}}
     networks:
       - proxy
     depends_on:
