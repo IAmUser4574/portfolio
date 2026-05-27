@@ -1,21 +1,26 @@
 export const metadata = {
-  title: "R.A.I.I. is R.A.D.! -  Using the C & Rust Compilers For Free Memory Management ",
+  title: "R.A.I.I. is R.A.D.! -  Using the C & Rust Compilers For Free Resource Management ",
   excerpt:
-    "Resource Acquisition Is Initialization (RAII)",
-  publishedAt: "",
-  readingTime: "10 min read",
+    "RAII: Resource Acquisition Is Initialization - clever, powerful, and simple",
+  publishedAt: "2026-05-27",
+  readingTime: "15 min read",
   tags: ["C++", "Rust"],
 };
 
 import { SnippetRunner } from "@/components/snippet-runner";
 
-So much compiler, runtime, and application code is designed around memory safety. Most software environments opt for either manually tracking and releasing memory (e.g. C/C++) or automatic memory management through garbage collection (e.g. Java, C#, Python).
+Considerable compiler, runtime, and application code is designed around memory safety and most software environments reside in one of two camps: You're either manually tracking and releasing memory 
+(e.g. C/C++) or automatically managing memory through runtime garbage collection (e.g. Java, C#, Python).
 
-The problem with the former is human overhead; it's tedious and error-prone for developers to be constantly putting away the toys they play with.
+The problem with manual is human overhead; it's tedious and error-prone for developers to constantly check out and then restock the toys they play with.
 
-The issue with the latter is compute overhead - automatic garbage collection in Java, C#, Python, Javascript is expensive.
+And problem with automatic is compute overhead and non-determinism  - automatic garbage collection in Java, C#, Python, Javascript is expensive and can run at undesirable moments in your code.
 
-Enter RAII:
+Let's begin by observing some non-RAII examples of memory management:
+
+// todo - C++ example with manual pointer freeing
+
+// todo - C# example of automatic gc collection
 
 <SnippetRunner
   title="RAII demo"
