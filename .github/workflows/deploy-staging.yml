@@ -70,14 +70,15 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          envs: GHCR_TOKEN,GHCR_USER,IMAGE,COMPOSE_PROJECT_DIR
+          envs: GHCR_TOKEN,GHCR_USER,IMAGE,COMPOSE_PROJECT_DIR,DOPPLER_TOKEN
           script: |
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
-            printf 'STAGING_IMAGE=%s\n' "$IMAGE" > "$COMPOSE_PROJECT_DIR/.env.github.staging"
-            docker compose -f "$COMPOSE_PROJECT_DIR/docker-compose.yml" --env-file "$COMPOSE_PROJECT_DIR/.env.github.staging" pull portfolio-staging
-            docker compose -f "$COMPOSE_PROJECT_DIR/docker-compose.yml" --env-file "$COMPOSE_PROJECT_DIR/.env.github.staging" up -d --no-deps portfolio-staging
+            export STAGING_IMAGE="$IMAGE"
+            doppler run -- docker compose -f "$COMPOSE_PROJECT_DIR/docker-compose.yml" pull portfolio-staging
+            doppler run -- docker compose -f "$COMPOSE_PROJECT_DIR/docker-compose.yml" up -d --no-deps portfolio-staging
         env:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHCR_USER: ${{ github.actor }}
           IMAGE: ${{ steps.image.outputs.ref }}
           COMPOSE_PROJECT_DIR: ${{ vars.COMPOSE_PROJECT_DIR }}
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_STAGING }}

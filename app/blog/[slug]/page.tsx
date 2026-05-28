@@ -5,6 +5,7 @@ import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
 import { TableOfContents } from "@/components/table-of-contents";
+import { ViewCounter } from "@/components/view-counter";
 import { getBlogPost, getBlogPosts } from "@/lib/blog";
 import { getHeadings } from "@/lib/heading-utils";
 import { ArrowLeft } from "lucide-react";
@@ -54,8 +55,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="border-b pb-10">
           <p className="flex items-center gap-8 font-mono text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
             <span>{post.publishedAt}</span>
-            {/* <span aria-hidden="true">|</span> */}
             <span>{post.readingTime}</span>
+            <ViewCounter slug={`blog/${slug}`} />
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
             {post.title}

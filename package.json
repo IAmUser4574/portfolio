@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "pnpm@11.2.2",
   "scripts": {
-    "dev": "next dev",
+    "dev": "doppler run -- next dev",
     "build": "next build",
     "cf:build": "opennextjs-cloudflare build",
     "deploy": "opennextjs-cloudflare deploy",
@@ -21,6 +21,7 @@
     "@fortawesome/react-fontawesome": "^3.3.1",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
+    "@neondatabase/serverless": "^1.1.0",
     "@next/mdx": "^16.2.5",
     "@opennextjs/cloudflare": "^1.19.8",
     "@radix-ui/react-slot": "^1.2.4",

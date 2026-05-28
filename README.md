@@ -16,20 +16,24 @@ my personal blog and portfolio sitting at [briton.dev](https://briton.dev)
 - Tailwind CSS v4
 - shadcn/ui component conventions
 - MDX blog posts via `@next/mdx`
+- NeonDB (postgres) — view counts
+- Doppler — secrets management
 - pnpm for package management
 
 ## run the project
 
-Install dependencies:
+Install the [Doppler CLI](https://docs.doppler.com/docs/install-cli), then authenticate and link the project (one-time per machine):
+
+```bash
+doppler login
+doppler setup   # selects portfolio/dev — reads doppler.yaml
+```
+
+Install dependencies and start the dev server:
 
 ```bash
 pnpm install
-```
-
-Run the dev server:
-
-```bash
-pnpm dev
+pnpm dev        # runs `doppler run -- next dev`; secrets are injected automatically
 ```
 
 Open `http://localhost:3000`.
@@ -39,6 +43,23 @@ Useful checks:
 ```bash
 pnpm lint
 pnpm build
+```
+
+### database
+
+Run the schema once against your Neon database before first use:
+
+```bash
+doppler run -- psql "$DATABASE_URL" -f db/schema.sql
+```
+
+### doppler commands
+
+```bash
+doppler secrets                          # list all secrets for the current config
+doppler secrets get DATABASE_URL --plain # print a single secret value
+doppler open dashboard                   # open the doppler web UI for this project
+doppler run -- <command>                 # run any command with secrets injected
 ```
 
 ## architecture
@@ -64,12 +85,31 @@ The site runs on a self-hosted VPS via Docker Compose with two environments:
 
 Prod reuses the `latest` image built during the staging step — nothing is rebuilt twice. Piston is reachable at `http://piston_api:2000` over the internal Docker network and is set directly in the Compose service env.
 
+### secrets
+
+All runtime secrets live in Doppler under the `portfolio` project:
+
+| Doppler config | used by |
+|---|---|
+| `dev` | local development |
+| `staging` | staging container |
+| `production` | prod container |
+
+Key variables managed in Doppler:
+
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | Neon postgres connection string |
+| `PISTON_URL` | Piston code execution API (internal: `http://piston_api:2000`) |
+
 ### GitHub Actions secrets
 
 Set in repo Settings → Secrets and variables → Actions → **Secrets**:
 
 | Secret | Value |
 |---|---|
+| `DOPPLER_TOKEN` | Doppler service token scoped to the `production` config |
+| `DOPPLER_TOKEN_STAGING` | Doppler service token scoped to the `staging` config |
 | `VPS_HOST` | hostname or IP of the VPS |
 | `VPS_USER` | SSH username on the VPS |
 | `VPS_SSH_KEY` | private SSH key (corresponding public key must be in `~/.ssh/authorized_keys` on the VPS) |
@@ -82,15 +122,13 @@ Set in repo Settings → Secrets and variables → Actions → **Variables**:
 |---|---|
 | `COMPOSE_PROJECT_DIR` | absolute path to the Docker Compose project on the VPS (e.g. `/opt/briton`) |
 
-### Runtime env vars
+### VPS setup
 
-These are set in `docker-compose.yml` and require no GitHub configuration:
+Install the Doppler CLI once on the VPS. The deploy scripts pass `DOPPLER_TOKEN` via SSH at runtime so no login is needed on the server itself:
 
-| Variable | Value | Set in |
-|---|---|---|
-| `PISTON_URL` | `http://piston_api:2000` | compose service `environment:` block |
-| `PROD_IMAGE` | injected by prod deploy workflow | `.env.github.prod` (written at deploy time) |
-| `STAGING_IMAGE` | injected by staging deploy workflow | `.env.github.staging` (written at deploy time) |
+```bash
+curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh | sh
+```
 
 ## adding content
 

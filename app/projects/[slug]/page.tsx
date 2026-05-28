@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
 import { TableOfContents } from "@/components/table-of-contents";
+import { ViewCounter } from "@/components/view-counter";
 import { getProject, getProjects } from "@/lib/projects";
 import { getHeadings } from "@/lib/heading-utils";
 
@@ -60,8 +61,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </Link>
         </Button>
         <div className="border-b pb-10">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            {formatDate(project.publishedAt)}
+          <p className="flex items-center gap-8 font-mono text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+            <span>{formatDate(project.publishedAt)}</span>
+            <ViewCounter slug={`projects/${slug}`} />
           </p>
           <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
             {project.title}

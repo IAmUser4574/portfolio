@@ -36,7 +36,8 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - PISTON_URL=http://piston_api:2000
+      - PISTON_URL=${PISTON_URL}
+      - DATABASE_URL=${DATABASE_URL}
     networks:
       - proxy
     depends_on:
@@ -49,7 +50,8 @@ services:
     ports:
       - "3001:3000"
     environment:
-      - PISTON_URL=http://piston_api:2000
+      - PISTON_URL=${PISTON_URL}
+      - DATABASE_URL=${DATABASE_URL}
     networks:
       - proxy
     depends_on:

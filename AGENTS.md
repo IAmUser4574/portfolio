@@ -6,7 +6,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ### Architecture
 
-Basic production nextjs web application intended to be hosted initially by Cloudflare Pages
+Production nextjs web application hosted on a VPS via Docker Compose (nginx-proxy-manager + ghcr image). NeonDB (postgres) for persistent data (view counts).
 
 ### Stack
 
