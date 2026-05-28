@@ -9,14 +9,21 @@ export function ViewCounter({ slug }: { slug: string }) {
   const [counts, setCounts] = useState<Counts | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     fetch("/api/views", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ slug }),
+      signal: controller.signal,
     })
       .then((r) => r.json())
       .then(setCounts)
-      .catch(() => {});
+      .catch((err) => {
+        if (err.name !== "AbortError") console.error("[view-counter]", err);
+      });
+
+    return () => controller.abort();
   }, [slug]);
 
   if (!counts) return null;

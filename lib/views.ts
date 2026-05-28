@@ -18,7 +18,7 @@ export async function recordView(
   userAgent: string
 ): Promise<ViewCounts> {
   const visitorHash = await hashVisitor(ip, userAgent);
-
+ 
   // insert into visitor_log; ON CONFLICT DO NOTHING means duplicate = returning nothing
   const inserted = await sql`
     INSERT INTO visitor_log (slug, visitor_hash, visit_date)

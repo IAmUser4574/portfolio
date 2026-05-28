@@ -17,8 +17,13 @@ export async function POST(request: NextRequest) {
     "unknown";
   const userAgent = request.headers.get("user-agent") ?? "";
 
-  const counts = await recordView(slug, ip, userAgent);
-  return Response.json(counts);
+  try {
+    const counts = await recordView(slug, ip, userAgent);
+    return Response.json(counts);
+  } catch (err) {
+    console.error("[views] recordView failed:", err);
+    return Response.json({ error: "internal error" }, { status: 500 });
+  }
 }
 
 // GET /api/views?slugs=blog/a,blog/b  — batch read without recording a view
