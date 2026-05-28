@@ -1,4 +1,4 @@
-import { sql } from "@/lib/db";
+import { getDb } from "@/lib/db";
 
 export type ViewCounts = { views: number; unique: number };
 
@@ -17,8 +17,9 @@ export async function recordView(
   ip: string,
   userAgent: string
 ): Promise<ViewCounts> {
+  const sql = getDb();
   const visitorHash = await hashVisitor(ip, userAgent);
- 
+
   // insert into visitor_log; ON CONFLICT DO NOTHING means duplicate = returning nothing
   const inserted = await sql`
     INSERT INTO visitor_log (slug, visitor_hash, visit_date)
@@ -46,6 +47,8 @@ export async function getViewCounts(
   slugs: string[]
 ): Promise<Record<string, ViewCounts>> {
   if (slugs.length === 0) return {};
+
+  const sql = getDb();
 
   const rows = await sql`
     SELECT slug, total_views, unique_visitors

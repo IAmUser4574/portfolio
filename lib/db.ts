@@ -1,6 +1,9 @@
-import { neon } from "@neondatabase/serverless";
+import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
 
-// single shared sql client for the process lifetime
-const sql = neon(process.env.DATABASE_URL!);
+// lazy-init so DATABASE_URL is not required at build time
+let _sql: NeonQueryFunction<false, false> | null = null;
 
-export { sql };
+export function getDb(): NeonQueryFunction<false, false> {
+  if (!_sql) _sql = neon(process.env.DATABASE_URL!);
+  return _sql;
+}
