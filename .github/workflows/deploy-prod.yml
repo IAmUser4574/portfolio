@@ -21,15 +21,15 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          envs: GHCR_TOKEN,GHCR_USER,IMAGE,COMPOSE_PROJECT_DIR,DATABASE_URL
+          envs: GHCR_TOKEN,GHCR_USER,IMAGE,COMPOSE_PROJECT_DIR,DOPPLER_TOKEN
           script: |
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
-            printf 'PROD_IMAGE=%s\nDATABASE_URL=%s\n' "$IMAGE" "$DATABASE_URL" > "$COMPOSE_PROJECT_DIR/.env.github.prod"
-            docker compose -f "$COMPOSE_PROJECT_DIR/docker-compose.yml" --env-file "$COMPOSE_PROJECT_DIR/.env.github.prod" pull portfolio-prod
-            docker compose -f "$COMPOSE_PROJECT_DIR/docker-compose.yml" --env-file "$COMPOSE_PROJECT_DIR/.env.github.prod" up -d --no-deps portfolio-prod
+            export PROD_IMAGE="$IMAGE"
+            doppler run -- docker compose -f "$COMPOSE_PROJECT_DIR/docker-compose.yml" pull portfolio-prod
+            doppler run -- docker compose -f "$COMPOSE_PROJECT_DIR/docker-compose.yml" up -d --no-deps portfolio-prod
         env:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHCR_USER: ${{ github.actor }}
           IMAGE: ${{ steps.image.outputs.ref }}
           COMPOSE_PROJECT_DIR: ${{ vars.COMPOSE_PROJECT_DIR }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
