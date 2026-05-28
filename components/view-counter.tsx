@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Eye, Users } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Counts = { views: number; unique: number };
 
@@ -26,17 +27,15 @@ export function ViewCounter({ slug }: { slug: string }) {
     return () => controller.abort();
   }, [slug]);
 
-  if (!counts) return null;
-
   return (
     <span className="flex items-center gap-4">
       <span className="flex items-center gap-1.5" title="total views">
         <Eye className="h-3.5 w-3.5" aria-hidden="true" />
-        {counts.views.toLocaleString()}
+        {counts ? counts.views.toLocaleString() : <Skeleton className="h-3 w-7" />}
       </span>
       <span className="flex items-center gap-1.5" title="unique visitors today">
         <Users className="h-3.5 w-3.5" aria-hidden="true" />
-        {counts.unique.toLocaleString()}
+        {counts ? counts.unique.toLocaleString() : <Skeleton className="h-3 w-7" />}
       </span>
     </span>
   );
