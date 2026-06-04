@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -28,16 +28,32 @@ const SLIDE_GAP = "0.5rem";
 
 export function ImageCarousel({ images, aspectRatio = "video" }: ImageCarouselProps) {
   const [current, setCurrent] = useState(0);
+  const touchStartX = useRef<number | null>(null);
 
   if (images.length === 0) return null;
 
   const prev = () => setCurrent((i) => (i - 1 + images.length) % images.length);
   const next = () => setCurrent((i) => (i + 1) % images.length);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(delta) > 50) delta < 0 ? next() : prev();
+    touchStartX.current = null;
+  };
+
   return (
     <figure className="my-8">
       {/* overflow-hidden clips the peek zones to the rounded container */}
-      <div className="relative overflow-hidden rounded-lg bg-card">
+      <div
+        className="relative overflow-hidden rounded-lg bg-card"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* horizontal padding carves out peek zones for adjacent slides */}
         <div className="px-10">
           <div className={cn("relative", aspectClasses[aspectRatio])}>
