@@ -10,6 +10,10 @@ export type BlogPostMetadata = {
   readingTime: string;
   tags: string[];
   toc?: boolean;
+  thumbnail?: {
+    src: string;
+    position?: "center" | "top" | "bottom" | "left" | "right";
+  };
 };
 
 export type BlogPost = BlogPostMetadata & {
@@ -40,6 +44,7 @@ export async function getBlogPostSummaries(): Promise<BlogPostSummary[]> {
     publishedAt: post.publishedAt,
     readingTime: post.readingTime,
     tags: post.tags,
+    thumbnail: post.thumbnail,
   }));
 }
 

@@ -2,31 +2,153 @@ import Image from "next/image";
 import { ImageCarousel } from "@/components/image-carousel";
 
 export const metadata = {
-  title: "Halo 2",
+  title: "Halo 2: Succceeding the Modern Classic",
   excerpt:
-    "When you first played Halo, were you blinded by its majesty?",
-  publishedAt: "",
+    "When you first played Halo 2, were you blinded by its majesty?",
+  publishedAt: "2026-06-09",
   readingTime: "3 min read",
-  tags: ["portfolio", "nextjs"],
-  toc: true
+  tags: ["media"],
+  toc: true,
+  thumbnail: { src: "/blog/halo-2/halo-2.jpg", position: "center" }
 };
 
-## Inspired Script
+<div className="mt-8 overflow-hidden rounded-lg border bg-background">
+  <Image
+    src="/blog/halo-2/halo-2.jpg"
+    alt="Halo 2 poster"
+    width={900}
+    height={540}
+    className="aspect-[5/3] w-full object-cover"
+    priority
+  />
+</div>
 
-## Stacked Voice Cast
+## An Awkward Position
+
+A cliffhanger ending. A rushed development. New online technology. 
+
+Sandwiched between *Halo: Combat Evolved*, 
+the classic that defined modern game consoles and shooters, and *Halo 3*, the beloved trilogy conclusion so popular
+its poster is [still fading on many Gamestop storefront walls](https://www.reddit.com/r/GameStop/comments/1ecz1za/can_anyone_tell_me_why_some_gamestops_still_have/) 
+nearly twenty years later,
+*Halo 2* is an awkward child saddled with a controversial cliffhanger ending and forgotten lore.
+
+
+
+So, why is *Halo 2* actually the best?
+
+## An Inspired Script
+
+In many shooters, even in other Halo games, scriptwriting serves as a thin veneer over the action, loosely justifying the movement between one action set piece and the next. Not Halo 2.
 
 <ImageCarousel images={[
-    { src: "/blog/halo-2/david_arbiter.jpg", alt: "David as Arbiter", caption: "Keith David voiced Thel 'Vadam (The Arbiter)" },
-    { src: "/blog/halo-2/david_the-thing.jpeg", alt: "David as Childs" },
-    { src: "/blog/halo-2/david_they-live.jpeg", alt: "David as Frank" },
+  { src: "/blog/halo-2/halo-2_vadam-trial.jpg", alt: "pic2", caption: "Thel 'Vadam is punished for allowing the humans to destroy their 'sacred' ring." },
+  { src: "/blog/halo-2/halo-2_award1.jpg", alt: "pic1", caption: "Chief is rewarded for defeating the Covenant and blowing up Installation 04." },
+    
 ]} />
+ 
+[The opening scenes](https://www.youtube.com/watch?v=8F7OgOCzph4&t=93s) of Halo 2 offer some of the most compelling moments in the franchise 
+as they recap Halo CE from both the human and Covenant perspective, neatly staging the key conflicts of the game.
 
+Thel 'Vadam's character introduction is elegant both in story writing and dialogue. The former Covenant batallion leader, disgraced for failing to stop Master Chief, is tried as a 
+Heretic, stripped of his name and rank, and branded with a mark of shame. Sentenced to death for his crimes, the Covenant council leaders, the Prophets, decide to temporarily spare
+Thel and promote him to the highest combat rank for his race, the Arbiter. He was too useful of an instrument to discard so quickly.
+
+*"What of the council?"* an incredulous Thel asks.
+
+*"The tasks you must undertake as Arbiter are perilous, suicidal. You will die, as each Arbiter has before you. The council shall have their corpse."* Mercy proclaims.
+
+Donning the shining, ancient helmet, Thel retorts, *"What would you have your Arbiter do?"*
+
+Of course, a character named 'Mercy' delivering this news is a little on-the-nose.
+
+
+## A Stacked Voice Cast
+
+Dawn Hershey, Halo 2's casting director, stepped up to the plate at a critical moment. The Covenant were expanding into a fully voiced, characterized faction in Halo 2. Players were experiencing Halo through a new second protagonist. 
+2004-era character graphics were, to put it nicely, in need of quality voice acting to pick up the slack. And Dawn surely knocked it out of the park acquiring the right talent.
 
 <ImageCarousel images={[
-    { src: "/blog/halo-2/davi.jpg", alt: "Robert Davi at Rose City Comic Con", caption: "Robert Davi voiced Rtas 'Vadum" },
-    { src: "/blog/halo-2/davi_rtas.png", alt: "Davi as Rtas 'Vadum" },
-    { src: "/blog/halo-2/davi_kolya.png", alt: "Davi as Commander Kolya" },
-    { src: "/blog/halo-2/davi_goonies.jpg", alt: "Davi as Jake Fratelli" }
+    { src: "/blog/halo-2/david_arbiter.jpg", alt: "David as Arbiter", caption: "Keith David's iconic voice as Thel 'Vadam (The Arbiter)" },
+    { src: "/blog/halo-2/david_the-thing.jpeg", alt: "David as Childs", caption: "David played survivor Childs in \"The Thing\" (1982)" },
+    { src: "/blog/halo-2/david_they-live.jpeg", alt: "David as Frank", caption: "Here to kick ass and chew bubblegum with Roddy Piper, Keith's similarly out of bubblegum in \"They Live\" (1988)." },
 ]} />
+
+<ImageCarousel images={[
+    { src: "/blog/halo-2/perlman.jpg", alt: "Ron Perlman", caption: "Ron Perlman voices Admiral Hood. The iconic Hellboy and narrator of the Fallout franchise needs little introduction." },
+    { src: "/blog/halo-2/perlman_hood.webp", alt: "Ron Perlman as Admiral Hood", caption: "Ron Perlman as Admiral Hood." },
+]} />
+
+<ImageCarousel images={[
+    { src: "/blog/halo-2/davi.jpg", alt: "Robert Davi at Rose City Comic Con", caption: "Robert Davi voices Rtas 'Vadum, the Covenant command battling alongside the Arbiter" },
+    { src: "/blog/halo-2/davi_rtas.png", alt: "Davi as Rtas 'Vadum", caption: "Davi's soothing voice is well-suited for jazz, which he sings often." },
+    { src: "/blog/halo-2/davi_kolya.png", alt: "Davi as Commander Kolya", caption: "Davi plays an iconic nemesis Commander Kolya in the sci-fi show Stargate: Atlantis" },
+    { src: "/blog/halo-2/davi_goonies.jpg", alt: "Davi as Jake Fratelli", caption: "You might recall Robert Davi's intimidating performance as Jake Fratelli, who terrorizes the kids in \"The Goonies\"" }
+]} />
+
+### A Voice to the Enemy
+
+Aside from disparate and brief combat voice lines, the Covenant have *zero* spoken dialogue in *Halo: Combat Evolved*. While Cortana does translate a handful of Covenant radio 
+transmissions during key moments in the game, the central antagonist faction is largely left uncharacterized, opaque, and mysterious.
+
+While the stoic and reticent covenant troops of *Halo: CE* served as a terrific teaser to the franchise lore, they would not sustain a sequel. *Halo 2* understood the assignment, leveraging its writing and voice casting
+to bring to life the dormant foe.
+
+## Rich Lore, New Perspectives
+
+<div className="mt-8 overflow-hidden rounded-lg border bg-background">
+  <Image
+    src="/blog/halo-2/halo-2_lore.jpg"
+    alt="Halo 2 High Charity"
+    width={900}
+    height={540}
+    className="aspect-[5/3] w-full object-cover"
+    priority
+  />
+</div>
+
+### Covenant Civil War
+
+Chief and Arbiter find themselves embroiled in a slow-building Covenant civil war that climaxes in the game's later levels when the Chief visits High Charity (pictured above). It is through this critical 
+setting and story event that the game offers a better glimpse into the extended lore of *Halo*. 
+
+Built around a Forerunner spaceship, the Covenant holy city High Charity is a massive space station that, like the Covenant itself, was built through war, conquest, and religious fervor at the direction
+ of the San'Shyuum race (known as the Prophets).
+
+The coil that wound together the Covenant slowly loosened as the blind ambition of Prophet Truth and the Brutes betrayed the other leaders and factions.
+
+
+## Twice the Halo
+
+<div className="mt-8 overflow-hidden rounded-lg border bg-background">
+  <Image
+    src="/blog/halo-2/halo-2_twice-the-halo.jpg"
+    alt="Halo 2 gameplay"
+    width={900}
+    height={540}
+    className="aspect-[5/3] w-full object-cover"
+    priority
+  />
+</div>
+
+It wasn't just dual wielding - *Halo 2* brought so much more "Halo" to *Halo* gameplay. Locales, weapons, vehicles, races, factions, and abilities were all greatly expanded.
+
+The sandbox rounded out as the game added covenant weapon and vehicle solutions to the much more complete human arsenal (Carbine, Beam Rifle, Spectre all served as answers to the UNSC Battle Rifle, Sniper Rifle, and Warthog). 
+Items from Halo CE that players couldn't interact with finally became usable - the Covenant Wraith, Energy Sword, and Fuel Rod Gun.
 
 ## Developed Against the Odds
+### Shattered into pieces, reassembled in months
+
+Full development of *Halo 2* began quickly after the release of *Halo: CE* in 2001, but progress and direction was far from linear as the team sprinted towards a 2004 release.
+
+The team felt immense pressure to deliver a promising spectacle to E3 2003 audiences [and they delivered](https://www.youtube.com/watch?v=9i-4foLur0g) - but in the process, they had burned resources on a vertical slice
+ that ultimately would prove infeasible to integrate into the real game. Months after the E3 demo, Bungie cut crucial levels and story beats, leaving the original vision 
+ decimated and incomplete, and leaving the game's ending as a cliffhanger. 
+
+Originally, *Halo 2* was to be a self-contained story with a third act that saw the Arbiter and Chief teaming up, chasing Truth to Earth (where the Ark was originally to be located), 
+and defeating him. Instead, much of that story became *Halo 3* and the rest is history.
+
+## Further Reading
+
+Andrew G's article [Assembling A Cathedral Out Of A Hurricane — The Making of Halo 2](https://medium.com/@Oozer3993/assembling-a-cathedral-out-of-a-hurricane-the-making-of-halo-2-24652d08d29a) is
+an awesome resource if you're interested in diving deeper into the details of *Halo 2*'s tumultous development.

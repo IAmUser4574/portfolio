@@ -1,6 +1,7 @@
 "use client";
 
 import { CalendarDays, Search, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -9,6 +10,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { BlogPostSummary } from "@/lib/blog";
 import { cn } from "@/lib/utils";
+
+const thumbnailPositionClass = {
+  center: "object-center",
+  top: "object-top",
+  bottom: "object-bottom",
+  left: "object-left",
+  right: "object-right",
+} as const;
 
 type BlogIndexProps = {
   posts: BlogPostSummary[];
@@ -139,47 +148,67 @@ export function BlogIndex({ posts, tags }: BlogIndexProps) {
         {filteredPosts.map((post) => (
           <Card
             key={post.slug}
-            className="rounded-lg transition-all duration-300 hover:-translate-y-1 hover:border-foreground hover:shadow-lg"
+            className="gap-0 overflow-hidden rounded-lg p-0 transition-all duration-300 hover:-translate-y-1 hover:border-foreground hover:shadow-lg"
           >
-            <CardHeader className="gap-4">
-              <div>
-                <div className="mb-3 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                  <span className="inline-flex items-center gap-2">
-                    <CalendarDays className="size-4" />
-                    {formatDate(post.publishedAt)}
-                  </span>
-                  <span>{post.readingTime}</span>
-                </div>
-                <CardTitle className="text-2xl">
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="transition-colors hover:text-muted-foreground"
-                  >
-                    {post.title}
-                  </Link>
-                </CardTitle>
+            <div className="flex flex-1 flex-col sm:flex-row">
+              <div className="flex min-w-0 flex-1 flex-col gap-6 py-6">
+                <CardHeader className="gap-4">
+                  <div>
+                    <div className="mb-3 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                      <span className="inline-flex items-center gap-2">
+                        <CalendarDays className="size-4" />
+                        {formatDate(post.publishedAt)}
+                      </span>
+                      <span>{post.readingTime}</span>
+                    </div>
+                    <CardTitle className="text-2xl">
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="transition-colors hover:text-muted-foreground"
+                      >
+                        {post.title}
+                      </Link>
+                    </CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="max-w-3xl leading-7 text-muted-foreground">
+                    {post.excerpt}
+                  </p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {post.tags.map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => updateParams({ tag })}
+                        className={cn(
+                          "rounded-md border bg-background px-2.5 py-1 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:border-foreground hover:text-foreground",
+                          selectedTag === tag && "border-foreground text-foreground",
+                        )}
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </CardContent>
               </div>
-            </CardHeader>
-            <CardContent>
-              <p className="max-w-3xl leading-7 text-muted-foreground">
-                {post.excerpt}
-              </p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {post.tags.map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() => updateParams({ tag })}
-                    className={cn(
-                      "rounded-md border bg-background px-2.5 py-1 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:border-foreground hover:text-foreground",
-                      selectedTag === tag && "border-foreground text-foreground",
-                    )}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            </CardContent>
+              {post.thumbnail && (
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="relative order-first aspect-video w-full shrink-0 sm:order-last sm:aspect-auto sm:w-64"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                >
+                  <Image
+                    src={post.thumbnail.src}
+                    alt=""
+                    fill
+                    sizes="(max-width: 640px) 100vw, 256px"
+                    className={cn("object-cover", thumbnailPositionClass[post.thumbnail.position ?? "center"])}
+                  />
+                </Link>
+              )}
+            </div>
           </Card>
         ))}
 
