@@ -7,6 +7,10 @@ export type ProjectMetadata = {
   stack: string[];
   blogTag?: string;
   toc?: boolean;
+  thumbnail?: {
+    src: string;
+    position?: "center" | "top" | "bottom" | "left" | "right";
+  };
 };
 
 export type Project = ProjectMetadata & {
@@ -37,6 +41,7 @@ export async function getProjectSummaries(): Promise<ProjectSummary[]> {
     publishedAt: project.publishedAt,
     stack: project.stack,
     blogTag: project.blogTag,
+    thumbnail: project.thumbnail,
   }));
 }
 
