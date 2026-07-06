@@ -2,6 +2,8 @@
 // theme (app/globals.css). email clients ignore CSS variables and Tailwind
 // classes, so colors are hardcoded to the same hex values as the dark palette.
 
+import { siteUrl } from "@/lib/site-url";
+
 type EmailContent = { subject: string; html: string };
 
 const COLORS = {
@@ -13,10 +15,6 @@ const COLORS = {
   primary: "#d7e8ff",
   primaryForeground: "#07111f",
 };
-
-function siteUrl(): string {
-  return (process.env.SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
-}
 
 function emailLayout(bodyHtml: string, unsubscribeUrl: string): string {
   return `<!doctype html>

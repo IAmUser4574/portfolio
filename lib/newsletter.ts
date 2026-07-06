@@ -1,12 +1,9 @@
 import { getDb } from "@/lib/db";
 import { getBlogPosts } from "@/lib/blog";
 import { sendEmail } from "@/lib/mailgun";
+import { siteUrl } from "@/lib/site-url";
 import { normalizeEmail, signUnsubscribeToken } from "@/lib/newsletter-token";
 import { renderNewPostEmail, renderWelcomeEmail } from "@/lib/newsletter-email";
-
-function siteUrl(): string {
-  return (process.env.SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
-}
 
 async function unsubscribeUrlFor(email: string): Promise<string> {
   const token = await signUnsubscribeToken(email);
