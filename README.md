@@ -101,6 +101,33 @@ Key variables managed in Doppler:
 |---|---|
 | `DATABASE_URL` | Neon postgres connection string |
 | `PISTON_URL` | Piston code execution API (internal: `http://piston_api:2000`) |
+| `MAILGUN_API_KEY` | Mailgun private API key |
+| `MAILGUN_DOMAIN` | Mailgun sending domain |
+| `MAILGUN_FROM` | newsletter `From:` header, e.g. `Briton <newsletter@mg.briton.dev>` |
+| `NEWSLETTER_UNSUBSCRIBE_SECRET` | HMAC key signing unsubscribe links (unique per environment) |
+| `NEWSLETTER_CRON_SECRET` | shared secret authenticating the deploy-triggered send job (unique per environment) |
+| `SITE_URL` | base URL used to build absolute links in emails |
+
+### newsletter
+
+Readers can subscribe to an email newsletter from the site footer or the blog pages.
+Signup is single opt-in: submitting the form immediately stores the subscriber in Neon
+(`newsletter_subscribers`) and sends a welcome email via Mailgun with an unsubscribe
+link. Every email includes a one-click unsubscribe link, verified with an HMAC token
+(`lib/newsletter-token.ts`) rather than a stored token — no confirm-click/double
+opt-in step.
+
+Because the blog is static MDX with no runtime "on publish" hook, new-post emails are
+triggered from the deploy pipeline instead: after every deploy, both
+`.github/workflows/deploy-prod.yml` and `deploy-staging.yml` call
+`POST /api/newsletter/send-new-posts` against their respective running container
+(authenticated via each environment's own `NEWSLETTER_CRON_SECRET`), which diffs
+published posts against that environment's `newsletter_sent_posts` table and emails any
+newly-published post to all active subscribers in that environment's own
+`newsletter_subscribers` table. Staging and production use separate Doppler configs, so
+they have entirely separate Neon databases, Mailgun domains, and subscriber lists —
+staging redeploying on every PR/push is harmless since a slug is only ever emailed once
+per environment regardless of how many times the trigger fires.
 
 ### GitHub Actions secrets
 
@@ -163,6 +190,10 @@ Register new MDX files in `lib/mdx-collection.ts` so they appear in `/blog` and
 get a static `/blog/[slug]` page.
 
 Note - MDX files with an empty `publishedAt` field will not be included.
+
+Note - publishing a post (merging an `.mdx` file with a non-empty `publishedAt` to
+`main`) triggers a one-time newsletter email to all subscribers on the next production
+deploy. See [newsletter](#newsletter) under deployment.
 
 ## interactive code snippets
 

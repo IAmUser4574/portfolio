@@ -6,7 +6,6 @@ import {
   Cog,
   FileCog,
   FileText,
-  Mail,
   Pencil,
   ScrollText,
 } from "lucide-react";
@@ -14,7 +13,6 @@ import { faLetterboxd } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { GiTennisRacket } from "react-icons/gi";
 
 import { HomeIntro } from "@/components/home-intro";
@@ -47,24 +45,6 @@ const homeTiles = [
     href: "/cv",
     description: "Recruiters and snoopers, go nuts.",
     icon: FileText,
-  },
-];
-
-const footerLinks = [
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/briton-bauerly/",
-    icon: FaLinkedin,
-  },
-  {
-    label: "GitHub",
-    href: "https://github.com/IAmUser4574/",
-    icon: FaGithub,
-  },
-  {
-    label: "Email",
-    href: "mailto:bauerlybriton6@gmail.com",
-    icon: Mail,
   },
 ];
 
@@ -379,26 +359,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      <footer className="border-t bg-background">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>&copy; {new Date().getFullYear()} Briton Bauerly.</p>
-          <div className="flex flex-wrap gap-2">
-            {footerLinks.map((link) => {
-              const Icon = link.icon;
-
-              return (
-                <Button key={link.label} asChild variant="ghost" size="sm">
-                  <a href={link.href} target="_blank" rel="noreferrer">
-                    <Icon className="size-5" />
-                    {/* {link.label} */}
-                  </a>
-                </Button>
-              );
-            })}
-          </div>
-        </div>
-      </footer>
     </PageShell>
   );
 }
