@@ -1,0 +1,28 @@
+import Image from "next/image";
+import { ImageCarousel } from "@/components/image-carousel";
+
+export const metadata = {
+  title: "Test blog: Halo 2 (for newsletter)",
+  excerpt:
+    "When you first played Halo 2, were you blinded by its majesty?",
+  publishedAt: "2026-07-05",
+  readingTime: "7 min read",
+  tags: ["media"],
+  toc: true,
+  thumbnail: { src: "/blog/halo-2/halo-2.jpg", position: "center" }
+};
+
+Testing!
+
+<div className="mt-8 overflow-hidden rounded-lg border bg-background">
+  <Image
+    src="/blog/halo-2/halo-2.jpg"
+    alt="Halo 2 poster"
+    width={900}
+    height={540}
+    className="aspect-[5/3] w-full object-cover"
+    priority
+  />
+</div>
+
+## An Awkward Position
