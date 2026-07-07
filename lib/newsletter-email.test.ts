@@ -33,4 +33,27 @@ describe("renderNewPostEmail", () => {
     expect(html).toContain("https://briton.dev/blog/hello-world");
     expect(html).toContain(unsubscribeUrl);
   });
+
+  it("includes the thumbnail image as an absolute URL when present", () => {
+    const { html } = renderNewPostEmail(
+      {
+        title: "Hello World",
+        excerpt: "An excerpt.",
+        slug: "hello-world",
+        thumbnail: { src: "/blog/hello-world/cover.jpg" },
+      },
+      unsubscribeUrl
+    );
+    expect(html).toContain("<img");
+    expect(html).toContain("https://briton.dev/blog/hello-world/cover.jpg");
+    expect(html).toContain('alt="Hello World"');
+  });
+
+  it("omits the image entirely when there is no thumbnail", () => {
+    const { html } = renderNewPostEmail(
+      { title: "Hello World", excerpt: "An excerpt.", slug: "hello-world" },
+      unsubscribeUrl
+    );
+    expect(html).not.toContain("<img");
+  });
 });

@@ -71,11 +71,16 @@ export function renderWelcomeEmail(unsubscribeUrl: string): EmailContent {
 }
 
 export function renderNewPostEmail(
-  post: { title: string; excerpt: string; slug: string },
+  post: { title: string; excerpt: string; slug: string; thumbnail?: { src: string } },
   unsubscribeUrl: string
 ): EmailContent {
   const postUrl = `${siteUrl()}/blog/${post.slug}`;
+  // card is 600px wide with 32px padding on each side, so the image fills 536px
+  const thumbnailHtml = post.thumbnail
+    ? `<img src="${siteUrl()}${post.thumbnail.src}" alt="${post.title}" width="536" style="display:block;width:100%;max-width:536px;height:auto;border-radius:6px;margin:0 0 16px 0;" />`
+    : "";
   const body = `
+    ${thumbnailHtml}
     <p style="margin:0 0 8px 0;font-family:'Courier New',monospace;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${COLORS.mutedForeground};">New post</p>
     <h1 style="margin:0 0 12px 0;font-size:22px;">${post.title}</h1>
     <p style="margin:0;color:${COLORS.mutedForeground};">${post.excerpt}</p>
