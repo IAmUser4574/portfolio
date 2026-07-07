@@ -31,7 +31,7 @@ function emailLayout(bodyHtml: string, unsubscribeUrl: string): string {
             <tr>
               <td style="padding:24px 32px 0 32px;">
                 <span style="font-family:'Courier New',monospace;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:${COLORS.mutedForeground};">
-                  Briton
+                  BRITON.DEV
                 </span>
               </td>
             </tr>

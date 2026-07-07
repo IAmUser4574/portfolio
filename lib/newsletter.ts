@@ -52,7 +52,7 @@ export async function subscribe(email: string): Promise<void> {
   } catch (err) {
     // the subscription itself succeeded — don't fail the signup just
     // because the welcome email couldn't be sent
-    console.error(`[newsletter] welcome email failed for ${normalized}:`, err);
+    console.error(`[newsletter] welcome email failed for ${normalized.slice(0, 3)}:`, err);
   }
 }
 
@@ -115,7 +115,7 @@ export async function sendNewPostNotifications(): Promise<{
         await sendEmail({ to: email, subject, html });
       } catch (err) {
         // one bad/bounced address must not abort the whole batch
-        console.error(`[newsletter] send failed for ${email}:`, err);
+        console.error(`[newsletter] send failed for ${email.slice(0, 3)}:`, err);
       }
     }
 

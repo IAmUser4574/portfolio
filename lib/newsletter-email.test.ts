@@ -8,7 +8,7 @@ describe("renderWelcomeEmail", () => {
   it("includes the wordmark and the unsubscribe link", () => {
     const { subject, html } = renderWelcomeEmail(unsubscribeUrl);
     expect(subject).toMatch(/subscribed/i);
-    expect(html).toContain("Briton");
+    expect(html).toContain("BRITON.DEV");
     expect(html).toContain(unsubscribeUrl);
   });
 });
