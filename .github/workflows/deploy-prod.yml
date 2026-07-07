@@ -27,6 +27,10 @@ jobs:
             export PROD_IMAGE="$IMAGE"
             doppler run -- docker compose -f "$COMPOSE_PROJECT_DIR/docker-compose.yml" pull portfolio-prod
             doppler run -- docker compose -f "$COMPOSE_PROJECT_DIR/docker-compose.yml" up -d --no-deps portfolio-prod
+            doppler run -- bash -c 'curl -sf --retry 5 --retry-delay 3 --retry-connrefused --max-time 60 \
+              -H "X-Newsletter-Cron-Secret: $NEWSLETTER_CRON_SECRET" \
+              -X POST http://localhost:3000/api/newsletter/send-new-posts' \
+              || echo "newsletter trigger failed (non-fatal, deploy already succeeded)"
         env:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHCR_USER: ${{ github.actor }}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 
+import { NewsletterSignupForm } from "@/components/newsletter-signup-form";
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
 import { TableOfContents } from "@/components/table-of-contents";
@@ -65,6 +66,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {post.excerpt}
           </p>
         </div>
+
+        <NewsletterSignupForm variant="prominent" className="mt-10" />
+
         <div className="pt-10 text-lg">
           {post.toc && <TableOfContents headings={getHeadings("blog", slug)} />}
           <Post />
